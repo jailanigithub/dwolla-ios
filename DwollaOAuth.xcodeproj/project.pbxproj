@@ -15,11 +15,6 @@
 		F534DBAF157EB04E000E2BF8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F534DBAE157EB04E000E2BF8 /* AppDelegate.m */; };
 		F534DBB2157EB04E000E2BF8 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F534DBB0157EB04E000E2BF8 /* MainStoryboard.storyboard */; };
 		F534DBB5157EB04E000E2BF8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F534DBB4157EB04E000E2BF8 /* ViewController.m */; };
-		F534DBBD157EB04E000E2BF8 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F534DBBC157EB04E000E2BF8 /* SenTestingKit.framework */; };
-		F534DBBE157EB04E000E2BF8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F534DB9E157EB04E000E2BF8 /* UIKit.framework */; };
-		F534DBBF157EB04E000E2BF8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F534DBA0157EB04E000E2BF8 /* Foundation.framework */; };
-		F534DBC7157EB04E000E2BF8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F534DBC5157EB04E000E2BF8 /* InfoPlist.strings */; };
-		F534DBCA157EB04E000E2BF8 /* DwollaOAuthTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F534DBC9157EB04E000E2BF8 /* DwollaOAuthTests.m */; };
 		F534DBD8157EB11C000E2BF8 /* DwollaAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = F534DBD7157EB11C000E2BF8 /* DwollaAPI.m */; };
 		F534DC1F157EB218000E2BF8 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = F534DC07157EB218000E2BF8 /* NSObject+SBJson.m */; };
 		F534DC20157EB218000E2BF8 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F534DC0A157EB218000E2BF8 /* SBJsonParser.m */; };
@@ -33,9 +28,12 @@
 		F534DC28157EB218000E2BF8 /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = F534DC1A157EB218000E2BF8 /* SBJsonTokeniser.m */; };
 		F534DC29157EB218000E2BF8 /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = F534DC1C157EB218000E2BF8 /* SBJsonUTF8Stream.m */; };
 		F534DC2A157EB218000E2BF8 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = F534DC1E157EB218000E2BF8 /* SBJsonWriter.m */; };
-		F59A64421580F1CD00EABF75 /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = F59A643D1580F1CD00EABF75 /* NSMutableURLRequest+Parameters.m */; };
-		F59A64431580F1CD00EABF75 /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = F59A643F1580F1CD00EABF75 /* NSString+URLEncoding.m */; };
-		F59A64441580F1CD00EABF75 /* NSURL+Base.m in Sources */ = {isa = PBXBuildFile; fileRef = F59A64411580F1CD00EABF75 /* NSURL+Base.m */; };
+		F577ADA41594D7E30024BC2A /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F534DBBC157EB04E000E2BF8 /* SenTestingKit.framework */; };
+		F577ADA51594D7E30024BC2A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F534DB9E157EB04E000E2BF8 /* UIKit.framework */; };
+		F577ADA61594D7E30024BC2A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F534DBA0157EB04E000E2BF8 /* Foundation.framework */; };
+		F577ADAC1594D7E30024BC2A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F577ADAA1594D7E30024BC2A /* InfoPlist.strings */; };
+		F577ADAF1594D7E30024BC2A /* DwollaOAuthTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F577ADAE1594D7E30024BC2A /* DwollaOAuthTest.m */; };
+		F577ADBF1594DC1D0024BC2A /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F577ADBE1594DC1D0024BC2A /* libOCMock.a */; };
 		F59A644C1580F7B300EABF75 /* APIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F59A644A1580F7B300EABF75 /* APIViewController.m */; };
 		F59A644D1580F7B300EABF75 /* APIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F59A644B1580F7B300EABF75 /* APIViewController.xib */; };
 		F59A645815812E8E00EABF75 /* DwollaContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = F59A645715812E8E00EABF75 /* DwollaContacts.m */; };
@@ -50,7 +48,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		F534DBC0157EB04E000E2BF8 /* PBXContainerItemProxy */ = {
+		F577ADC21594F4270024BC2A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F534DB91157EB04E000E2BF8 /* Project object */;
 			proxyType = 1;
@@ -73,12 +71,7 @@
 		F534DBB1157EB04E000E2BF8 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		F534DBB3157EB04E000E2BF8 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		F534DBB4157EB04E000E2BF8 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		F534DBBB157EB04E000E2BF8 /* DwollaOAuthTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DwollaOAuthTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F534DBBC157EB04E000E2BF8 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		F534DBC4157EB04E000E2BF8 /* DwollaOAuthTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DwollaOAuthTests-Info.plist"; sourceTree = "<group>"; };
-		F534DBC6157EB04E000E2BF8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		F534DBC8157EB04E000E2BF8 /* DwollaOAuthTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DwollaOAuthTests.h; sourceTree = "<group>"; };
-		F534DBC9157EB04E000E2BF8 /* DwollaOAuthTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DwollaOAuthTests.m; sourceTree = "<group>"; };
 		F534DBD6157EB11B000E2BF8 /* DwollaAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DwollaAPI.h; sourceTree = "<group>"; };
 		F534DBD7157EB11C000E2BF8 /* DwollaAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DwollaAPI.m; sourceTree = "<group>"; };
 		F534DBD9157EB141000E2BF8 /* IDwollaMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDwollaMessages.h; sourceTree = "<group>"; };
@@ -107,6 +100,19 @@
 		F534DC1C157EB218000E2BF8 /* SBJsonUTF8Stream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonUTF8Stream.m; sourceTree = "<group>"; };
 		F534DC1D157EB218000E2BF8 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		F534DC1E157EB218000E2BF8 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		F577ADA31594D7E30024BC2A /* DwollaOAuthTest.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DwollaOAuthTest.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F577ADA91594D7E30024BC2A /* DwollaOAuthTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DwollaOAuthTest-Info.plist"; sourceTree = "<group>"; };
+		F577ADAB1594D7E30024BC2A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		F577ADAD1594D7E30024BC2A /* DwollaOAuthTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DwollaOAuthTest.h; sourceTree = "<group>"; };
+		F577ADAE1594D7E30024BC2A /* DwollaOAuthTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DwollaOAuthTest.m; sourceTree = "<group>"; };
+		F577ADB01594D7E30024BC2A /* DwollaOAuthTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DwollaOAuthTest-Prefix.pch"; sourceTree = "<group>"; };
+		F577ADB81594DBEE0024BC2A /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
+		F577ADB91594DBEE0024BC2A /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
+		F577ADBA1594DBEE0024BC2A /* OCMConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMConstraint.h; sourceTree = "<group>"; };
+		F577ADBB1594DBEE0024BC2A /* OCMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
+		F577ADBC1594DBEE0024BC2A /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
+		F577ADBD1594DBEE0024BC2A /* OCMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockRecorder.h; sourceTree = "<group>"; };
+		F577ADBE1594DC1D0024BC2A /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
 		F59A643C1580F1CD00EABF75 /* NSMutableURLRequest+Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+Parameters.h"; sourceTree = "<group>"; };
 		F59A643D1580F1CD00EABF75 /* NSMutableURLRequest+Parameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+Parameters.m"; sourceTree = "<group>"; };
 		F59A643E1580F1CD00EABF75 /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncoding.h"; sourceTree = "<group>"; };
@@ -147,13 +153,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F534DBB7157EB04E000E2BF8 /* Frameworks */ = {
+		F577AD9F1594D7E30024BC2A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F534DBBD157EB04E000E2BF8 /* SenTestingKit.framework in Frameworks */,
-				F534DBBE157EB04E000E2BF8 /* UIKit.framework in Frameworks */,
-				F534DBBF157EB04E000E2BF8 /* Foundation.framework in Frameworks */,
+				F577ADA41594D7E30024BC2A /* SenTestingKit.framework in Frameworks */,
+				F577ADA51594D7E30024BC2A /* UIKit.framework in Frameworks */,
+				F577ADA61594D7E30024BC2A /* Foundation.framework in Frameworks */,
+				F577ADBF1594DC1D0024BC2A /* libOCMock.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,8 +170,9 @@
 		F534DB8F157EB04E000E2BF8 = {
 			isa = PBXGroup;
 			children = (
+				F577ADB41594DA310024BC2A /* Libraries */,
 				F534DBA4157EB04E000E2BF8 /* DwollaOAuth */,
-				F534DBC2157EB04E000E2BF8 /* DwollaOAuthTests */,
+				F577ADA71594D7E30024BC2A /* DwollaOAuthTest */,
 				F534DB9D157EB04E000E2BF8 /* Frameworks */,
 				F534DB9B157EB04E000E2BF8 /* Products */,
 			);
@@ -174,7 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				F534DB9A157EB04E000E2BF8 /* DwollaOAuth.app */,
-				F534DBBB157EB04E000E2BF8 /* DwollaOAuthTests.octest */,
+				F577ADA31594D7E30024BC2A /* DwollaOAuthTest.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -219,25 +227,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		F534DBC2157EB04E000E2BF8 /* DwollaOAuthTests */ = {
-			isa = PBXGroup;
-			children = (
-				F534DBC8157EB04E000E2BF8 /* DwollaOAuthTests.h */,
-				F534DBC9157EB04E000E2BF8 /* DwollaOAuthTests.m */,
-				F534DBC3157EB04E000E2BF8 /* Supporting Files */,
-			);
-			path = DwollaOAuthTests;
-			sourceTree = "<group>";
-		};
-		F534DBC3157EB04E000E2BF8 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				F534DBC4157EB04E000E2BF8 /* DwollaOAuthTests-Info.plist */,
-				F534DBC5157EB04E000E2BF8 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		F534DC05157EB218000E2BF8 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -274,6 +263,48 @@
 				F534DC1E157EB218000E2BF8 /* SBJsonWriter.m */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		F577ADA71594D7E30024BC2A /* DwollaOAuthTest */ = {
+			isa = PBXGroup;
+			children = (
+				F577ADAD1594D7E30024BC2A /* DwollaOAuthTest.h */,
+				F577ADAE1594D7E30024BC2A /* DwollaOAuthTest.m */,
+				F577ADA81594D7E30024BC2A /* Supporting Files */,
+			);
+			path = DwollaOAuthTest;
+			sourceTree = "<group>";
+		};
+		F577ADA81594D7E30024BC2A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F577ADA91594D7E30024BC2A /* DwollaOAuthTest-Info.plist */,
+				F577ADAA1594D7E30024BC2A /* InfoPlist.strings */,
+				F577ADB01594D7E30024BC2A /* DwollaOAuthTest-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F577ADB41594DA310024BC2A /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				F577ADBE1594DC1D0024BC2A /* libOCMock.a */,
+				F577ADB71594DBEE0024BC2A /* OCMock */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
+		F577ADB71594DBEE0024BC2A /* OCMock */ = {
+			isa = PBXGroup;
+			children = (
+				F577ADB81594DBEE0024BC2A /* NSNotificationCenter+OCMAdditions.h */,
+				F577ADB91594DBEE0024BC2A /* OCMArg.h */,
+				F577ADBA1594DBEE0024BC2A /* OCMConstraint.h */,
+				F577ADBB1594DBEE0024BC2A /* OCMock.h */,
+				F577ADBC1594DBEE0024BC2A /* OCMockObject.h */,
+				F577ADBD1594DBEE0024BC2A /* OCMockRecorder.h */,
+			);
+			path = OCMock;
 			sourceTree = "<group>";
 		};
 		F59A645515812E6B00EABF75 /* DwollaAPI */ = {
@@ -324,23 +355,23 @@
 			productReference = F534DB9A157EB04E000E2BF8 /* DwollaOAuth.app */;
 			productType = "com.apple.product-type.application";
 		};
-		F534DBBA157EB04E000E2BF8 /* DwollaOAuthTests */ = {
+		F577ADA21594D7E30024BC2A /* DwollaOAuthTest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F534DBD0157EB04E000E2BF8 /* Build configuration list for PBXNativeTarget "DwollaOAuthTests" */;
+			buildConfigurationList = F577ADB11594D7E30024BC2A /* Build configuration list for PBXNativeTarget "DwollaOAuthTest" */;
 			buildPhases = (
-				F534DBB6157EB04E000E2BF8 /* Sources */,
-				F534DBB7157EB04E000E2BF8 /* Frameworks */,
-				F534DBB8157EB04E000E2BF8 /* Resources */,
-				F534DBB9157EB04E000E2BF8 /* ShellScript */,
+				F577AD9E1594D7E30024BC2A /* Sources */,
+				F577AD9F1594D7E30024BC2A /* Frameworks */,
+				F577ADA01594D7E30024BC2A /* Resources */,
+				F577ADA11594D7E30024BC2A /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				F534DBC1157EB04E000E2BF8 /* PBXTargetDependency */,
+				F577ADC31594F4270024BC2A /* PBXTargetDependency */,
 			);
-			name = DwollaOAuthTests;
-			productName = DwollaOAuthTests;
-			productReference = F534DBBB157EB04E000E2BF8 /* DwollaOAuthTests.octest */;
+			name = DwollaOAuthTest;
+			productName = DwollaOAuthTest;
+			productReference = F577ADA31594D7E30024BC2A /* DwollaOAuthTest.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -364,7 +395,7 @@
 			projectRoot = "";
 			targets = (
 				F534DB99157EB04E000E2BF8 /* DwollaOAuth */,
-				F534DBBA157EB04E000E2BF8 /* DwollaOAuthTests */,
+				F577ADA21594D7E30024BC2A /* DwollaOAuthTest */,
 			);
 		};
 /* End PBXProject section */
@@ -380,18 +411,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F534DBB8157EB04E000E2BF8 /* Resources */ = {
+		F577ADA01594D7E30024BC2A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F534DBC7157EB04E000E2BF8 /* InfoPlist.strings in Resources */,
+				F577ADAC1594D7E30024BC2A /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		F534DBB9157EB04E000E2BF8 /* ShellScript */ = {
+		F577ADA11594D7E30024BC2A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -440,24 +471,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F534DBB6157EB04E000E2BF8 /* Sources */ = {
+		F577AD9E1594D7E30024BC2A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F534DBCA157EB04E000E2BF8 /* DwollaOAuthTests.m in Sources */,
-				F59A64421580F1CD00EABF75 /* NSMutableURLRequest+Parameters.m in Sources */,
-				F59A64431580F1CD00EABF75 /* NSString+URLEncoding.m in Sources */,
-				F59A64441580F1CD00EABF75 /* NSURL+Base.m in Sources */,
+				F577ADAF1594D7E30024BC2A /* DwollaOAuthTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		F534DBC1157EB04E000E2BF8 /* PBXTargetDependency */ = {
+		F577ADC31594F4270024BC2A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F534DB99157EB04E000E2BF8 /* DwollaOAuth */;
-			targetProxy = F534DBC0157EB04E000E2BF8 /* PBXContainerItemProxy */;
+			targetProxy = F577ADC21594F4270024BC2A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -478,10 +506,10 @@
 			name = MainStoryboard.storyboard;
 			sourceTree = "<group>";
 		};
-		F534DBC5157EB04E000E2BF8 /* InfoPlist.strings */ = {
+		F577ADAA1594D7E30024BC2A /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				F534DBC6157EB04E000E2BF8 /* en */,
+				F577ADAB1594D7E30024BC2A /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -511,6 +539,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Libraries\"";
 			};
 			name = Debug;
 		};
@@ -530,6 +559,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Libraries\"";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -540,6 +570,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DwollaOAuth/DwollaOAuth-Prefix.pch";
 				INFOPLIST_FILE = "DwollaOAuth/DwollaOAuth-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Libraries\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -550,42 +584,75 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DwollaOAuth/DwollaOAuth-Prefix.pch";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "DwollaOAuth/DwollaOAuth-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Libraries\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
 		};
-		F534DBD1157EB04E000E2BF8 /* Debug */ = {
+		F577ADB21594D7E30024BC2A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/DwollaOAuth.app/DwollaOAuth";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/DwollaOAuth.app/DwollaOAuth\n";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "DwollaOAuth/DwollaOAuth-Prefix.pch";
-				INFOPLIST_FILE = "DwollaOAuthTests/DwollaOAuthTests-Info.plist";
+				GCC_PREFIX_HEADER = "DwollaOAuthTest/DwollaOAuthTest-Prefix.pch";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(SRCROOT)/Libraries/**",
+					"\"$(SRCROOT)/DwollaOAuth\"/**",
+				);
+				INFOPLIST_FILE = "DwollaOAuthTest/DwollaOAuthTest-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Libraries\"",
+				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				"TEST_HOST[sdk=*]" = "$(BUNDLE_LOADER)\n";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Libraries";
+				VERSION_INFO_BUILDER = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
-		F534DBD2157EB04E000E2BF8 /* Release */ = {
+		F577ADB31594D7E30024BC2A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/DwollaOAuth.app/DwollaOAuth";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/DwollaOAuth.app/DwollaOAuth\n";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "DwollaOAuth/DwollaOAuth-Prefix.pch";
-				INFOPLIST_FILE = "DwollaOAuthTests/DwollaOAuthTests-Info.plist";
+				GCC_PREFIX_HEADER = "DwollaOAuthTest/DwollaOAuthTest-Prefix.pch";
+				"HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(SRCROOT)/Libraries/**",
+					"\"$(SRCROOT)/DwollaOAuth\"/**",
+				);
+				INFOPLIST_FILE = "DwollaOAuthTest/DwollaOAuthTest-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Libraries\"",
+				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-all_load",
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
+				TEST_HOST = "$(BUNDLE_LOADER)\n";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/Libraries";
+				VERSION_INFO_BUILDER = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
@@ -611,14 +678,13 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F534DBD0157EB04E000E2BF8 /* Build configuration list for PBXNativeTarget "DwollaOAuthTests" */ = {
+		F577ADB11594D7E30024BC2A /* Build configuration list for PBXNativeTarget "DwollaOAuthTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F534DBD1157EB04E000E2BF8 /* Debug */,
-				F534DBD2157EB04E000E2BF8 /* Release */,
+				F577ADB21594D7E30024BC2A /* Debug */,
+				F577ADB31594D7E30024BC2A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
