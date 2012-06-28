@@ -102,4 +102,16 @@
     return userType;
 }
 
+-(NSString*)toString
+{
+    return [NSString stringWithFormat:@"Amount:%@ ID:%@", amount,destinationID];
+}
+
+
+-(BOOL)isEqualTo:(DwollaTransaction*)transaction2
+{
+    return ([amount isEqualToString:[transaction2 getAmount]] && [destinationID isEqualToString:[transaction2 getDestinationID]] && 
+            [date isEqualToString:[transaction2 getDate]] && [status isEqualToString:[transaction2 getStatus]]);
+}
+
 @end

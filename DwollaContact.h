@@ -16,6 +16,10 @@
     NSString* city;
     NSString* state;
     NSString* type;
+    NSString* latitude;
+    NSString* longitude;
+    NSString* address;
+    NSString* postal;
 }
 
 /**
@@ -27,6 +31,8 @@
  * @param city: a string representation of the contact's city
  * @param state: a string representation of the contact's state
  * @param type: a string representation of the contact's type
+ * @param latitude: a string representation of the contact's latitude
+ * @param longitude: a string representatio of the contact's longitude
  *
  * @return DwollaContact
  **/
@@ -35,7 +41,11 @@
               image:(NSString*)image 
                city:(NSString*)city 
               state:(NSString*)state 
-               type:(NSString*)type;
+               type:(NSString*)type
+           latitude:(NSString*)latitude
+          longitude:(NSString*)longitude
+            address:(NSString*)address
+             postal:(NSString*)postal;
 
 /**
  * @return name
@@ -66,5 +76,35 @@
  * @return type
  **/
 -(NSString*)getType;
+
+/**
+ *@return latitude
+ **/
+-(NSString*)getLatitude;
+
+/**
+ *@return longitude
+ **/
+-(NSString*)getLongitude;
+
+/**
+ *@return address
+ **/
+-(NSString*)getAddress;
+
+/**
+ *@return postal
+ **/
+-(NSString*)getPostal;
+
+/*
+ * @return string representation of contact
+ **/
+-(NSString*)toString;
+
+/*
+ * @return YES if users are same NO if otherwise
+ **/
+-(BOOL) isEqualTo:(DwollaContact*)contact2;
 
 @end

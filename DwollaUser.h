@@ -75,4 +75,14 @@
  **/
 -(NSString*)getType;
 
+/*
+ * @return string representation of user
+ **/
+-(NSString*)toString;
+
+/*
+ * @return YES if users are same NO if otherwise
+ **/
+-(BOOL) isEqualTo:(DwollaUser*)user;
+
 @end

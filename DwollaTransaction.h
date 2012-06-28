@@ -115,4 +115,14 @@
  **/
 -(NSString*)getUserType;
 
+/*
+ * @return string representation of transaction
+ **/
+-(NSString*)toString;
+
+/*
+ * @return YES if users are same NO if otherwise
+ **/
+-(BOOL) isEqualTo:(DwollaTransaction*)transaction2;
+
 @end

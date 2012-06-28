@@ -397,6 +397,16 @@ static NSString *const dwollaAPIBaseURL;
 +(DwollaContact*)generateContactWithString:(NSString*)contact;
 
 /**
+ * helper method that generates a DwollaContact from the given string
+ *
+ * @param contact: the string containing the DwollaContact data
+ *
+ * @return DwollaContact object containing the contents of the string
+ **/
++(DwollaContact*)generateBasicContactWithString:(NSString*)contact;
+
+
+/**
  * helper method that generates a DwollaTransaction from the given string
  *
  * @param transasction: the string containing the DwollaTransaction data
@@ -431,5 +441,17 @@ static NSString *const dwollaAPIBaseURL;
  * @return the correctly encoded string
  **/
 +(NSString*)encodedURLParameterString:(NSString*)string;
+
++(NSDictionary*)generateDictionaryWithTestData:(NSString*)data;
+
++(void)setTest:(BOOL)test;
+
++(BOOL)getTest;
+
++(void)setResult:(NSString*)result;
+
++(NSString*)getResult;
+
++(NSDictionary*)makeDwollaRequest:(NSMutableURLRequest*)request;
 
 @end

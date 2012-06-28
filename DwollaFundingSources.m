@@ -65,5 +65,27 @@
     return [sources objectAtIndex:index];
 }
 
+-(NSString*)toString
+{
+    NSString* string = @"Funding Sources:";
+    for (int i = 0; i<[sources count]; i++) 
+    {
+        string = [string stringByAppendingString:[[sources objectAtIndex:i] toString]];
+    }
+    return string;
+}
+
+-(BOOL) isEqualTo:(DwollaFundingSources*)sources2
+{
+    NSMutableArray* sources2array = [sources2 getAll];
+    for (int i = 0; i< [sources count]; i++) 
+    {
+        if (![[sources objectAtIndex:i] isEqualTo: [sources2array objectAtIndex:i]]) 
+        {
+            return NO;
+        }
+    }
+    return YES;
+}
 
 @end

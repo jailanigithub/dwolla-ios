@@ -20,7 +20,7 @@
         sourceID = _sourceID;
         name = _name;
         type = _type;
-        if ([_verified isEqualToString:@"1"]) 
+        if ([_verified isEqualToString:@"true"]) 
         {
             verified = YES;
         }
@@ -50,6 +50,18 @@
 -(BOOL)isVerified
 {
     return verified;
+}
+
+-(NSString*)toString
+{
+    return [NSString stringWithFormat:@"Name:%@ ID:%@ Type:%@ Verified%i", name,sourceID, type, verified];
+}
+
+
+-(BOOL)isEqualTo:(DwollaFundingSource*)source2
+{
+    return ([name isEqualToString:[source2 getName]] && [sourceID isEqualToString:[source2 getSourceID]] && 
+            [type isEqualToString:[source2 getType]] && verified == [source2 isVerified]);
 }
 
 @end

@@ -57,4 +57,14 @@
  **/
 -(int)count;
 
+/*
+ * @return string representation of contacts
+ **/
+-(NSString*)toString;
+
+/*
+ * @return YES if users are same NO if otherwise
+ **/
+-(BOOL) isEqualTo:(DwollaContacts*)contacts;
+
 @end

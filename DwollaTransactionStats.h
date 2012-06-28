@@ -43,4 +43,14 @@
  **/
 -(NSString*)getTotal;
 
+/*
+ * @return string representation of source
+ **/
+-(NSString*)toString;
+
+/*
+ * @return YES if users are same NO if otherwise
+ **/
+-(BOOL) isEqualTo:(DwollaTransactionStats*)stats2;
+
 @end

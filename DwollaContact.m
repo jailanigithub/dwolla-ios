@@ -16,6 +16,10 @@
                city:(NSString*)_city 
               state:(NSString*)_state 
                type:(NSString*)_type
+           latitude:(NSString *)_latitude 
+          longitude:(NSString *)_longitude
+            address:(NSString *)_address 
+             postal:(NSString *)_postal
 {
     if (self) 
     {
@@ -25,6 +29,10 @@
         city = _city;
         state = _state;
         type = _type;
+        latitude = _latitude;
+        longitude = _longitude;
+        address = _address;
+        postal = _postal;
     }
     return self;
 }
@@ -57,6 +65,38 @@
 -(NSString*)getType
 {
     return type;
+}
+
+-(NSString*)getLatitude
+{
+    return latitude;
+}
+
+-(NSString*)getLongitude
+{
+    return longitude;
+}
+
+-(NSString*)getAddress
+{
+    return address;
+}
+
+-(NSString*)getPostal
+{
+    return postal;
+}
+
+-(NSString*)toString
+{
+    return [NSString stringWithFormat:@"Name:%@ ID:%@", name, userID];
+}
+
+
+-(BOOL)isEqualTo:(DwollaContact*)contact2
+{
+    return ([name isEqualToString:[contact2 getName]] && [userID isEqualToString:[contact2 getUserID]] && 
+            [type isEqualToString:[contact2 getType]]);
 }
 
 @end

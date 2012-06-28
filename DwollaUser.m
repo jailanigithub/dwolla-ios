@@ -62,4 +62,15 @@
     return type;
 }
 
+-(NSString*)toString
+{
+    return [NSString stringWithFormat:@"Name:%@ ID:%@", name, userID];
+}
+
+
+-(BOOL)isEqualTo:(DwollaUser*)user
+{
+    return ([name isEqualToString:[user getName]] && [userID isEqualToString:[user getUserID]]);
+}
+
 @end

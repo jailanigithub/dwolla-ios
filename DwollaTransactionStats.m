@@ -38,4 +38,14 @@
     return total;
 }
 
+-(NSString*)toString
+{
+    return [NSString stringWithFormat:@"Count:%@ Total:%@", count,total];
+}
+
+
+-(BOOL)isEqualTo:(DwollaTransactionStats*)stats2
+{
+    return ([count isEqualToString:[stats2 getCount]] && [total isEqualToString:[stats2 getTotal]]);
+}
 @end

@@ -65,5 +65,27 @@
     return [contacts objectAtIndex:index];
 }
 
+-(NSString*)toString
+{
+    NSString* string = @"Contacts:";
+    for (int i = 0; i<[contacts count]; i++) 
+    {
+        string = [string stringByAppendingString:[[contacts objectAtIndex:i] toString]];
+    }
+    return string;
+}
+
+-(BOOL) isEqualTo:(DwollaContacts*)contacts2
+{
+    NSMutableArray* contacts2array = [contacts2 getAll];
+    for (int i = 0; i< [contacts count]; i++) 
+    {
+        if (![[contacts objectAtIndex:i] isEqualTo: [contacts2array objectAtIndex:i]]) 
+        {
+            return NO;
+        }
+    }
+    return YES;
+}
 
 @end

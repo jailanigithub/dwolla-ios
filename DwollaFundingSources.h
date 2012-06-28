@@ -57,4 +57,14 @@
  **/
 -(int)count;
 
+/*
+ * @return string representation of sources
+ **/
+-(NSString*)toString;
+
+/*
+ * @return YES if users are same NO if otherwise
+ **/
+-(BOOL) isEqualTo:(DwollaFundingSources*)sources;
+
 @end

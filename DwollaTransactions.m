@@ -41,4 +41,28 @@
     return [transactions objectAtIndex:index];
 }
 
+-(NSString*)toString
+{
+    NSString* string = @"Transactions:";
+    for (int i = 0; i<[transactions count]; i++) 
+    {
+        string = [string stringByAppendingString:[[transactions objectAtIndex:i] toString]];
+    }
+    return string;
+}
+
+-(BOOL) isEqualTo:(DwollaTransactions*)transactions2
+{
+    NSMutableArray* transactions2array = [transactions2 getAll];
+    for (int i = 0; i< [transactions count]; i++) 
+    {
+        if (![[transactions objectAtIndex:i] isEqualTo: [transactions2array objectAtIndex:i]]) 
+        {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+
 @end

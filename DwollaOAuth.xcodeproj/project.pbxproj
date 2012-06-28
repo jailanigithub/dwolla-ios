@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F53486B71598B2680037BC73 /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F53486B61598B2680037BC73 /* libOCMock.a */; };
+		F53486B81598B84C0037BC73 /* OCMock.h in Sources */ = {isa = PBXBuildFile; fileRef = F53486B31598B2430037BC73 /* OCMock.h */; };
 		F534DB9F157EB04E000E2BF8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F534DB9E157EB04E000E2BF8 /* UIKit.framework */; };
 		F534DBA1157EB04E000E2BF8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F534DBA0157EB04E000E2BF8 /* Foundation.framework */; };
 		F534DBA3157EB04E000E2BF8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F534DBA2157EB04E000E2BF8 /* CoreGraphics.framework */; };
@@ -47,6 +49,8 @@
 		F59A646A15812ECE00EABF75 /* DwollaTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = F59A646915812ECE00EABF75 /* DwollaTransaction.m */; };
 		F59A646D15812EDB00EABF75 /* DwollaTransactionStats.m in Sources */ = {isa = PBXBuildFile; fileRef = F59A646C15812EDB00EABF75 /* DwollaTransactionStats.m */; };
 		F59DF6D61580028F00178B82 /* DwollaOAuth2Client.m in Sources */ = {isa = PBXBuildFile; fileRef = F59DF6D51580028F00178B82 /* DwollaOAuth2Client.m */; };
+		F5DB73761594FF6C005AB473 /* OARequestParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DB73751594FF6C005AB473 /* OARequestParameter.m */; };
+		F5DB73771594FF6C005AB473 /* OARequestParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = F5DB73751594FF6C005AB473 /* OARequestParameter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +64,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F53486B01598B2430037BC73 /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
+		F53486B11598B2430037BC73 /* OCMArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
+		F53486B21598B2430037BC73 /* OCMConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMConstraint.h; sourceTree = "<group>"; };
+		F53486B31598B2430037BC73 /* OCMock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
+		F53486B41598B2430037BC73 /* OCMockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
+		F53486B51598B2430037BC73 /* OCMockRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCMockRecorder.h; sourceTree = "<group>"; };
+		F53486B61598B2680037BC73 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
+		F53486BA1598B8770037BC73 /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
+		F53486BC1598B8770037BC73 /* NSNotificationCenter+OCMAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+OCMAdditions.h"; sourceTree = "<group>"; };
+		F53486BD1598B8770037BC73 /* OCMArg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCMArg.h; sourceTree = "<group>"; };
+		F53486BE1598B8770037BC73 /* OCMConstraint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCMConstraint.h; sourceTree = "<group>"; };
+		F53486BF1598B8770037BC73 /* OCMock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCMock.h; sourceTree = "<group>"; };
+		F53486C01598B8770037BC73 /* OCMockObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCMockObject.h; sourceTree = "<group>"; };
+		F53486C11598B8770037BC73 /* OCMockRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCMockRecorder.h; sourceTree = "<group>"; };
 		F534DB9A157EB04E000E2BF8 /* DwollaOAuth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DwollaOAuth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F534DB9E157EB04E000E2BF8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F534DBA0157EB04E000E2BF8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -134,6 +152,8 @@
 		F59A646C15812EDB00EABF75 /* DwollaTransactionStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DwollaTransactionStats.m; path = ../DwollaTransactionStats.m; sourceTree = "<group>"; };
 		F59DF6D41580028F00178B82 /* DwollaOAuth2Client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DwollaOAuth2Client.h; sourceTree = "<group>"; };
 		F59DF6D51580028F00178B82 /* DwollaOAuth2Client.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DwollaOAuth2Client.m; sourceTree = "<group>"; };
+		F5DB73741594FF6C005AB473 /* OARequestParameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OARequestParameter.h; sourceTree = "<group>"; };
+		F5DB73751594FF6C005AB473 /* OARequestParameter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OARequestParameter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,15 +174,62 @@
 				F534DBBD157EB04E000E2BF8 /* SenTestingKit.framework in Frameworks */,
 				F534DBBE157EB04E000E2BF8 /* UIKit.framework in Frameworks */,
 				F534DBBF157EB04E000E2BF8 /* Foundation.framework in Frameworks */,
+				F53486B71598B2680037BC73 /* libOCMock.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F53486AD1598B21E0037BC73 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				F53486B61598B2680037BC73 /* libOCMock.a */,
+				F53486AF1598B2430037BC73 /* OCMock */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
+		F53486AF1598B2430037BC73 /* OCMock */ = {
+			isa = PBXGroup;
+			children = (
+				F53486B01598B2430037BC73 /* NSNotificationCenter+OCMAdditions.h */,
+				F53486B11598B2430037BC73 /* OCMArg.h */,
+				F53486B21598B2430037BC73 /* OCMConstraint.h */,
+				F53486B31598B2430037BC73 /* OCMock.h */,
+				F53486B41598B2430037BC73 /* OCMockObject.h */,
+				F53486B51598B2430037BC73 /* OCMockRecorder.h */,
+			);
+			path = OCMock;
+			sourceTree = "<group>";
+		};
+		F53486B91598B8770037BC73 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				F53486BA1598B8770037BC73 /* libOCMock.a */,
+				F53486BB1598B8770037BC73 /* OCMock */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
+		F53486BB1598B8770037BC73 /* OCMock */ = {
+			isa = PBXGroup;
+			children = (
+				F53486BC1598B8770037BC73 /* NSNotificationCenter+OCMAdditions.h */,
+				F53486BD1598B8770037BC73 /* OCMArg.h */,
+				F53486BE1598B8770037BC73 /* OCMConstraint.h */,
+				F53486BF1598B8770037BC73 /* OCMock.h */,
+				F53486C01598B8770037BC73 /* OCMockObject.h */,
+				F53486C11598B8770037BC73 /* OCMockRecorder.h */,
+			);
+			path = OCMock;
+			sourceTree = "<group>";
+		};
 		F534DB8F157EB04E000E2BF8 = {
 			isa = PBXGroup;
 			children = (
+				F53486B91598B8770037BC73 /* Libraries */,
+				F53486AD1598B21E0037BC73 /* Libraries */,
 				F534DBA4157EB04E000E2BF8 /* DwollaOAuth */,
 				F534DBC2157EB04E000E2BF8 /* DwollaOAuthTests */,
 				F534DB9D157EB04E000E2BF8 /* Frameworks */,
@@ -249,6 +316,8 @@
 				F59A64411580F1CD00EABF75 /* NSURL+Base.m */,
 				F534DC06157EB218000E2BF8 /* NSObject+SBJson.h */,
 				F534DC07157EB218000E2BF8 /* NSObject+SBJson.m */,
+				F5DB73741594FF6C005AB473 /* OARequestParameter.h */,
+				F5DB73751594FF6C005AB473 /* OARequestParameter.m */,
 				F534DC08157EB218000E2BF8 /* SBJson.h */,
 				F534DC09157EB218000E2BF8 /* SBJsonParser.h */,
 				F534DC0A157EB218000E2BF8 /* SBJsonParser.m */,
@@ -437,6 +506,7 @@
 				F59A646715812EC200EABF75 /* DwollaTransactions.m in Sources */,
 				F59A646A15812ECE00EABF75 /* DwollaTransaction.m in Sources */,
 				F59A646D15812EDB00EABF75 /* DwollaTransactionStats.m in Sources */,
+				F5DB73761594FF6C005AB473 /* OARequestParameter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -444,10 +514,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F53486B81598B84C0037BC73 /* OCMock.h in Sources */,
 				F534DBCA157EB04E000E2BF8 /* DwollaOAuthTests.m in Sources */,
 				F59A64421580F1CD00EABF75 /* NSMutableURLRequest+Parameters.m in Sources */,
 				F59A64431580F1CD00EABF75 /* NSString+URLEncoding.m in Sources */,
 				F59A64441580F1CD00EABF75 /* NSURL+Base.m in Sources */,
+				F5DB73771594FF6C005AB473 /* OARequestParameter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,9 +638,19 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DwollaOAuth/DwollaOAuth-Prefix.pch";
+				HEADER_SEARCH_PATHS = "“$(SRCROOT)/Libraries/OCMock”/**";
 				INFOPLIST_FILE = "DwollaOAuthTests/DwollaOAuthTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Libraries\"",
+				);
+				"OTHER_LDFLAGS[arch=*]" = (
+					"-ObjC,",
+					"-all_load",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
+				USER_HEADER_SEARCH_PATHS = "“$(SRCROOT)/Libraries/OCMock”/**";
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -583,9 +665,19 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DwollaOAuth/DwollaOAuth-Prefix.pch";
+				"HEADER_SEARCH_PATHS[arch=*]" = "“$(SRCROOT)/Libraries/OCMock”";
 				INFOPLIST_FILE = "DwollaOAuthTests/DwollaOAuthTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Libraries\"",
+				);
+				OTHER_LDFLAGS = (
+					"-ObjC,",
+					"-all_load",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
+				USER_HEADER_SEARCH_PATHS = "“$(SRCROOT)/Libraries/OCMock”/**";
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
