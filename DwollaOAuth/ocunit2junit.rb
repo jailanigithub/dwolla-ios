@@ -160,3 +160,4 @@ class ReportParser
                                   report = ReportParser.new(piped_input)
                                   
                                   exit report.exit_code
+
