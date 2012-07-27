@@ -135,7 +135,7 @@
 		F59A646C15812EDB00EABF75 /* DwollaTransactionStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DwollaTransactionStats.m; path = ../DwollaTransactionStats.m; sourceTree = "<group>"; };
 		F59DF6D41580028F00178B82 /* DwollaOAuth2Client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DwollaOAuth2Client.h; sourceTree = "<group>"; };
 		F59DF6D51580028F00178B82 /* DwollaOAuth2Client.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DwollaOAuth2Client.m; sourceTree = "<group>"; };
-		F5D3D9E715C330F20052A59B /* ocunit2junit.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = ocunit2junit.rb; sourceTree = "<group>"; };
+		F5D3D9E715C330F20052A59B /* ocunit2junit.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = ocunit2junit.rb; path = DwollaOAuth/ocunit2junit.rb; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +165,7 @@
 		F534DB8F157EB04E000E2BF8 = {
 			isa = PBXGroup;
 			children = (
+				F5D3D9E715C330F20052A59B /* ocunit2junit.rb */,
 				F534DBA4157EB04E000E2BF8 /* DwollaOAuth */,
 				F534DBC2157EB04E000E2BF8 /* DwollaOAuthTests */,
 				F534DB9D157EB04E000E2BF8 /* Frameworks */,
@@ -195,7 +196,6 @@
 		F534DBA4157EB04E000E2BF8 /* DwollaOAuth */ = {
 			isa = PBXGroup;
 			children = (
-				F5D3D9E715C330F20052A59B /* ocunit2junit.rb */,
 				F534DC05157EB218000E2BF8 /* Classes */,
 				F534DBAD157EB04E000E2BF8 /* AppDelegate.h */,
 				F534DBAE157EB04E000E2BF8 /* AppDelegate.m */,
