@@ -60,7 +60,7 @@ static NSString *Boundary = @"-----------------------------------0xCoCoaouTHeBou
 
 - (void)setParameters:(NSArray *)parameters
 {
-	NSMutableArray *pairs = [[[NSMutableArray alloc] initWithCapacity:[parameters count]] autorelease];
+	NSMutableArray *pairs = [[NSMutableArray alloc] initWithCapacity:[parameters count]];
 	
 	NSString *encodedParameterPairs = [pairs componentsJoinedByString:@"&"];
     
@@ -94,7 +94,6 @@ static NSString *Boundary = @"-----------------------------------0xCoCoaouTHeBou
 	[bodyData appendData:[[[@"\r\n--" stringByAppendingString:Boundary] stringByAppendingString:@"--"] dataUsingEncoding:NSUTF8StringEncoding]];
 	[self setValue:[NSString stringWithFormat:@"%d", [bodyData length]] forHTTPHeaderField:@"Content-Length"];
 	[self setHTTPBody:bodyData];
-	[bodyData release];
 }
 
 @end
