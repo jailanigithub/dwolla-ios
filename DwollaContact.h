@@ -67,4 +67,6 @@
  **/
 -(NSString*)getType;
 
+-(BOOL) isEqualTo:(DwollaContact*)_contact;
+
 @end

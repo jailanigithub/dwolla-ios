@@ -57,4 +57,6 @@
  **/
 -(int)count;
 
+-(BOOL) isEqualTo:(DwollaContacts*)_contacts;
+
 @end

@@ -65,5 +65,23 @@
     return [sources objectAtIndex:index];
 }
 
+-(BOOL)isEqualTo:(DwollaFundingSources*)_sources
+{
+    if ([_sources count] == [sources count]) 
+    {
+        for (int i = 0; i < [sources count]; i++) 
+        {
+            if (![[_sources getObjectAtIndex:i] isEqualTo: [sources objectAtIndex:i]]) 
+            {
+                return NO;
+            }
+        }
+    }
+    else 
+    {
+        return NO;
+    }
+    return YES;
+}
 
 @end

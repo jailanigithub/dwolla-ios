@@ -41,4 +41,23 @@
     return [transactions objectAtIndex:index];
 }
 
+-(BOOL)isEqualTo:(DwollaTransactions*)_transactions
+{
+    if ([_transactions count] == [transactions count]) 
+    {
+        for (int i = 0; i < [transactions count]; i++) 
+        {
+            if (![[_transactions getObjectAtIndex:i] isEqualTo: [transactions objectAtIndex:i]]) 
+            {
+                return NO;
+            }
+        }
+    }
+    else 
+    {
+        return NO;
+    }
+    return YES;
+}
+
 @end

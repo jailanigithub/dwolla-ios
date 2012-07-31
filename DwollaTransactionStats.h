@@ -43,4 +43,6 @@
  **/
 -(NSString*)getTotal;
 
+-(BOOL)isEqualTo:(DwollaTransactionStats*)_stats;
+
 @end

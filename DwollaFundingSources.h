@@ -57,4 +57,6 @@
  **/
 -(int)count;
 
+-(BOOL)isEqualTo:(DwollaFundingSources*)_sources;
+
 @end

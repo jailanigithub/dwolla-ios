@@ -40,4 +40,6 @@
  **/
 -(int)count;
 
+-(BOOL)isEqualTo:(DwollaTransactions*)_transactions;
+
 @end

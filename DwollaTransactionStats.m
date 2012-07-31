@@ -38,4 +38,16 @@
     return total;
 }
 
+-(BOOL)isEqualTo:(DwollaTransactionStats*)_stats
+{
+    if (![count isEqualToString:[_stats getCount]] || ![total isEqualToString:[_stats getTotal]]) 
+    {
+        return NO;
+    }
+    else 
+    {
+        return YES;
+    } 
+}
+
 @end

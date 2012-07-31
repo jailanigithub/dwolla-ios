@@ -102,4 +102,16 @@
     return userType;
 }
 
+-(BOOL)isEqualTo:(DwollaTransaction*)_transaction
+{
+    if (![destinationName isEqualToString:[_transaction getDestinationName]] || ![transactionID isEqualToString:[_transaction getTransactionID]] || ![userType isEqualToString:[_transaction getUserType]] || ![amount isEqualToString:[_transaction getAmount]] || ![status isEqualToString:[_transaction getStatus]] || ![type isEqualToString:[_transaction getType]] || ![destinationID isEqualToString:[_transaction getDestinationID]] || ![date isEqualToString:[_transaction getDate]]) 
+    {
+        return NO;
+    }
+    else 
+    {
+        return YES;
+    }
+}
+
 @end

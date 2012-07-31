@@ -62,4 +62,16 @@
     return type;
 }
 
+-(BOOL)isEqualTo:(DwollaUser*)_user
+{
+    if (![name isEqualToString:[_user getName]] || ![userID isEqualToString:[_user getUserID]] || ![type isEqualToString:[_user getType]]) 
+    {
+        return NO;
+    }
+    else 
+    {
+        return YES;
+    }
+}
+
 @end

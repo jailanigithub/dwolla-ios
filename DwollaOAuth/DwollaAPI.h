@@ -17,6 +17,8 @@
 #import "DwollaContacts.h"
 
 static NSString *const dwollaAPIBaseURL;
+static BOOL isTest;
+static NSDictionary* testResult;
 
 @interface DwollaAPI : NSObject
 
@@ -431,5 +433,9 @@ static NSString *const dwollaAPIBaseURL;
  * @return the correctly encoded string
  **/
 +(NSString*)encodedURLParameterString:(NSString*)string;
+
++(void)isTest;
+
++(void)setTestResult:(NSDictionary*)dictionary;
 
 @end

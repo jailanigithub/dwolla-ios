@@ -75,4 +75,6 @@
  **/
 -(NSString*)getType;
 
+-(BOOL)isEqualTo:(DwollaUser*)_user;
+
 @end

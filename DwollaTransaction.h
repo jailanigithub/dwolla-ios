@@ -115,4 +115,6 @@
  **/
 -(NSString*)getUserType;
 
+-(BOOL)isEqualTo:(DwollaTransaction*)_transaction;
+
 @end

@@ -59,4 +59,16 @@
     return type;
 }
 
+-(BOOL) isEqualTo:(DwollaContact*)_contact
+{
+    if (![name isEqualToString:[_contact getName]] || ![userID isEqualToString:[_contact getUserID]] || ![type isEqualToString:[_contact getType]]) 
+    {
+        return NO;
+    }
+    else
+    {
+        return YES;
+    }
+}
+
 @end

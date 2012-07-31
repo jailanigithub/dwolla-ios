@@ -7,6 +7,7 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
+#import "DwollaAPI.h"
 
 @interface DwollaOAuthTests : SenTestCase
 

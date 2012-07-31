@@ -65,5 +65,24 @@
     return [contacts objectAtIndex:index];
 }
 
+-(BOOL) isEqualTo:(DwollaContacts*)_contacts
+{
+    if ([_contacts count] == [contacts count]) 
+    {
+        for (int i = 0; i < [contacts count]; i++) 
+        {
+            if (![[_contacts getObjectAtIndex:i] isEqualTo: [contacts objectAtIndex:i]]) 
+            {
+                return NO;
+            }
+        }
+    }
+    else 
+    {
+        return NO;
+    }
+        return YES;
+}
+
 
 @end

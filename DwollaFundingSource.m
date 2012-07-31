@@ -52,4 +52,15 @@
     return verified;
 }
 
+-(BOOL)isEqualTo:(DwollaFundingSource*)_source
+{
+    if (![sourceID isEqualToString:[_source getSourceID]] || ![name isEqualToString:[_source getName]] || ![type isEqualToString:[_source getType]] || verified != [_source isVerified]) 
+    {
+        return NO;
+    }
+    else 
+    {
+        return YES;
+    } 
+}
 @end

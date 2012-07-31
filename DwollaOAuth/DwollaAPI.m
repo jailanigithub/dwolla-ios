@@ -56,69 +56,79 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
                        notes:(NSString*)notes
              fundingSourceID:(NSString*)fundingID
 {
-    if (![DwollaAPI hasToken]) 
+    
+    NSDictionary* dictionary;
+    
+    if (isTest) 
     {
-        @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
-                                       reason:@"oauth_token is invalid" userInfo:nil]; 
+        dictionary = testResult;
     }
-    NSString* token = [DwollaAPI getAccessToken];
-    
-    NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/transactions/send?oauth_token=%@", token]; 
-    
-    if(pin == nil || [pin isEqualToString:@""])
+    else 
     {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
-                                       reason:@"pin is either nil or empty" userInfo:nil];
+        if (![DwollaAPI hasToken]) 
+        {
+            @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
+                                           reason:@"oauth_token is invalid" userInfo:nil]; 
+        }
+        NSString* token = [DwollaAPI getAccessToken];
+        
+        NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/transactions/send?oauth_token=%@", token]; 
+        
+        if(pin == nil || [pin isEqualToString:@""])
+        {
+            @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
+                                           reason:@"pin is either nil or empty" userInfo:nil];
+        }
+        if (destinationID == nil || [destinationID isEqualToString:@""]) 
+        {
+            @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
+                                           reason:@"destinationID is either nil or empty" userInfo:nil];   
+        }
+        if (amount == nil || [amount isEqualToString:@""])
+        {
+            @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
+                                           reason:@"amount is either nil or empty" userInfo:nil];    
+        }
+        NSString* json = [NSString stringWithFormat:@"{\"pin\":\"%@\", \"destinationId\":\"%@\", \"amount\":%@", pin, destinationID, amount];
+        if (type != nil && ![type isEqualToString:@""]) 
+        {
+            json = [json stringByAppendingFormat: @", \"destinationType\":\"%@\"", type];
+        }
+        if (facAmount != nil && ![facAmount isEqualToString:@""]) 
+        {
+            json = [json stringByAppendingFormat: @", \"facilitatorAmount\":\"%@\"", facAmount];
+        }
+        if (assumeCosts != nil && ![assumeCosts isEqualToString:@""])
+        {
+            json = [json stringByAppendingFormat: @", \"assumeCosts\":\"%@\"", assumeCosts];
+        }
+        if (notes != nil && ![notes isEqualToString:@""]) 
+        {
+            json = [json stringByAppendingFormat: @", \"notes\":\"%@\"", notes];
+        }
+        if (fundingID != nil && ![fundingID isEqualToString:@""])
+        {
+            json = [json stringByAppendingFormat: @", \"fundsSource\":\"%@\"", fundingID];
+        }
+        json = [json stringByAppendingFormat: @"}", type];
+        
+        NSData* body = [json dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
+        
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        
+        [request setHTTPMethod: @"POST"];
+        
+        [request setHTTPBody:body];
+        
+        NSError *requestError;
+        NSURLResponse *urlResponse = nil;
+        
+        NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
+        
+        dictionary = [DwollaAPI generateDictionaryWithData:result];
     }
-    if (destinationID == nil || [destinationID isEqualToString:@""]) 
-    {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
-                                       reason:@"destinationID is either nil or empty" userInfo:nil];   
-    }
-    if (amount == nil || [amount isEqualToString:@""])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
-                                       reason:@"amount is either nil or empty" userInfo:nil];    
-    }
-    NSString* json = [NSString stringWithFormat:@"{\"pin\":\"%@\", \"destinationId\":\"%@\", \"amount\":%@", pin, destinationID, amount];
-    if (type != nil && ![type isEqualToString:@""]) 
-    {
-        json = [json stringByAppendingFormat: @", \"destinationType\":\"%@\"", type];
-    }
-    if (facAmount != nil && ![facAmount isEqualToString:@""]) 
-    {
-        json = [json stringByAppendingFormat: @", \"facilitatorAmount\":\"%@\"", facAmount];
-    }
-    if (assumeCosts != nil && ![assumeCosts isEqualToString:@""])
-    {
-        json = [json stringByAppendingFormat: @", \"assumeCosts\":\"%@\"", assumeCosts];
-    }
-    if (notes != nil && ![notes isEqualToString:@""]) 
-    {
-        json = [json stringByAppendingFormat: @", \"notes\":\"%@\"", notes];
-    }
-    if (fundingID != nil && ![fundingID isEqualToString:@""])
-    {
-        json = [json stringByAppendingFormat: @", \"fundsSource\":\"%@\"", fundingID];
-    }
-    json = [json stringByAppendingFormat: @"}", type];
-    
-    NSData* body = [json dataUsingEncoding:NSUTF8StringEncoding];
-    
-    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
-    
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    
-    [request setHTTPMethod: @"POST"];
-    
-    [request setHTTPBody:body];
-    
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-    
-    NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
-    
-    NSDictionary* dictionary = [DwollaAPI generateDictionaryWithData:result];
     NSLog(@"%@", dictionary);
     
     NSString* data = [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
@@ -140,63 +150,72 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
         facilitatorAmount:(NSString*)facAmount
                     notes:(NSString*)notes
 {
-    if (![DwollaAPI hasToken]) 
+    NSDictionary* dictionary;
+    
+    if (isTest) 
     {
-        @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
-                                       reason:@"oauth_token is invalid" userInfo:nil];
+        dictionary = testResult;
     }
-    
-    NSString* token = [DwollaAPI getAccessToken];
-    
-    NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/transactions/request?oauth_token=%@", token]; 
-    
-    if(pin == nil || [pin isEqualToString:@""])
+    else 
     {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
-                                       reason:@"pin is either nil or empty" userInfo:nil];  
+        if (![DwollaAPI hasToken]) 
+        {
+            @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
+                                           reason:@"oauth_token is invalid" userInfo:nil];
+        }
+        
+        NSString* token = [DwollaAPI getAccessToken];
+        
+        NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/transactions/request?oauth_token=%@", token]; 
+        
+        if(pin == nil || [pin isEqualToString:@""])
+        {
+            @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
+                                           reason:@"pin is either nil or empty" userInfo:nil];  
+        }
+        if (sourceID == nil || [sourceID isEqualToString:@""]) 
+        {
+            @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
+                                           reason:@"sourceID is either nil or empty" userInfo:nil];
+        }
+        if (amount == nil || [amount isEqualToString:@""])
+        {
+            @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
+                                           reason:@"amount is either nil or empty" userInfo:nil];
+        }
+        NSString* json = [NSString stringWithFormat:@"{\"pin\":\"%@\", \"sourceId\":\"%@\", \"amount\":%@", pin, sourceID, amount];
+        
+        if (type != nil && ![type isEqualToString:@""]) 
+        {
+            json = [json stringByAppendingFormat: @", \"destinationType\":\"%@\"", type];
+        }
+        if (facAmount != nil && ![facAmount isEqualToString:@""]) 
+        {
+            json = [json stringByAppendingFormat: @", \"facilitatorAmount\":\"%@\"", facAmount];
+        }
+        if (notes != nil && ![notes isEqualToString:@""]) 
+        {
+            json = [json stringByAppendingFormat: @", \"notes\":\"%@\"", notes];
+        }
+        json = [json stringByAppendingFormat: @"}", type];
+        
+        NSData* body = [json dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
+        
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        
+        [request setHTTPMethod: @"POST"];
+        
+        [request setHTTPBody:body];
+        
+        NSError *requestError;
+        NSURLResponse *urlResponse = nil;
+        
+        NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
+    
+        dictionary = [DwollaAPI generateDictionaryWithData:result]; 
     }
-    if (sourceID == nil || [sourceID isEqualToString:@""]) 
-    {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
-                                       reason:@"sourceID is either nil or empty" userInfo:nil];
-    }
-    if (amount == nil || [amount isEqualToString:@""])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
-                                       reason:@"amount is either nil or empty" userInfo:nil];
-    }
-    NSString* json = [NSString stringWithFormat:@"{\"pin\":\"%@\", \"sourceId\":\"%@\", \"amount\":%@", pin, sourceID, amount];
-    
-    if (type != nil && ![type isEqualToString:@""]) 
-    {
-        json = [json stringByAppendingFormat: @", \"destinationType\":\"%@\"", type];
-    }
-    if (facAmount != nil && ![facAmount isEqualToString:@""]) 
-    {
-        json = [json stringByAppendingFormat: @", \"facilitatorAmount\":\"%@\"", facAmount];
-    }
-    if (notes != nil && ![notes isEqualToString:@""]) 
-    {
-        json = [json stringByAppendingFormat: @", \"notes\":\"%@\"", notes];
-    }
-    json = [json stringByAppendingFormat: @"}", type];
-    
-    NSData* body = [json dataUsingEncoding:NSUTF8StringEncoding];
-    
-    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
-    
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    
-    [request setHTTPMethod: @"POST"];
-    
-    [request setHTTPBody:body];
-    
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-    
-    NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
-    
-    NSDictionary* dictionary = [DwollaAPI generateDictionaryWithData:result];
     NSLog(@"%@", dictionary);
     
     NSString* data = [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
@@ -235,8 +254,16 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
 
 +(NSString*)getBalance
 {
+    NSDictionary* dictionary;
+    if (isTest) 
+    {
+        dictionary = testResult;
+    }
+    else 
+    {
+        dictionary = [DwollaAPI getJSONBalance];
+    }
 
-    NSDictionary* dictionary = [DwollaAPI getJSONBalance];
     NSString* data = [[NSString alloc]initWithFormat:@"%@", [dictionary objectForKey:@"Response"]];
     NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
     
@@ -293,7 +320,16 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
                               types:(NSString*)types
                               limit:(NSString*)limit
 {
-    NSDictionary* dictionary = [DwollaAPI getJSONContactsByName:name types:types limit:limit];
+    NSDictionary* dictionary;
+    
+    if (isTest) 
+    {
+        dictionary = testResult;
+    }
+    else 
+    { 
+        dictionary = [DwollaAPI getJSONContactsByName:name types:types limit:limit];
+    }
     NSArray* data =[dictionary valueForKey:@"Response"];
     
     NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
@@ -303,8 +339,8 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
         NSString* message = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Message"]];
         @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:message userInfo:dictionary];
     }
-    
     NSMutableArray* contacts = [[NSMutableArray alloc] initWithCapacity:[data count]];
+    
     for (int i = 0; i < [data count]; i++)
     {
         NSString* info = [[NSString alloc] initWithFormat:@"%@", [data objectAtIndex:i]];
@@ -365,7 +401,16 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
                                 Limit:(NSString*)limit
                                 Range:(NSString*)range
 {
-    NSDictionary* dictionary = [DwollaAPI getJSONNearbyWithLatitude:lat Longitude:lon Limit:limit Range:range];
+    NSDictionary* dictionary;
+    
+    if (isTest) 
+    {
+        dictionary = testResult;
+    }
+    else 
+    {
+        dictionary = [DwollaAPI getJSONNearbyWithLatitude:lat Longitude:lon Limit:limit Range:range];
+    }
     NSArray* data =[dictionary valueForKey:@"Response"];
     
     NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
@@ -409,7 +454,16 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
 
 +(DwollaFundingSources*)getFundingSources
 {
-    NSDictionary* dictionary = [DwollaAPI getJSONFundingSources];
+    NSDictionary* dictionary;
+    
+    if (isTest) 
+    {
+        dictionary = testResult;
+    }
+    else 
+    {
+        dictionary = [DwollaAPI getJSONFundingSources];
+    }
     NSArray* data =[dictionary valueForKey:@"Response"];
     
     NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
@@ -462,7 +516,17 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
 
 +(DwollaFundingSource*)getFundingSource:(NSString*)sourceID
 {
-    NSDictionary* dictionary = [DwollaAPI getJSONFundingSource:sourceID];
+    NSDictionary* dictionary;
+    
+    if (isTest) 
+    {
+        dictionary = testResult;
+    }
+    else 
+    {
+        dictionary = [DwollaAPI getJSONFundingSource:sourceID];
+        
+    }
     NSArray* data =[dictionary valueForKey:@"Response"];
     
     NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
@@ -501,7 +565,16 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
 
 +(DwollaUser*)getAccountInfo
 {
-    NSDictionary* dictionary = [DwollaAPI getJSONAccountInfo];
+    NSDictionary* dictionary;
+    
+    if (isTest) 
+    {
+        dictionary = testResult;
+    }
+    else 
+    {
+        dictionary = [DwollaAPI getJSONAccountInfo];
+    }
     NSString* data = [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
     
     NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
@@ -560,7 +633,16 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
 
 +(DwollaUser*)getBasicInfoWithAccountID:(NSString*)accountID
 {
-    NSDictionary* dictionary = [DwollaAPI getJSONBasicInfoWithAccountID:accountID];
+    NSDictionary* dictionary;
+    
+    if (isTest) 
+    {
+        dictionary = testResult;
+    }
+    else 
+    {
+        dictionary = [DwollaAPI getJSONBasicInfoWithAccountID:accountID];
+    }
     NSString* data = [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
     
     NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
@@ -768,7 +850,16 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
                                      limit:(NSString*)limit
                                       skip:(NSString*)skip
 {
-    NSDictionary* dictionary = [DwollaAPI getJSONTransactionsSince:date limit:limit skip:skip];
+    NSDictionary* dictionary;
+    
+    if (isTest) 
+    {
+        dictionary = testResult;
+    }
+    else 
+    {
+        dictionary = [DwollaAPI getJSONTransactionsSince:date limit:limit skip:skip];
+    }
     NSArray* data =[dictionary valueForKey:@"Response"];
     
     NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
@@ -814,7 +905,16 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
 
 +(DwollaTransaction*)getTransaction:(NSString*)transactionID
 {
-    NSDictionary* dictionary = [DwollaAPI getJSONTransaction:transactionID];
+    NSDictionary* dictionary;
+    
+    if (isTest) 
+    {
+        dictionary = testResult;
+    }
+    else 
+    {
+        dictionary = [DwollaAPI getJSONTransaction:transactionID];
+    }
     NSArray* pull =[dictionary valueForKey:@"Response"];
     NSString* data = [[NSString alloc] initWithFormat:@"%@", pull];
     
@@ -882,7 +982,16 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
 +(DwollaTransactionStats*)getTransactionStats:(NSString*)start 
                                           end:(NSString*)end
 {
-    NSDictionary* dictionary = [DwollaAPI getJSONTransactionStats:start end:end];
+    NSDictionary* dictionary;
+    
+    if (isTest) 
+    {
+        dictionary = testResult;
+    }
+    else 
+    {
+        dictionary = [DwollaAPI getJSONTransactionStats:start end:end];
+    }
     NSArray* pull =[dictionary valueForKey:@"Response"];
     NSString* data = [[NSString alloc] initWithFormat:@"%@", pull];
     
@@ -1033,6 +1142,16 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
                                                                                              CFSTR(":/=,!$&'()*+;[]@#?"),
                                                                                              kCFStringEncodingUTF8);
 	return result;
+}
+
++(void)isTest
+{
+    isTest = YES;
+}
+
++(void)setTestResult:(NSDictionary*)dictionary
+{
+    testResult = dictionary;
 }
 
 @end

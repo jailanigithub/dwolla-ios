@@ -51,4 +51,6 @@
  **/
 -(BOOL)isVerified;
 
+-(BOOL)isEqualTo:(DwollaFundingSource*)_source;
+
 @end
