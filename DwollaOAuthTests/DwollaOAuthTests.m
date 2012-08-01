@@ -97,7 +97,7 @@
 
 -(void)testGetSources
 {
-    NSString* response = [NSString stringWithFormat:@"{\"Success\":true,\"Message\":\"Success\",\"Response\":[{\"Id\":\"TVmMwlKz1z6HmOK1np8NFA==\",\"Name\":\"Donations Collection Fund - Savings\",\"Type\":\"Savings\",\"Verified\":\"true\"},{\"Id\":\"TqmKw8Kz1z6HmOK1np8Npq==,\"Name\":\"Donations Payout Account - Checking\",\"Type\":\"Checking\",\"Verified\":\"true\"}]}"];
+    NSString* response = @"{\"Success\":true,\"Message\":\"Success\",\"Response\":[{\"Id\":\"TVmMwlKz1z6HmOK1np8NFA==\",\"Name\":\"Donations Collection Fund - Savings\",\"Type\":\"Savings\",\"Verified\":\"true\"}]}";
     
     SBJsonParser *parser = [[SBJsonParser alloc] init];
     
@@ -109,11 +109,9 @@
     
     DwollaFundingSource* one = [[DwollaFundingSource alloc] initWithSourceID:@"TVmMwlKz1z6HmOK1np8NFA==" name:@"Donations Collection Fund - Savings" type:@"Savings" verified:@"true"];
     
-    DwollaFundingSource* two = [[DwollaFundingSource alloc] initWithSourceID:@"TqmKw8Kz1z6HmOK1np8Npq==" name:@"Donations Payout Account - Checking" type:@"Checking" verified:@"true"];
+    DwollaFundingSources* sources2 = [[DwollaFundingSources alloc] initWithSuccess:YES sources:[[NSMutableArray alloc] initWithObjects:one, nil]];
     
-    DwollaFundingSources* sources2 = [[DwollaFundingSources alloc] initWithSuccess:YES sources:[[NSMutableArray alloc] initWithObjects:one, two, nil]];
-    
-    //STAssertTrue([sources isEqualTo:sources2],@"NOT EQUAL!");
+    STAssertTrue([sources isEqualTo:sources2],@"NOT EQUAL!");
 
 }
 
@@ -182,7 +180,7 @@
 
 -(void)testGetTransaction
 {
-    NSString* response = @"{\"Success\":true,\"Message\":\"Success\",\"Response\":[{\"Amount\":1.92,\"Date\":\"7/18/2012 1:45:36 PM\",\"Type\":\"money_sent\",\"UserType\":\"Dwolla\",\"DestinationId\":\"812-737-5434\",\"DestinationName\":\"Timbuktuu Coffee\",\"SourceId\":\"\",\"SourceName\":\"\",\"ClearingDate\":\"\",\"Notes\":\"From iPhone\",\"Id\":1226108,\"Status\":\"processed\"}]}";
+    NSString* response = @"{\"Success\":true,\"Message\":\"Success\",\"Response\":{\"Amount\":1.92,\"Date\":\"7/18/2012 1:45:36 PM\",\"Type\":\"money_sent\",\"UserType\":\"Dwolla\",\"DestinationId\":\"812-737-5434\",\"DestinationName\":\"Timbuktuu Coffee\",\"SourceId\":\"\",\"SourceName\":\"\",\"ClearingDate\":\"\",\"Notes\":\"From iPhone\",\"Id\":1226108,\"Status\":\"processed\"}}";
                                                     
     SBJsonParser *parser = [[SBJsonParser alloc] init];
                                                     
@@ -190,11 +188,11 @@
     
     [DwollaAPI setTestResult:result];
 
-   // DwollaTransaction* transaction = [DwollaAPI getTransaction:@""];
+    DwollaTransaction* transaction = [DwollaAPI getTransaction:@""];
     
     DwollaTransaction* transaction2 = [[DwollaTransaction alloc] initWithAmount:@"1.92" clearingDate:@"" date:@"7/18/2012 1:45:36 PM" destinationID:@"812-737-5434" destinationName:@"Timbuktuu Coffee" transactionID:@"1226108" notes:@"" sourceID:@"" sourceName:@"" status:@"processed" type:@"money_sent" userType:@"Dwolla"];
     
-   // STAssertTrue([transaction isEqualTo:transaction2], @"NOT EQUAL");
+    STAssertTrue([transaction isEqualTo:transaction2], @"NOT EQUAL");
 }
 
 -(void)testGetTransactionStats
