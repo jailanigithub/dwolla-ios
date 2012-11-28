@@ -12,8 +12,11 @@
 ## Installation
 
 - Download XCode 4 (https://developer.apple.com/xcode/index.php)
-- Clone Repo
-- Import into Application
+- Add repo as submodule
+- Add DwollaOAuth project as subproject to application
+- Add DwollaOAuthLib as a target dependency in "Build Phases"
+- Add libDwollaOAuthLib.a to "Link Binaries with Libraries" in "Build Phases"
+- Add $(SRCROOT)/dwolla-ios/DwollaOAuthLib to "Header Search Paths" (select recursive)
 
 ## Usage
 
