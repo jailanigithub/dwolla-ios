@@ -343,8 +343,8 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     
     for (int i = 0; i < [data count]; i++)
     {
-        NSString* info = [[NSString alloc] initWithFormat:@"%@", [data objectAtIndex:i]];
-        [contacts addObject:[DwollaAPI generateContactWithString:info]];
+        NSDictionary *info = [data objectAtIndex:i];
+        [contacts addObject:[DwollaAPI generateContactWithDictionary:info]];
     }
     return [[DwollaContacts alloc] initWithSuccess:YES contacts:contacts];
 }
@@ -391,7 +391,8 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     
     NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
     
-    NSDictionary* dictionary = [DwollaAPI generateDictionaryWithData:result];
+    NSString *response = [[NSString alloc] initWithData:result encoding:NSUTF8StringEncoding];
+    NSDictionary *dictionary = [response JSONValue];
     
     return dictionary;
 }
@@ -423,9 +424,9 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     
     NSMutableArray* contacts = [[NSMutableArray alloc] initWithCapacity:[data count]];
     for (int i = 0; i < [data count]; i++)
-    {
-        NSString* info = [[NSString alloc] initWithFormat:@"%@", [data objectAtIndex:i]];
-        [contacts addObject:[DwollaAPI generateContactWithString:info]];
+    {        
+        NSDictionary *info = [data objectAtIndex:i];
+        [contacts addObject:[DwollaAPI generateContactWithDictionary:info]];
     }
     return [[DwollaContacts alloc] initWithSuccess:YES contacts:contacts];
 }
@@ -1065,7 +1066,6 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
 +(NSDictionary*)generateDictionaryWithData:(NSData*)data
 {
     NSString *dataString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]; 
-    
     SBJsonParser *parser = [[SBJsonParser alloc] init];
     
     NSDictionary *dictionary = [parser objectWithString:dataString];
@@ -1073,17 +1073,15 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     return dictionary;
 }
 
-+(DwollaContact*)generateContactWithString:(NSString*)string
-{
-    NSArray* info = [string componentsSeparatedByString:@"\n"];
-    NSString* city = [DwollaAPI findValue:[info objectAtIndex:1]];
-    NSString* userID = [DwollaAPI findValue:[info objectAtIndex:2]];
-    NSString* image = [DwollaAPI findValue:[info objectAtIndex:3]];
-    NSString* name = [DwollaAPI findValue:[info objectAtIndex:4]];
-    NSString* state = [DwollaAPI findValue:[info objectAtIndex:5]];
-    NSString* type = [DwollaAPI findValue:[info objectAtIndex:6]];
++(DwollaContact*) generateContactWithDictionary:(NSDictionary *)dictionary {
     
-    return [[DwollaContact alloc] initWithUserID:userID name:name image:image city:city state:state type:type];
+    NSString *userId = [dictionary objectForKey:@"Id"];
+    NSString *name = [dictionary objectForKey:@"Name"];
+    NSString *image = [dictionary objectForKey:@"Image"];
+    NSString *city = [dictionary objectForKey:@"City"];
+    NSString *state = [dictionary objectForKey:@"State"];
+    NSString *type = [dictionary objectForKey:@"Type"];
+    return [[DwollaContact alloc] initWithUserID:userId name:name image:image city:city state:state type:type];
 }
 
 +(DwollaFundingSource*)generateSourceWithString:(NSString*)string

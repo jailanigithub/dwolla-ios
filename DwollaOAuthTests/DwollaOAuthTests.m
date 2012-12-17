@@ -78,7 +78,7 @@
 
 -(void)testGetNearby
 {
-   NSString* response = [NSString stringWithFormat:@"{\"Success\":true,\"Message\":\"Success\",\"Response\":[{\"Name\":\"Ben Facebook Test\",\"Id\":\"12345\",\"Type\":\"Facebook\",\"Image\":\"\",\"City\":\"Des Moines\",\"State\":\"IA\"},{\"Name\":\"Ben Dwolla Test\",\"Id\":\"812-111-111\",\"Type\":\"Dwolla\",\"Image\":\"\",\"City\":\"Des Moines\",\"State\":\"IA\"}]}"];
+   NSString* response = [NSString stringWithFormat:@"{\"Success\":true,\"Message\":\"Success\",\"Response\":[{\"Name\":\"Ben Facebook Test\",\"City\":\"Des Moines\",\"Id\":\"12345\",\"Type\":\"Facebook\",\"Image\":\"\",\"State\":\"IA\"},{\"Name\":\"Ben Dwolla Test\",\"Id\":\"812-111-111\",\"Type\":\"Dwolla\",\"Image\":\"\",\"City\":\"Des Moines\",\"State\":\"IA\"}]}"];
     
     SBJsonParser *parser = [[SBJsonParser alloc] init];
     

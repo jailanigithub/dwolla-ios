@@ -437,5 +437,6 @@ static NSDictionary* testResult;
 +(void)isTest;
 
 +(void)setTestResult:(NSDictionary*)dictionary;
++(DwollaContact*) generateContactWithDictionary:(NSDictionary*)dictionary;
 
 @end
