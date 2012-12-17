@@ -1081,7 +1081,10 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     NSString *city = [dictionary objectForKey:@"City"];
     NSString *state = [dictionary objectForKey:@"State"];
     NSString *type = [dictionary objectForKey:@"Type"];
-    return [[DwollaContact alloc] initWithUserID:userId name:name image:image city:city state:state type:type];
+    NSString *address = [dictionary objectForKey:@"Address"];
+    NSString *longitude = [dictionary objectForKey:@"Longitude"];
+    NSString *latitude = [dictionary objectForKey:@"Latitude"];
+    return [[DwollaContact alloc] initWithUserID:userId name:name image:image city:city state:state type:type address:address longitude:longitude latitude:latitude];
 }
 
 +(DwollaFundingSource*)generateSourceWithString:(NSString*)string

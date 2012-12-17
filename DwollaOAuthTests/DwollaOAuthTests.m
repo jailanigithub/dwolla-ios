@@ -67,9 +67,9 @@
     [DwollaAPI setTestResult:result];
     DwollaContacts* contacts = [DwollaAPI getContactsByName:@"" types:@"" limit:@""];
     
-    DwollaContact* one = [[DwollaContact alloc] initWithUserID:@"12345" name:@"Ben Facebook Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Facebook"];
+    DwollaContact* one = [[DwollaContact alloc] initWithUserID:@"12345" name:@"Ben Facebook Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Facebook" address:@"" longitude:@"" latitude:@""];
     
-     DwollaContact* two = [[DwollaContact alloc] initWithUserID:@"812-111-111" name:@"Ben Dwolla Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Dwolla"];
+     DwollaContact* two = [[DwollaContact alloc] initWithUserID:@"812-111-111" name:@"Ben Dwolla Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Dwolla" address:@"" longitude:@"" latitude:@""];
     
     DwollaContacts* contacts2 = [[DwollaContacts alloc] initWithSuccess:YES contacts:[[NSMutableArray alloc] initWithObjects:one, two, nil]];
     
@@ -86,9 +86,9 @@
     [DwollaAPI setTestResult:result];
     DwollaContacts* contacts = [DwollaAPI getNearbyWithLatitude:@"" Longitude:@"" Limit:@"" Range:@""];
     
-    DwollaContact* one = [[DwollaContact alloc] initWithUserID:@"12345" name:@"Ben Facebook Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Facebook"];
+    DwollaContact* one = [[DwollaContact alloc] initWithUserID:@"12345" name:@"Ben Facebook Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Facebook" address:@"" longitude:@"" latitude:@""];
     
-    DwollaContact* two = [[DwollaContact alloc] initWithUserID:@"812-111-111" name:@"Ben Dwolla Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Dwolla"];
+    DwollaContact* two = [[DwollaContact alloc] initWithUserID:@"812-111-111" name:@"Ben Dwolla Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Dwolla" address:@"" longitude:@"" latitude:@""];
     
     DwollaContacts* contacts2 = [[DwollaContacts alloc] initWithSuccess:YES contacts:[[NSMutableArray alloc] initWithObjects:one, two, nil]];
     

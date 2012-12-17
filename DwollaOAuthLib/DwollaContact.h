@@ -16,6 +16,9 @@
     NSString* city;
     NSString* state;
     NSString* type;
+    NSString* address;
+    NSString* longitude;
+    NSString* latitude;
 }
 
 /**
@@ -35,7 +38,10 @@
               image:(NSString*)image 
                city:(NSString*)city 
               state:(NSString*)state 
-               type:(NSString*)type;
+               type:(NSString*)type
+            address:(NSString*)address
+          longitude:(NSString*)longitude
+           latitude:(NSString*)latitude;
 
 /**
  * @return name
@@ -66,6 +72,10 @@
  * @return type
  **/
 -(NSString*)getType;
+
+-(NSString*) getAddress;
+-(NSString*) getLongitude;
+-(NSString*) getLatitude;
 
 -(BOOL) isEqualTo:(DwollaContact*)_contact;
 

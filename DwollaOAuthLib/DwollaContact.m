@@ -16,8 +16,11 @@
                city:(NSString*)_city 
               state:(NSString*)_state 
                type:(NSString*)_type
+            address:(NSString*)_address
+          longitude:(NSString *)_longitude
+           latitude:(NSString *)_latitude
 {
-    if (self) 
+    if (self)
     {
         userID = _userID;
         name = _name;
@@ -25,6 +28,9 @@
         city = _city;
         state = _state;
         type = _type;
+        address = _address;
+        longitude = _longitude;
+        latitude = _latitude;
     }
     return self;
 }
@@ -59,9 +65,23 @@
     return type;
 }
 
+-(NSString*) getAddress {
+    return address;
+}
+
+-(NSString*) getLongitude {
+    return longitude;
+}
+
+-(NSString*) getLatitude {
+    return latitude;
+}
+
 -(BOOL) isEqualTo:(DwollaContact*)_contact
 {
-    if (![name isEqualToString:[_contact getName]] || ![userID isEqualToString:[_contact getUserID]] || ![type isEqualToString:[_contact getType]]) 
+    if (![name isEqualToString:[_contact getName]] ||
+        ![userID isEqualToString:[_contact getUserID]] ||
+        ![type isEqualToString:[_contact getType]])
     {
         return NO;
     }
