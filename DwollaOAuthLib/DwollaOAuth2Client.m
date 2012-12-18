@@ -10,6 +10,8 @@
 
 @implementation DwollaOAuth2Client
 
+@synthesize dwollaAPI;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -31,8 +33,9 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        key = [DwollaAPI encodedURLParameterString:_key];
-        secret = [DwollaAPI encodedURLParameterString:_secret];
+        dwollaAPI = [DwollaAPI sharedInstance];
+        key = [dwollaAPI encodedURLParameterString:_key];
+        secret = [dwollaAPI encodedURLParameterString:_secret];
         [[NSUserDefaults standardUserDefaults] setObject:key forKey:@"key"];
         [[NSUserDefaults standardUserDefaults] setObject:secret forKey:@"secret"];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -52,7 +55,7 @@
 
 -(void) login
 {
-    NSURLRequest* url = [DwollaAPI generateURLWithKey:key
+    NSURLRequest* url = [dwollaAPI generateURLWithKey:key
                                       redirect:redirect
                                       response:response
                                         scopes:scopes];
@@ -61,12 +64,12 @@
 
 -(void)logout
 {
-    [DwollaAPI clearAccessToken];
+    [dwollaAPI clearAccessToken];
 }
 
 -(BOOL)isAuthorized
 {
-    return [DwollaAPI hasToken];
+    return [dwollaAPI hasToken];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)req navigationType:(UIWebViewNavigationType)navigationType
@@ -134,9 +137,9 @@
     
     NSString* token =[dictionary objectForKey:@"access_token"];
     
-    token = [DwollaAPI encodedURLParameterString:token];
+    token = [dwollaAPI encodedURLParameterString:token];
     
-    [DwollaAPI setAccessToken:token];
+    [dwollaAPI setAccessToken:token];
     
     [receiver successfulLogin];
     [self removeFromSuperview];

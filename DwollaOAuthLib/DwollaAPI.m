@@ -11,7 +11,20 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
 
 @implementation DwollaAPI
 
-+(BOOL)hasToken
+static DwollaAPI* sharedInstance;
+
++(id) sharedInstance {
+    if(!sharedInstance){
+        sharedInstance = [[DwollaAPI alloc] init];
+    }
+    return sharedInstance;
+}
+
++(void) setSharedInstance:(DwollaAPI *)_instance {
+    sharedInstance = _instance;
+}
+
+-(BOOL)hasToken
 {
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
     
@@ -25,9 +38,9 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
 }
 
-+(NSString*)getAccessToken
+-(NSString*)getAccessToken
 {
-    if (![DwollaAPI hasToken]) 
+    if (![self hasToken])
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
@@ -36,18 +49,18 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     return token;
 }
 
-+(void)setAccessToken:(NSString*) token
+-(void)setAccessToken:(NSString*) token
 {
     [[NSUserDefaults standardUserDefaults] setObject:token forKey:@"token"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-+(void)clearAccessToken
+-(void)clearAccessToken
 {
     [[NSUserDefaults standardUserDefaults]setObject:nil forKey:@"token"];
 }
 
-+(NSString*)sendMoneyWithPIN:(NSString*)pin 
+-(NSString*)sendMoneyWithPIN:(NSString*)pin
                destinationID:(NSString*)destinationID 
              destinationType:(NSString*)type
                       amount:(NSString*)amount
@@ -65,12 +78,12 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
     else 
     {
-        if (![DwollaAPI hasToken]) 
+        if (![self hasToken])
         {
             @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                            reason:@"oauth_token is invalid" userInfo:nil]; 
         }
-        NSString* token = [DwollaAPI getAccessToken];
+        NSString* token = [self getAccessToken];
         
         NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/transactions/send?oauth_token=%@", token]; 
         
@@ -127,7 +140,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
         
         NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
         
-        dictionary = [DwollaAPI generateDictionaryWithData:result];
+        dictionary = [self generateDictionaryWithData:result];
     }
     NSLog(@"%@", dictionary);
     
@@ -143,7 +156,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     return data;  
 }
 
-+(NSString*)requestMoneyWithPIN:(NSString*)pin 
+-(NSString*)requestMoneyWithPIN:(NSString*)pin
                  sourceID:(NSString*)sourceID 
                sourceType:(NSString*)type
                    amount:(NSString*)amount
@@ -158,13 +171,13 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
     else 
     {
-        if (![DwollaAPI hasToken]) 
+        if (![self hasToken])
         {
             @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                            reason:@"oauth_token is invalid" userInfo:nil];
         }
         
-        NSString* token = [DwollaAPI getAccessToken];
+        NSString* token = [self getAccessToken];
         
         NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/transactions/request?oauth_token=%@", token]; 
         
@@ -214,7 +227,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
         
         NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
     
-        dictionary = [DwollaAPI generateDictionaryWithData:result]; 
+        dictionary = [self generateDictionaryWithData:result];
     }
     NSLog(@"%@", dictionary);
     
@@ -230,15 +243,15 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     return data;  
 }
 
-+(NSDictionary*)getJSONBalance
+-(NSDictionary*)getJSONBalance
 {
-    if (![DwollaAPI hasToken]) 
+    if (![self hasToken])
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
     }
     
-    NSMutableURLRequest* request = [DwollaAPI generateRequestWithString:@"/balance?oauth_token="];
+    NSMutableURLRequest* request = [self generateRequestWithString:@"/balance?oauth_token="];
     
     [request setHTTPMethod: @"GET"];
     
@@ -247,12 +260,12 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
         
     NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
     
-    NSDictionary* dictionary = [DwollaAPI generateDictionaryWithData:result];
+    NSDictionary* dictionary = [self generateDictionaryWithData:result];
     
     return dictionary;
 }
 
-+(NSString*)getBalance
+-(NSString*)getBalance
 {
     NSDictionary* dictionary;
     if (isTest) 
@@ -261,7 +274,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
     else 
     {
-        dictionary = [DwollaAPI getJSONBalance];
+        dictionary = [self getJSONBalance];
     }
 
     NSString* data = [[NSString alloc]initWithFormat:@"%@", [dictionary objectForKey:@"Response"]];
@@ -277,11 +290,11 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
 }
 
-+(NSDictionary*)getJSONContactsByName:(NSString*)name 
+-(NSDictionary*)getJSONContactsByName:(NSString*)name
                                 types:(NSString*)types
                                 limit:(NSString*)limit
 {
-    if (![DwollaAPI hasToken]) 
+    if (![self hasToken])
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
@@ -302,7 +315,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
 
     url = [url stringByAppendingString:@"oauth_token="];
-    NSMutableURLRequest* request = [DwollaAPI generateRequestWithString:url];
+    NSMutableURLRequest* request = [self generateRequestWithString:url];
 
     [request setHTTPMethod: @"GET"];
 
@@ -311,12 +324,12 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
 
     NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
 
-    NSDictionary* dictionary = [DwollaAPI generateDictionaryWithData:result];
+    NSDictionary* dictionary = [self generateDictionaryWithData:result];
 
     return dictionary;
 }
 
-+(DwollaContacts*)getContactsByName:(NSString*)name 
+-(DwollaContacts*)getContactsByName:(NSString*)name
                               types:(NSString*)types
                               limit:(NSString*)limit
 {
@@ -328,7 +341,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
     else 
     { 
-        dictionary = [DwollaAPI getJSONContactsByName:name types:types limit:limit];
+        dictionary = [self getJSONContactsByName:name types:types limit:limit];
     }
     NSArray* data =[dictionary valueForKey:@"Response"];
     
@@ -344,12 +357,12 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     for (int i = 0; i < [data count]; i++)
     {
         NSDictionary *info = [data objectAtIndex:i];
-        [contacts addObject:[DwollaAPI generateContactWithDictionary:info]];
+        [contacts addObject:[self generateContactWithDictionary:info]];
     }
     return [[DwollaContacts alloc] initWithSuccess:YES contacts:contacts];
 }
 
-+(NSDictionary*)getJSONNearbyWithLatitude:(NSString*)lat 
+-(NSDictionary*)getJSONNearbyWithLatitude:(NSString*)lat
                                 Longitude:(NSString*)lon
                                     Limit:(NSString*)limit
                                     Range:(NSString*)range
@@ -397,7 +410,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     return dictionary;
 }
 
-+(DwollaContacts*)getNearbyWithLatitude:(NSString*)lat 
+-(DwollaContacts*)getNearbyWithLatitude:(NSString*)lat
                             Longitude:(NSString*)lon
                                 Limit:(NSString*)limit
                                 Range:(NSString*)range
@@ -410,7 +423,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
     else 
     {
-        dictionary = [DwollaAPI getJSONNearbyWithLatitude:lat Longitude:lon Limit:limit Range:range];
+        dictionary = [self getJSONNearbyWithLatitude:lat Longitude:lon Limit:limit Range:range];
     }
     NSArray* data =[dictionary valueForKey:@"Response"];
     
@@ -426,20 +439,20 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     for (int i = 0; i < [data count]; i++)
     {        
         NSDictionary *info = [data objectAtIndex:i];
-        [contacts addObject:[DwollaAPI generateContactWithDictionary:info]];
+        [contacts addObject:[self generateContactWithDictionary:info]];
     }
     return [[DwollaContacts alloc] initWithSuccess:YES contacts:contacts];
 }
 
-+(NSDictionary*)getJSONFundingSources
+-(NSDictionary*)getJSONFundingSources
 {
-    if (![DwollaAPI hasToken]) 
+    if (![self hasToken])
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
     }
     
-    NSMutableURLRequest* request = [DwollaAPI generateRequestWithString:@"/fundingsources?oauth_token="];
+    NSMutableURLRequest* request = [self generateRequestWithString:@"/fundingsources?oauth_token="];
     
     [request setHTTPMethod: @"GET"];
     
@@ -448,12 +461,12 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     
     NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
     
-    NSDictionary* dictionary = [DwollaAPI generateDictionaryWithData:result];
+    NSDictionary* dictionary = [self generateDictionaryWithData:result];
     
     return dictionary;
 }
 
-+(DwollaFundingSources*)getFundingSources
+-(DwollaFundingSources*)getFundingSources
 {
     NSDictionary* dictionary;
     
@@ -463,7 +476,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
     else 
     {
-        dictionary = [DwollaAPI getJSONFundingSources];
+        dictionary = [self getJSONFundingSources];
     }
     NSArray* data =[dictionary valueForKey:@"Response"];
     
@@ -479,15 +492,15 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     for (int i = 0; i < [data count]; i++)
     {
         NSString* info = [[NSString alloc] initWithFormat:@"%@", [data objectAtIndex:i]];
-        [sources addObject:[DwollaAPI generateSourceWithString:info]];
+        [sources addObject:[self generateSourceWithString:info]];
     }
     
     return [[DwollaFundingSources alloc] initWithSuccess:YES sources:sources];
 }
 
-+(NSDictionary*)getJSONFundingSource:(NSString*)sourceID
+-(NSDictionary*)getJSONFundingSource:(NSString*)sourceID
 {
-    if (![DwollaAPI hasToken]) 
+    if (![self hasToken])
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
@@ -499,9 +512,9 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
                                        reason:@"sourceID is either nil or empty" userInfo:nil];  
     }
     
-    NSString* encodedID = [DwollaAPI encodedURLParameterString:sourceID];    
+    NSString* encodedID = [self encodedURLParameterString:sourceID];
     NSString* parameters = [@"/fundingsources?fundingid=" stringByAppendingString:[NSString stringWithFormat:@"%@",encodedID]];
-    NSMutableURLRequest* request = [DwollaAPI generateRequestWithString:[parameters stringByAppendingString: @"&oauth_token="]];
+    NSMutableURLRequest* request = [self generateRequestWithString:[parameters stringByAppendingString: @"&oauth_token="]];
     
     [request setHTTPMethod: @"GET"];
 
@@ -510,12 +523,12 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     
     NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
     
-    NSDictionary* dictionary = [DwollaAPI generateDictionaryWithData:result];
+    NSDictionary* dictionary = [self generateDictionaryWithData:result];
     
     return dictionary;   
 }
 
-+(DwollaFundingSource*)getFundingSource:(NSString*)sourceID
+-(DwollaFundingSource*)getFundingSource:(NSString*)sourceID
 {
     NSDictionary* dictionary;
     
@@ -525,7 +538,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
     else 
     {
-        dictionary = [DwollaAPI getJSONFundingSource:sourceID];
+        dictionary = [self getJSONFundingSource:sourceID];
         
     }
     NSArray* data =[dictionary valueForKey:@"Response"];
@@ -539,18 +552,18 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
     
     NSString* info = [[NSString alloc] initWithFormat:@"%@", [data objectAtIndex:0]];
-    return [DwollaAPI generateSourceWithString:info];
+    return [self generateSourceWithString:info];
 }
 
-+(NSDictionary*)getJSONAccountInfo
+-(NSDictionary*)getJSONAccountInfo
 {
-    if (![DwollaAPI hasToken]) 
+    if (![self hasToken])
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
     }
     
-    NSMutableURLRequest* request = [DwollaAPI generateRequestWithString:@"/users?oauth_token="];
+    NSMutableURLRequest* request = [self generateRequestWithString:@"/users?oauth_token="];
     
     [request setHTTPMethod: @"GET"];
     
@@ -559,12 +572,12 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     
     NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
     
-    NSDictionary* dictionary = [DwollaAPI generateDictionaryWithData:result];
+    NSDictionary* dictionary = [self generateDictionaryWithData:result];
     
     return dictionary;
 }
 
-+(DwollaUser*)getAccountInfo
+-(DwollaUser*)getAccountInfo
 {
     NSDictionary* dictionary;
     
@@ -574,7 +587,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
     else 
     {
-        dictionary = [DwollaAPI getJSONAccountInfo];
+        dictionary = [self getJSONAccountInfo];
     }
     NSString* data = [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
     
@@ -587,19 +600,19 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
     
     NSArray* values = [data componentsSeparatedByString:@"\n"];
-    NSString* city = [DwollaAPI findValue:[values objectAtIndex:1]];
-    NSString* userID = [DwollaAPI findValue:[values objectAtIndex:2]];
-    NSString* latitude = [DwollaAPI findValue:[values objectAtIndex:3]];
-    NSString* longitude = [DwollaAPI findValue:[values objectAtIndex:4]];
-    NSString* name = [DwollaAPI findValue:[values objectAtIndex:5]];
-    NSString* state = [DwollaAPI findValue:[values objectAtIndex:6]];
-    NSString* type = [DwollaAPI findValue:[values objectAtIndex:7]];
+    NSString* city = [self findValue:[values objectAtIndex:1]];
+    NSString* userID = [self findValue:[values objectAtIndex:2]];
+    NSString* latitude = [self findValue:[values objectAtIndex:3]];
+    NSString* longitude = [self findValue:[values objectAtIndex:4]];
+    NSString* name = [self findValue:[values objectAtIndex:5]];
+    NSString* state = [self findValue:[values objectAtIndex:6]];
+    NSString* type = [self findValue:[values objectAtIndex:7]];
     
     return [[DwollaUser alloc] initWithUserID:userID name:name city:city state:state 
                                      latitude:latitude longitude:longitude type:type];
 }
 
-+(NSDictionary*)getJSONBasicInfoWithAccountID:(NSString*)accountID
+-(NSDictionary*)getJSONBasicInfoWithAccountID:(NSString*)accountID
 {    
     NSString* key = [[NSUserDefaults standardUserDefaults] objectForKey:@"key"];
     NSString* secret = [[NSUserDefaults standardUserDefaults] objectForKey:@"secret"];
@@ -627,12 +640,12 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     
     NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
     
-    NSDictionary* dictionary = [DwollaAPI generateDictionaryWithData:result];
+    NSDictionary* dictionary = [self generateDictionaryWithData:result];
     
     return dictionary;
 }
 
-+(DwollaUser*)getBasicInfoWithAccountID:(NSString*)accountID
+-(DwollaUser*)getBasicInfoWithAccountID:(NSString*)accountID
 {
     NSDictionary* dictionary;
     
@@ -642,7 +655,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
     else 
     {
-        dictionary = [DwollaAPI getJSONBasicInfoWithAccountID:accountID];
+        dictionary = [self getJSONBasicInfoWithAccountID:accountID];
     }
     NSString* data = [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
     
@@ -655,17 +668,17 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
     
     NSArray* values = [data componentsSeparatedByString:@"\n"];
-    NSString* userID = [DwollaAPI findValue:[values objectAtIndex:1]];
-    NSString* latitude = [DwollaAPI findValue:[values objectAtIndex:2]];
-    NSString* longitude = [DwollaAPI findValue:[values objectAtIndex:3]];
-    NSString* name = [DwollaAPI findValue:[values objectAtIndex:4]];
+    NSString* userID = [self findValue:[values objectAtIndex:1]];
+    NSString* latitude = [self findValue:[values objectAtIndex:2]];
+    NSString* longitude = [self findValue:[values objectAtIndex:3]];
+    NSString* name = [self findValue:[values objectAtIndex:4]];
     
     return [[DwollaUser alloc] initWithUserID:userID name:name city:nil state:nil 
                                      latitude:latitude longitude:longitude type:nil];
 
 }
 
-+(DwollaUser*)registerUserWithEmail:(NSString*) email 
+-(DwollaUser*)registerUserWithEmail:(NSString*) email
                            password:(NSString*)password 
                                 pin:(NSString*)pin
                           firstName:(NSString*)first
@@ -765,7 +778,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     
     NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
     
-    NSDictionary* dictionary = [DwollaAPI generateDictionaryWithData:result];
+    NSDictionary* dictionary = [self generateDictionaryWithData:result];
     NSLog(@"%@", dictionary);
     
     NSString* data = [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
@@ -780,24 +793,24 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     
     NSArray* values = [data componentsSeparatedByString:@"\n"];
 
-    NSString* _city = [DwollaAPI findValue:[values objectAtIndex:1]];
-    NSString* _userID = [DwollaAPI findValue:[values objectAtIndex:2]];
-    NSString* _latitude = [DwollaAPI findValue:[values objectAtIndex:3]];
-    NSString* _longitude = [DwollaAPI findValue:[values objectAtIndex:4]];
-    NSString* _name = [DwollaAPI findValue:[values objectAtIndex:5]];
-    NSString* _state = [DwollaAPI findValue:[values objectAtIndex:6]];
-    NSString* _type = [DwollaAPI findValue:[values objectAtIndex:7]];
+    NSString* _city = [self findValue:[values objectAtIndex:1]];
+    NSString* _userID = [self findValue:[values objectAtIndex:2]];
+    NSString* _latitude = [self findValue:[values objectAtIndex:3]];
+    NSString* _longitude = [self findValue:[values objectAtIndex:4]];
+    NSString* _name = [self findValue:[values objectAtIndex:5]];
+    NSString* _state = [self findValue:[values objectAtIndex:6]];
+    NSString* _type = [self findValue:[values objectAtIndex:7]];
     
     return [[DwollaUser alloc] initWithUserID:_userID name:_name city:_city state:_state 
                                      latitude:_latitude longitude:_longitude type:_type];  
 
 }
 
-+(NSDictionary*)getJSONTransactionsSince:(NSString*)date 
+-(NSDictionary*)getJSONTransactionsSince:(NSString*)date
                                    limit:(NSString*)limit
                                     skip:(NSString*)skip
 {
-    if (![DwollaAPI hasToken]) 
+    if (![self hasToken]) 
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
@@ -833,7 +846,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
         }
     }
 
-    NSMutableURLRequest* request = [DwollaAPI generateRequestWithString:url];
+    NSMutableURLRequest* request = [self generateRequestWithString:url];
         
     [request setHTTPMethod: @"GET"];
     
@@ -842,12 +855,12 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     
     NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
     
-    NSDictionary* dictionary = [DwollaAPI generateDictionaryWithData:result];
+    NSDictionary* dictionary = [self generateDictionaryWithData:result];
     
     return dictionary;
 }
 
-+(DwollaTransactions*)getTransactionsSince:(NSString*)date 
+-(DwollaTransactions*)getTransactionsSince:(NSString*)date
                                      limit:(NSString*)limit
                                       skip:(NSString*)skip
 {
@@ -859,7 +872,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
     else 
     {
-        dictionary = [DwollaAPI getJSONTransactionsSince:date limit:limit skip:skip];
+        dictionary = [self getJSONTransactionsSince:date limit:limit skip:skip];
     }
     NSArray* data =[dictionary valueForKey:@"Response"];
     
@@ -875,22 +888,22 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     for (int i = 0; i < [data count]; i++)
     {
         NSString* info = [[NSString alloc] initWithFormat:@"%@", [data objectAtIndex:i]];
-        [transactions addObject:[DwollaAPI generateTransactionWithString:info]];
+        [transactions addObject:[self generateTransactionWithString:info]];
     }
     
    return [[DwollaTransactions alloc] initWithSuccess:YES transactions:transactions];
 }
 
-+(NSDictionary*)getJSONTransaction:(NSString*)transactionID
+-(NSDictionary*)getJSONTransaction:(NSString*)transactionID
 {
-    if (![DwollaAPI hasToken]) 
+    if (![self hasToken]) 
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
     }
     
     NSString* parameters = [@"/transactions/" stringByAppendingString:[NSString stringWithFormat:@"%@", transactionID]];
-    NSMutableURLRequest* request = [DwollaAPI generateRequestWithString:[parameters stringByAppendingString: @"?oauth_token="]];
+    NSMutableURLRequest* request = [self generateRequestWithString:[parameters stringByAppendingString: @"?oauth_token="]];
     
     [request setHTTPMethod: @"GET"];
     
@@ -899,12 +912,12 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     
     NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
     
-    NSDictionary* dictionary = [DwollaAPI generateDictionaryWithData:result];
+    NSDictionary* dictionary = [self generateDictionaryWithData:result];
     
     return dictionary; 
 }
 
-+(DwollaTransaction*)getTransaction:(NSString*)transactionID
+-(DwollaTransaction*)getTransaction:(NSString*)transactionID
 {
     NSDictionary* dictionary;
     
@@ -914,7 +927,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
     else 
     {
-        dictionary = [DwollaAPI getJSONTransaction:transactionID];
+        dictionary = [self getJSONTransaction:transactionID];
     }
     NSArray* pull =[dictionary valueForKey:@"Response"];
     NSString* data = [[NSString alloc] initWithFormat:@"%@", pull];
@@ -927,14 +940,14 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
         @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:message userInfo:dictionary];
     }
     
-    DwollaTransaction* transaction = [DwollaAPI generateTransactionWithString:data];
+    DwollaTransaction* transaction = [self generateTransactionWithString:data];
     return transaction;
 }
 
-+(NSDictionary*)getJSONTransactionStats:(NSString*)start 
+-(NSDictionary*)getJSONTransactionStats:(NSString*)start
                                     end:(NSString*)end
 {
-    if (![DwollaAPI hasToken]) 
+    if (![self hasToken]) 
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
@@ -965,7 +978,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
         }
     }
     
-    NSMutableURLRequest* request = [DwollaAPI generateRequestWithString:url];
+    NSMutableURLRequest* request = [self generateRequestWithString:url];
     
     [request setHTTPMethod: @"GET"];
     
@@ -974,13 +987,13 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     
     NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
     
-    NSDictionary* dictionary = [DwollaAPI generateDictionaryWithData:result];
+    NSDictionary* dictionary = [self generateDictionaryWithData:result];
     
     return dictionary;
 
 }
 
-+(DwollaTransactionStats*)getTransactionStats:(NSString*)start 
+-(DwollaTransactionStats*)getTransactionStats:(NSString*)start
                                           end:(NSString*)end
 {
     NSDictionary* dictionary;
@@ -991,7 +1004,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
     else 
     {
-        dictionary = [DwollaAPI getJSONTransactionStats:start end:end];
+        dictionary = [self getJSONTransactionStats:start end:end];
     }
     NSArray* pull =[dictionary valueForKey:@"Response"];
     NSString* data = [[NSString alloc] initWithFormat:@"%@", pull];
@@ -1006,14 +1019,14 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     
     NSArray* values = [data componentsSeparatedByString:@"\n"];
     
-    NSString* count = [DwollaAPI findValue:[values objectAtIndex:1]];
-    NSString* total = [DwollaAPI findValue:[values objectAtIndex:2]];
+    NSString* count = [self findValue:[values objectAtIndex:1]];
+    NSString* total = [self findValue:[values objectAtIndex:2]];
 
     return [[DwollaTransactionStats alloc] initWithSuccess:YES count:count total:total];
 }
 
 
-+(NSURLRequest*)generateURLWithKey:(NSString*)key
+-(NSURLRequest*)generateURLWithKey:(NSString*)key
                           redirect:(NSString*)redirect
                           response:(NSString*)response
                             scopes:(NSArray*)scopes
@@ -1048,7 +1061,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     return returnURL;
 }
 
-+(NSMutableURLRequest*)generateRequestWithString:(NSString*)string
+-(NSMutableURLRequest*)generateRequestWithString:(NSString*)string
 {
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
     
@@ -1063,7 +1076,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     return request;
 }
 
-+(NSDictionary*)generateDictionaryWithData:(NSData*)data
+-(NSDictionary*)generateDictionaryWithData:(NSData*)data
 {
     NSString *dataString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]; 
     SBJsonParser *parser = [[SBJsonParser alloc] init];
@@ -1073,7 +1086,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     return dictionary;
 }
 
-+(DwollaContact*) generateContactWithDictionary:(NSDictionary *)dictionary {
+-(DwollaContact*) generateContactWithDictionary:(NSDictionary *)dictionary {
     
     NSString *userId = [dictionary objectForKey:@"Id"];
     NSString *name = [dictionary objectForKey:@"Name"];
@@ -1087,40 +1100,40 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     return [[DwollaContact alloc] initWithUserID:userId name:name image:image city:city state:state type:type address:address longitude:longitude latitude:latitude];
 }
 
-+(DwollaFundingSource*)generateSourceWithString:(NSString*)string
+-(DwollaFundingSource*)generateSourceWithString:(NSString*)string
 {
     NSArray* info = [string componentsSeparatedByString:@"\n"];
     
-    NSString* sourceID = [DwollaAPI findValue:[info objectAtIndex:1]];
-    NSString* name = [DwollaAPI findValue:[info objectAtIndex:2]];
-    NSString* type = [DwollaAPI findValue:[info objectAtIndex:3]];
-    NSString* verified = [DwollaAPI findValue:[info objectAtIndex:4]];
+    NSString* sourceID = [self findValue:[info objectAtIndex:1]];
+    NSString* name = [self findValue:[info objectAtIndex:2]];
+    NSString* type = [self findValue:[info objectAtIndex:3]];
+    NSString* verified = [self findValue:[info objectAtIndex:4]];
     
     return [[DwollaFundingSource alloc] initWithSourceID:sourceID name:name type:type verified:verified];
 }
 
-+(DwollaTransaction*)generateTransactionWithString:(NSString*)string
+-(DwollaTransaction*)generateTransactionWithString:(NSString*)string
 {
     NSArray* info = [string componentsSeparatedByString:@"\n"];
     
-    NSString* amount = [DwollaAPI findValue:[info objectAtIndex:1]];
-    NSString* clearingDate = [DwollaAPI findValue:[info objectAtIndex:2]];
-    NSString* date = [DwollaAPI findValue:[info objectAtIndex:3]];
-    NSString* destinationID = [DwollaAPI findValue:[info objectAtIndex:4]];
-    NSString* destinationName = [DwollaAPI findValue:[info objectAtIndex:5]];
-    NSString* transactionID =  [DwollaAPI findValue:[info objectAtIndex:6]];
-    NSString* notes = [DwollaAPI findValue:[info objectAtIndex:7]];
-    NSString* sourceID = [DwollaAPI findValue:[info objectAtIndex:8]];
-    NSString* sourceName =  [DwollaAPI findValue:[info objectAtIndex:9]];
-    NSString* status =  [DwollaAPI findValue:[info objectAtIndex:10]];
-    NSString* type =  [DwollaAPI findValue:[info objectAtIndex:11]];
-    NSString* userType =  [DwollaAPI findValue:[info objectAtIndex:12]];
+    NSString* amount = [self findValue:[info objectAtIndex:1]];
+    NSString* clearingDate = [self findValue:[info objectAtIndex:2]];
+    NSString* date = [self findValue:[info objectAtIndex:3]];
+    NSString* destinationID = [self findValue:[info objectAtIndex:4]];
+    NSString* destinationName = [self findValue:[info objectAtIndex:5]];
+    NSString* transactionID =  [self findValue:[info objectAtIndex:6]];
+    NSString* notes = [self findValue:[info objectAtIndex:7]];
+    NSString* sourceID = [self findValue:[info objectAtIndex:8]];
+    NSString* sourceName =  [self findValue:[info objectAtIndex:9]];
+    NSString* status =  [self findValue:[info objectAtIndex:10]];
+    NSString* type =  [self findValue:[info objectAtIndex:11]];
+    NSString* userType =  [self findValue:[info objectAtIndex:12]];
 
     
     return [[DwollaTransaction alloc] initWithAmount:amount clearingDate:clearingDate date:date destinationID:destinationID destinationName:destinationName transactionID:transactionID notes:notes sourceID:sourceID sourceName:sourceName status:status type:type userType:userType];
 }
 
-+(NSString*)findValue:(NSString*)string
+-(NSString*)findValue:(NSString*)string
 {
     NSArray* split = [string componentsSeparatedByString:@"= "];
     NSArray* trimmed = [[split objectAtIndex:1] componentsSeparatedByString:@"\""];
@@ -1135,7 +1148,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
     }
 }
 
-+(NSString *)encodedURLParameterString:(NSString*)string
+-(NSString *)encodedURLParameterString:(NSString*)string
 {
     NSString *result = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
                                                                                              (__bridge_retained CFStringRef)string,
@@ -1145,12 +1158,12 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
 	return result;
 }
 
-+(void)isTest
+-(void)isTest
 {
     isTest = YES;
 }
 
-+(void)setTestResult:(NSDictionary*)dictionary
+-(void)setTestResult:(NSDictionary*)dictionary
 {
     testResult = dictionary;
 }

@@ -22,31 +22,34 @@ static NSDictionary* testResult;
 
 @interface DwollaAPI : NSObject
 
++(id) sharedInstance;
++(void) setSharedInstance:(DwollaAPI*)_instance;
+
 /**
  * checks to see if the user has a valid access token
  *
  * @return YES if a valid access token is present, false otherwise
  **/
-+(BOOL)hasToken;
+-(BOOL)hasToken;
 
 /**
  * gets the stored access token
  *
  * @return a string representing the access token
  **/
-+(NSString*)getAccessToken;
+-(NSString*)getAccessToken;
 
 /**
  * sets the access token
  *
  * @param token: the string representing the token
  **/
-+(void)setAccessToken:(NSString*) token;
+-(void)setAccessToken:(NSString*) token;
 
 /**
  * clears the access token
  **/
-+(void)clearAccessToken;
+-(void)clearAccessToken;
 
 /**
  * sends money to the indicated user
@@ -65,7 +68,7 @@ static NSDictionary* testResult;
  * @return string representing the transaction id
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(NSString*)sendMoneyWithPIN:(NSString*)pin 
+-(NSString*)sendMoneyWithPIN:(NSString*)pin
                destinationID:(NSString*)destinationID 
              destinationType:(NSString*)type
                       amount:(NSString*)amount
@@ -88,7 +91,7 @@ static NSDictionary* testResult;
  * @return string representing the request id
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(NSString*)requestMoneyWithPIN:(NSString*)pin 
+-(NSString*)requestMoneyWithPIN:(NSString*)pin
                        sourceID:(NSString*)sourceID
                      sourceType:(NSString*)type
                          amount:(NSString*)amount
@@ -101,7 +104,7 @@ static NSDictionary* testResult;
  * @return JSON representation of the request see: https://www.dwolla.com/developers/endpoints/balance/account
  * @throws NSException if no access token is available, or request fails
  **/
-+(NSDictionary*)getJSONBalance;
+-(NSDictionary*)getJSONBalance;
 
 /**
  * shows the balance of the current user
@@ -109,7 +112,7 @@ static NSDictionary* testResult;
  * @return string representation of the balance
  * @throws NSException if no access token is available, or request fails
  **/
-+(NSString*)getBalance;
+-(NSString*)getBalance;
 
 /**
  * gets users contacts
@@ -121,7 +124,7 @@ static NSDictionary* testResult;
  * @return JSON representation of the request see: https://www.dwolla.com/developers/endpoints/contacts/user
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(NSDictionary*)getJSONContactsByName:(NSString*)name 
+-(NSDictionary*)getJSONContactsByName:(NSString*)name
                                 types:(NSString*)types
                                 limit:(NSString*)limit;
 
@@ -135,7 +138,7 @@ static NSDictionary* testResult;
  * @return a DwollaContacts object containing the results of the request
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(DwollaContacts*)getContactsByName:(NSString*)name 
+-(DwollaContacts*)getContactsByName:(NSString*)name
                               types:(NSString*)types
                               limit:(NSString*)limit;
 
@@ -150,7 +153,7 @@ static NSDictionary* testResult;
  * @return JSON representation of the request see: https://www.dwolla.com/developers/endpoints/contacts/nearby
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(NSDictionary*)getJSONNearbyWithLatitude:(NSString*)lat 
+-(NSDictionary*)getJSONNearbyWithLatitude:(NSString*)lat
                                 Longitude:(NSString*)lon
                                     Limit:(NSString*)limit
                                     Range:(NSString*)range;
@@ -166,7 +169,7 @@ static NSDictionary* testResult;
  * @return a DwollaContacts object containing the results of the request
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(DwollaContacts*)getNearbyWithLatitude:(NSString*)lat 
+-(DwollaContacts*)getNearbyWithLatitude:(NSString*)lat
                             Longitude:(NSString*)lon
                                 Limit:(NSString*)limit
                                 Range:(NSString*)range;
@@ -177,7 +180,7 @@ static NSDictionary* testResult;
  * @return JSON representation of the request see https://www.dwolla.com/developers/endpoints/fundingsources/list
  * @throws NSException if no access token is available, or request fails
  **/
-+(NSDictionary*)getJSONFundingSources;
+-(NSDictionary*)getJSONFundingSources;
 
 /**
  * gets the funding sources of the current user
@@ -185,7 +188,7 @@ static NSDictionary* testResult;
  * @return a DwollaFundingSources object containing the results of the request
  * @throws NSException if no access token is available, or request fails
  **/
-+(DwollaFundingSources*)getFundingSources;
+-(DwollaFundingSources*)getFundingSources;
 
 /**
  * gets the funding source details of the provided funding source
@@ -195,7 +198,7 @@ static NSDictionary* testResult;
  * @return JSON representation of the request see https://www.dwolla.com/developers/endpoints/fundingsources/details
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(NSDictionary*)getJSONFundingSource:(NSString*)sourceID;
+-(NSDictionary*)getJSONFundingSource:(NSString*)sourceID;
 
 /**
  * gets the funding source details of the provided funding source
@@ -205,7 +208,7 @@ static NSDictionary* testResult;
  * @return a DwollaFundingSource object containing the result of the request
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(DwollaFundingSource*)getFundingSource:(NSString*)sourceID;
+-(DwollaFundingSource*)getFundingSource:(NSString*)sourceID;
 
 /**
  * gets the account information of the user
@@ -213,7 +216,7 @@ static NSDictionary* testResult;
  * @return JSON representation of the request see https://www.dwolla.com/developers/endpoints/users/accountinformation
  * @throws NSException if no access token is available, or request fails
  **/
-+(NSDictionary*)getJSONAccountInfo;
+-(NSDictionary*)getJSONAccountInfo;
 
 /**
  * gets the account information of the user
@@ -221,7 +224,7 @@ static NSDictionary* testResult;
  * @return a DwollaUser object containing the result of the request
  * @throws NSException if no access token is available, or request fails
  **/
-+(DwollaUser*)getAccountInfo;
+-(DwollaUser*)getAccountInfo;
 
 /**
  * gets the account information of the user with the given id
@@ -231,7 +234,7 @@ static NSDictionary* testResult;
  * @return JSON representation of the request see https://www.dwolla.com/developers/endpoints/users/basicinformation
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(NSDictionary*)getJSONBasicInfoWithAccountID:(NSString*)accountID;
+-(NSDictionary*)getJSONBasicInfoWithAccountID:(NSString*)accountID;
 
 /**
  * gets the account information of the user with the given id
@@ -241,7 +244,7 @@ static NSDictionary* testResult;
  * @return a DwollaUser object containing the result of the request
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(DwollaUser*)getBasicInfoWithAccountID:(NSString*)accountID;
+-(DwollaUser*)getBasicInfoWithAccountID:(NSString*)accountID;
 
 /**
  * registers a new user
@@ -266,7 +269,7 @@ static NSDictionary* testResult;
  * @return a DwollaUser object containing the result of the request
  * @throws NSException if parameters are invalid, no access token is available, accept terms is NO, or request fails
  **/
-+(DwollaUser*)registerUserWithEmail:(NSString*)email 
+-(DwollaUser*)registerUserWithEmail:(NSString*)email
                            password:(NSString*)password 
                                 pin:(NSString*)pin
                           firstName:(NSString*)first
@@ -293,7 +296,7 @@ static NSDictionary* testResult;
  * @return JSON representation of the request see: https://www.dwolla.com/developers/endpoints/transactions/list
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(NSDictionary*)getJSONTransactionsSince:(NSString*)date 
+-(NSDictionary*)getJSONTransactionsSince:(NSString*)date
                                    limit:(NSString*)limit
                                     skip:(NSString*)skip;
 
@@ -307,7 +310,7 @@ static NSDictionary* testResult;
  * @return a DwollaTransactions object contiaining the results of the request
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(DwollaTransactions*)getTransactionsSince:(NSString*)date 
+-(DwollaTransactions*)getTransactionsSince:(NSString*)date
                                      limit:(NSString*)limit
                                       skip:(NSString*)skip;
 
@@ -319,7 +322,7 @@ static NSDictionary* testResult;
  * @return JSON representation of the request see https://www.dwolla.com/developers/endpoints/transactions/details
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(NSDictionary*)getJSONTransaction:(NSString*)transactionID;
+-(NSDictionary*)getJSONTransaction:(NSString*)transactionID;
 
 /**
  * gets the transaction details of the provided transactionID
@@ -329,7 +332,7 @@ static NSDictionary* testResult;
  * @return a DwollaTransaction object containing the result of the request
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(DwollaTransaction*)getTransaction:(NSString*)transactionID;
+-(DwollaTransaction*)getTransaction:(NSString*)transactionID;
 
 /**
  * gets the transaction stats for the user
@@ -340,7 +343,7 @@ static NSDictionary* testResult;
  * @return JSON representation of the request see https://www.dwolla.com/developers/endpoints/transactions/stats
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(NSDictionary*)getJSONTransactionStats:(NSString*)start 
+-(NSDictionary*)getJSONTransactionStats:(NSString*)start
                                     end:(NSString*)end;
 
 /**
@@ -352,7 +355,7 @@ static NSDictionary* testResult;
  * @return a DwollaTransactionStats object containing the results of the request
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
-+(DwollaTransactionStats*)getTransactionStats:(NSString*)start 
+-(DwollaTransactionStats*)getTransactionStats:(NSString*)start
                                           end:(NSString*)end;
 
 /**
@@ -366,7 +369,7 @@ static NSDictionary* testResult;
  * @return url request to be run by the client
  * @throws NSException if parameters are invalid, or if key or secret are invalid
  **/
-+(NSURLRequest*)generateURLWithKey:(NSString*)key
+-(NSURLRequest*)generateURLWithKey:(NSString*)key
                           redirect:(NSString*)redirect
                           response:(NSString*)response
                             scopes:(NSArray*)scopes;
@@ -378,7 +381,7 @@ static NSDictionary* testResult;
  *
  * @return ur request to be run by the methods
  **/
-+(NSMutableURLRequest*)generateRequestWithString:(NSString*)request;
+-(NSMutableURLRequest*)generateRequestWithString:(NSString*)request;
 
 /**
  * helper method that generates a dictionary given the data returned by the request
@@ -387,7 +390,7 @@ static NSDictionary* testResult;
  *
  * @return dictionary containing the results of the response
  **/
-+(NSDictionary*)generateDictionaryWithData:(NSData*)data;
+-(NSDictionary*)generateDictionaryWithData:(NSData*)data;
 
 /**
  * helper method that generates a DwollaContact from the given string
@@ -396,7 +399,7 @@ static NSDictionary* testResult;
  *
  * @return DwollaContact object containing the contents of the string
  **/
-+(DwollaContact*)generateContactWithString:(NSString*)contact;
+-(DwollaContact*)generateContactWithString:(NSString*)contact;
 
 /**
  * helper method that generates a DwollaTransaction from the given string
@@ -405,7 +408,7 @@ static NSDictionary* testResult;
  *
  * @return DwollaTransaction object containing the contents of the string
  **/
-+(DwollaTransaction*)generateTransactionWithString:(NSString*)transasction;
+-(DwollaTransaction*)generateTransactionWithString:(NSString*)transasction;
 
 /**
  * helper method that parses the string to get the needed value
@@ -414,7 +417,7 @@ static NSDictionary* testResult;
  *
  * @return a string representation of the value
  **/
-+(NSString*)findValue:(NSString*)string;
+-(NSString*)findValue:(NSString*)string;
 
 /**
  * helper method that generates a DwollaFundingSource from the given string
@@ -423,7 +426,7 @@ static NSDictionary* testResult;
  *
  * @return DwollaFundingSource object containing the contents of the string
  **/
-+(DwollaFundingSource*)generateSourceWithString:(NSString*)source;
+-(DwollaFundingSource*)generateSourceWithString:(NSString*)source;
 
 /**
  * helper method that encodes the url
@@ -432,11 +435,11 @@ static NSDictionary* testResult;
  *
  * @return the correctly encoded string
  **/
-+(NSString*)encodedURLParameterString:(NSString*)string;
+-(NSString*)encodedURLParameterString:(NSString*)string;
 
-+(void)isTest;
+-(void)isTest;
 
-+(void)setTestResult:(NSDictionary*)dictionary;
-+(DwollaContact*) generateContactWithDictionary:(NSDictionary*)dictionary;
+-(void)setTestResult:(NSDictionary*)dictionary;
+-(DwollaContact*) generateContactWithDictionary:(NSDictionary*)dictionary;
 
 @end

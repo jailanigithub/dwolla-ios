@@ -67,4 +67,6 @@
  **/
 -(void) logout;
 
+@property (retain) DwollaAPI* dwollaAPI;
+
 @end

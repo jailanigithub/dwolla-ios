@@ -39,4 +39,6 @@
 
 -(IBAction)getNearby;
 
+@property (retain) DwollaAPI *dwollaAPI;
+
 @end

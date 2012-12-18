@@ -10,10 +10,13 @@
 
 @implementation DwollaOAuthTests
 
+@synthesize dwollaAPI;
+
 - (void)setUp
 {
     [super setUp];
-    [DwollaAPI isTest];
+    dwollaAPI = [DwollaAPI sharedInstance];
+    [dwollaAPI isTest];
     // Set-up code here.
 }
 
@@ -28,9 +31,9 @@
 -(void)testSendMoney
 {
     NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message", @"12345", @"Response",  nil];
-    [DwollaAPI setTestResult:result];
+    [dwollaAPI setTestResult:result];
     
-    NSString* response = [DwollaAPI sendMoneyWithPIN:@"" destinationID:@"" destinationType:@""
+    NSString* response = [dwollaAPI sendMoneyWithPIN:@"" destinationID:@"" destinationType:@""
                          amount:@"" facilitatorAmount:@""
                  assumeCosts:@"" notes:@"" fundingSourceID:@""];
     STAssertTrue([response isEqualToString:@"12345"],@"INCORRECT ID");
@@ -39,9 +42,9 @@
 -(void)testRequestMoney
 {
     NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message", @"12345", @"Response", nil];
-    [DwollaAPI setTestResult:result];
+    [dwollaAPI setTestResult:result];
     
-    NSString* response = [DwollaAPI requestMoneyWithPIN:@"" sourceID:@"" sourceType:@""
+    NSString* response = [dwollaAPI requestMoneyWithPIN:@"" sourceID:@"" sourceType:@""
                             amount:@"" facilitatorAmount:@"" notes:@""];
     STAssertTrue([response isEqualToString:@"12345"],@"INCORRECT ID");
 }
@@ -49,9 +52,9 @@
 -(void)testGetBalance
 {
     NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message", @"55.76", @"Response", nil];
-    [DwollaAPI setTestResult:result];
+    [dwollaAPI setTestResult:result];
     
-    NSString* response = [DwollaAPI getBalance];
+    NSString* response = [dwollaAPI getBalance];
     
     STAssertTrue([response isEqualToString:@"55.76"],@"INCORRECT AMOUNT");
 }
@@ -64,8 +67,8 @@
     
     NSDictionary *result = [parser objectWithString:response];
     
-    [DwollaAPI setTestResult:result];
-    DwollaContacts* contacts = [DwollaAPI getContactsByName:@"" types:@"" limit:@""];
+    [dwollaAPI setTestResult:result];
+    DwollaContacts* contacts = [dwollaAPI getContactsByName:@"" types:@"" limit:@""];
     
     DwollaContact* one = [[DwollaContact alloc] initWithUserID:@"12345" name:@"Ben Facebook Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Facebook" address:@"" longitude:@"" latitude:@""];
     
@@ -83,8 +86,8 @@
     SBJsonParser *parser = [[SBJsonParser alloc] init];
     
     NSDictionary *result = [parser objectWithString:response];
-    [DwollaAPI setTestResult:result];
-    DwollaContacts* contacts = [DwollaAPI getNearbyWithLatitude:@"" Longitude:@"" Limit:@"" Range:@""];
+    [dwollaAPI setTestResult:result];
+    DwollaContacts* contacts = [dwollaAPI getNearbyWithLatitude:@"" Longitude:@"" Limit:@"" Range:@""];
     
     DwollaContact* one = [[DwollaContact alloc] initWithUserID:@"12345" name:@"Ben Facebook Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Facebook" address:@"" longitude:@"" latitude:@""];
     
@@ -103,9 +106,9 @@
     
     NSDictionary *result = [parser objectWithString:response];
 
-    [DwollaAPI setTestResult:result];
+    [dwollaAPI setTestResult:result];
 
-    DwollaFundingSources* sources = [DwollaAPI getFundingSources];
+    DwollaFundingSources* sources = [dwollaAPI getFundingSources];
     
     DwollaFundingSource* one = [[DwollaFundingSource alloc] initWithSourceID:@"TVmMwlKz1z6HmOK1np8NFA==" name:@"Donations Collection Fund - Savings" type:@"Savings" verified:@"true"];
     
@@ -123,10 +126,10 @@
     
     NSDictionary *result = [parser objectWithString:response];
     
-    [DwollaAPI setTestResult:result];
+    [dwollaAPI setTestResult:result];
 
     
-    DwollaFundingSource* source =  [DwollaAPI getFundingSource:@""];
+    DwollaFundingSource* source =  [dwollaAPI getFundingSource:@""];
     
     DwollaFundingSource* one = [[DwollaFundingSource alloc] initWithSourceID:@"TVmMwlKz1z6HmOK1np8NFA==" name:@"Donations Collection Fund - Savings" type:@"Savings" verified:@"true"];
     
@@ -142,9 +145,9 @@
     
     NSDictionary *result = [parser objectWithString:response];
     
-    [DwollaAPI setTestResult:result];
+    [dwollaAPI setTestResult:result];
     
-    DwollaUser* user = [DwollaAPI getAccountInfo];
+    DwollaUser* user = [dwollaAPI getAccountInfo];
     
     DwollaUser* user2 = [[DwollaUser alloc] initWithUserID:@"812-570-5285" name:@"Nick Schulze" city:@"Ames" state:@"IA" latitude:@"41.584546" longitude:@"-93.634167" type:@"Personal"];
     
@@ -167,9 +170,9 @@
     
     NSDictionary *result = [parser objectWithString:response];
     
-    [DwollaAPI setTestResult:result];
+    [dwollaAPI setTestResult:result];
     
-    DwollaTransactions* transactions = [DwollaAPI getTransactionsSince:@"" limit:@"" skip:@""];
+    DwollaTransactions* transactions = [dwollaAPI getTransactionsSince:@"" limit:@"" skip:@""];
     
     DwollaTransaction* transaction = [[DwollaTransaction alloc] initWithAmount:@"1.91" clearingDate:@"" date:@"7/18/2012 1:45:36 PM" destinationID:@"812-737-5434" destinationName:@"Timbuktuu Coffee" transactionID:@"1226108" notes:@"" sourceID:@"" sourceName:@"" status:@"processed" type:@"money_sent" userType:@"Dwolla"];
     
@@ -186,9 +189,9 @@
                                                     
     NSDictionary *result = [parser objectWithString:response];
     
-    [DwollaAPI setTestResult:result];
+    [dwollaAPI setTestResult:result];
 
-    DwollaTransaction* transaction = [DwollaAPI getTransaction:@""];
+    DwollaTransaction* transaction = [dwollaAPI getTransaction:@""];
     
     DwollaTransaction* transaction2 = [[DwollaTransaction alloc] initWithAmount:@"1.92" clearingDate:@"" date:@"7/18/2012 1:45:36 PM" destinationID:@"812-737-5434" destinationName:@"Timbuktuu Coffee" transactionID:@"1226108" notes:@"" sourceID:@"" sourceName:@"" status:@"processed" type:@"money_sent" userType:@"Dwolla"];
     
@@ -203,9 +206,9 @@
     
     NSDictionary *result = [parser objectWithString:response];
     
-    [DwollaAPI setTestResult:result];
+    [dwollaAPI setTestResult:result];
     
-    DwollaTransactionStats* stats = [DwollaAPI getTransactionStats:@"" end:@""];
+    DwollaTransactionStats* stats = [dwollaAPI getTransactionStats:@"" end:@""];
     
     
     DwollaTransactionStats* stats2 = [[DwollaTransactionStats alloc] initWithSuccess:YES count:@"1" total:@"0.3"];

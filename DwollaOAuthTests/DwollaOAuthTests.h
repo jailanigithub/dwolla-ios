@@ -11,4 +11,6 @@
 
 @interface DwollaOAuthTests : SenTestCase
 
+@property (retain) DwollaAPI *dwollaAPI;
+
 @end
