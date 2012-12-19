@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AccessTokenRepository : NSObject
+@interface TokenRepository : NSObject
 -(BOOL)hasAccessToken;
 -(NSString*)getAccessToken;
 -(void)setAccessToken:(NSString*) token;
 -(void)clearAccessToken;
+-(NSString*)getClientKey;
+-(NSString*)getClientSecret;
 @end

@@ -15,12 +15,14 @@
 #import "DwollaFundingSources.h"
 #import "DwollaTransactionStats.h"
 #import "DwollaContacts.h"
-#import "AccessTokenRepository.h"
+#import "TokenRepository.h"
+#import "HttpRequestRepository.h"
 
 static NSString *const dwollaAPIBaseURL;
 
 @interface DwollaAPI : NSObject
-@property (retain) AccessTokenRepository *accessTokenRepository;
+@property (retain) TokenRepository *tokenRepository;
+@property (retain) HttpRequestRepository *httpRequestRepository;
 
 +(id) sharedInstance;
 +(void) setSharedInstance:(DwollaAPI*)_instance;
@@ -367,15 +369,6 @@ static NSString *const dwollaAPIBaseURL;
 -(NSDictionary*)generateDictionaryWithData:(NSData*)data;
 
 /**
- * helper method that generates a DwollaContact from the given string
- *
- * @param contact: the string containing the DwollaContact data
- *
- * @return DwollaContact object containing the contents of the string
- **/
--(DwollaContact*)generateContactWithString:(NSString*)contact;
-
-/**
  * helper method that generates a DwollaTransaction from the given string
  *
  * @param transasction: the string containing the DwollaTransaction data
@@ -411,9 +404,6 @@ static NSString *const dwollaAPIBaseURL;
  **/
 -(NSString*)encodedURLParameterString:(NSString*)string;
 
--(void)isTest;
-
--(void)setTestResult:(NSDictionary*)dictionary;
 -(DwollaContact*) generateContactWithDictionary:(NSDictionary*)dictionary;
 
 @end

@@ -6,9 +6,9 @@
 //
 //
 
-#import "AccessTokenRepository.h"
+#import "TokenRepository.h"
 
-@implementation AccessTokenRepository
+@implementation TokenRepository
 
 -(BOOL)hasAccessToken
 {
@@ -46,4 +46,11 @@
     [[NSUserDefaults standardUserDefaults]setObject:nil forKey:@"token"];
 }
 
+-(NSString*) getClientKey {
+        return [[NSUserDefaults standardUserDefaults] objectForKey:@"key"];
+}
+
+-(NSString*) getClientSecret {
+       return [[NSUserDefaults standardUserDefaults] objectForKey:@"secret"];
+}
 @end

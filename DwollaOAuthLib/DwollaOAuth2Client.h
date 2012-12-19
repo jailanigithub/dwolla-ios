@@ -24,7 +24,7 @@
     UIView* superView;
     id<IDwollaMessages> receiver;
 }
-@property (retain) AccessTokenRepository *accessTokenRepository;
+@property (retain) TokenRepository *tokenRepository;
 
 /** 
  * initializes an instance of the DwollaO2AuthClient allowing the user to 
