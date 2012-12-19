@@ -17,8 +17,6 @@
 #import "DwollaContacts.h"
 
 static NSString *const dwollaAPIBaseURL;
-static BOOL isTest;
-static NSDictionary* testResult;
 
 @interface DwollaAPI : NSObject
 

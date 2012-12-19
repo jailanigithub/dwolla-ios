@@ -6,7 +6,15 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "DwollaOAuthTests.h"
+#import <OCMock/OCMock.h>
+#import <GHUnitIOS/GHUnit.h>
+#import <DwollaOAuthLib/DwollaAPI.h>
+
+
+
+@interface DwollaOAuthTests : GHTestCase {}
+@property (retain) DwollaAPI *dwollaAPI;
+@end
 
 @implementation DwollaOAuthTests
 
@@ -16,7 +24,6 @@
 {
     [super setUp];
     dwollaAPI = [DwollaAPI sharedInstance];
-    [dwollaAPI isTest];
     // Set-up code here.
 }
 
@@ -28,35 +35,41 @@
 }
 
 
+-(void) Send_WithNoAccessToken_ThrowError
+{
+    GHAssertNoThrow([dwollaAPI sendMoneyWithPIN:@"" destinationID:@"" destinationType:@""
+                                         amount:@"" facilitatorAmount:@""
+                                    assumeCosts:@"" notes:@"" fundingSourceID:@""], @"Send didn't throw an error with no access token");
+}
+
 -(void)testSendMoney
 {
     NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message", @"12345", @"Response",  nil];
-    [dwollaAPI setTestResult:result];
+
     
     NSString* response = [dwollaAPI sendMoneyWithPIN:@"" destinationID:@"" destinationType:@""
                          amount:@"" facilitatorAmount:@""
                  assumeCosts:@"" notes:@"" fundingSourceID:@""];
-    STAssertTrue([response isEqualToString:@"12345"],@"INCORRECT ID");
+    GHAssertTrue([response isEqualToString:@"12345"],@"INCORRECT ID");
 }
-
 -(void)testRequestMoney
 {
     NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message", @"12345", @"Response", nil];
-    [dwollaAPI setTestResult:result];
+
     
     NSString* response = [dwollaAPI requestMoneyWithPIN:@"" sourceID:@"" sourceType:@""
                             amount:@"" facilitatorAmount:@"" notes:@""];
-    STAssertTrue([response isEqualToString:@"12345"],@"INCORRECT ID");
+    GHAssertTrue([response isEqualToString:@"12345"],@"INCORRECT ID");
 }
 
 -(void)testGetBalance
 {
     NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message", @"55.76", @"Response", nil];
-    [dwollaAPI setTestResult:result];
+
     
     NSString* response = [dwollaAPI getBalance];
     
-    STAssertTrue([response isEqualToString:@"55.76"],@"INCORRECT AMOUNT");
+    GHAssertTrue([response isEqualToString:@"55.76"],@"INCORRECT AMOUNT");
 }
 
 -(void)testGetContacts
@@ -67,7 +80,7 @@
     
     NSDictionary *result = [parser objectWithString:response];
     
-    [dwollaAPI setTestResult:result];
+
     DwollaContacts* contacts = [dwollaAPI getContactsByName:@"" types:@"" limit:@""];
     
     DwollaContact* one = [[DwollaContact alloc] initWithUserID:@"12345" name:@"Ben Facebook Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Facebook" address:@"" longitude:@"" latitude:@""];
@@ -76,7 +89,7 @@
     
     DwollaContacts* contacts2 = [[DwollaContacts alloc] initWithSuccess:YES contacts:[[NSMutableArray alloc] initWithObjects:one, two, nil]];
     
-    STAssertTrue([contacts isEqualTo:contacts2],@"NOT EQUAL!");
+    GHAssertTrue([contacts isEqualTo:contacts2],@"NOT EQUAL!");
 }
 
 -(void)testGetNearby
@@ -86,7 +99,7 @@
     SBJsonParser *parser = [[SBJsonParser alloc] init];
     
     NSDictionary *result = [parser objectWithString:response];
-    [dwollaAPI setTestResult:result];
+
     DwollaContacts* contacts = [dwollaAPI getNearbyWithLatitude:@"" Longitude:@"" Limit:@"" Range:@""];
     
     DwollaContact* one = [[DwollaContact alloc] initWithUserID:@"12345" name:@"Ben Facebook Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Facebook" address:@"" longitude:@"" latitude:@""];
@@ -95,7 +108,7 @@
     
     DwollaContacts* contacts2 = [[DwollaContacts alloc] initWithSuccess:YES contacts:[[NSMutableArray alloc] initWithObjects:one, two, nil]];
     
-    STAssertTrue([contacts isEqualTo:contacts2],@"NOT EQUAL!");
+    GHAssertTrue([contacts isEqualTo:contacts2],@"NOT EQUAL!");
 }
 
 -(void)testGetSources
@@ -106,7 +119,7 @@
     
     NSDictionary *result = [parser objectWithString:response];
 
-    [dwollaAPI setTestResult:result];
+
 
     DwollaFundingSources* sources = [dwollaAPI getFundingSources];
     
@@ -114,7 +127,7 @@
     
     DwollaFundingSources* sources2 = [[DwollaFundingSources alloc] initWithSuccess:YES sources:[[NSMutableArray alloc] initWithObjects:one, nil]];
     
-    STAssertTrue([sources isEqualTo:sources2],@"NOT EQUAL!");
+    GHAssertTrue([sources isEqualTo:sources2],@"NOT EQUAL!");
 
 }
 
@@ -126,14 +139,14 @@
     
     NSDictionary *result = [parser objectWithString:response];
     
-    [dwollaAPI setTestResult:result];
+
 
     
     DwollaFundingSource* source =  [dwollaAPI getFundingSource:@""];
     
     DwollaFundingSource* one = [[DwollaFundingSource alloc] initWithSourceID:@"TVmMwlKz1z6HmOK1np8NFA==" name:@"Donations Collection Fund - Savings" type:@"Savings" verified:@"true"];
     
-    STAssertTrue([source isEqualTo:one],@"NOT EQUAL!");
+    GHAssertTrue([source isEqualTo:one],@"NOT EQUAL!");
 
 }
 
@@ -145,13 +158,13 @@
     
     NSDictionary *result = [parser objectWithString:response];
     
-    [dwollaAPI setTestResult:result];
+
     
     DwollaUser* user = [dwollaAPI getAccountInfo];
     
     DwollaUser* user2 = [[DwollaUser alloc] initWithUserID:@"812-570-5285" name:@"Nick Schulze" city:@"Ames" state:@"IA" latitude:@"41.584546" longitude:@"-93.634167" type:@"Personal"];
     
-    STAssertTrue([user isEqualTo:user2], @"NOT EQUAL");
+    GHAssertTrue([user isEqualTo:user2], @"NOT EQUAL");
 }
 
 //-(void)testRegisterUser
@@ -170,7 +183,7 @@
     
     NSDictionary *result = [parser objectWithString:response];
     
-    [dwollaAPI setTestResult:result];
+
     
     DwollaTransactions* transactions = [dwollaAPI getTransactionsSince:@"" limit:@"" skip:@""];
     
@@ -178,7 +191,7 @@
     
     DwollaTransactions* transactions2 = [[DwollaTransactions alloc] initWithSuccess:YES transactions:[[NSMutableArray alloc] initWithObjects:transaction, nil]];
     
-    STAssertTrue([transactions isEqualTo:transactions2],@"NOT EQUAL");
+    GHAssertTrue([transactions isEqualTo:transactions2],@"NOT EQUAL");
 }
 
 -(void)testGetTransaction
@@ -189,13 +202,13 @@
                                                     
     NSDictionary *result = [parser objectWithString:response];
     
-    [dwollaAPI setTestResult:result];
+
 
     DwollaTransaction* transaction = [dwollaAPI getTransaction:@""];
     
     DwollaTransaction* transaction2 = [[DwollaTransaction alloc] initWithAmount:@"1.92" clearingDate:@"" date:@"7/18/2012 1:45:36 PM" destinationID:@"812-737-5434" destinationName:@"Timbuktuu Coffee" transactionID:@"1226108" notes:@"" sourceID:@"" sourceName:@"" status:@"processed" type:@"money_sent" userType:@"Dwolla"];
     
-    STAssertTrue([transaction isEqualTo:transaction2], @"NOT EQUAL");
+    GHAssertTrue([transaction isEqualTo:transaction2], @"NOT EQUAL");
 }
 
 -(void)testGetTransactionStats
@@ -206,14 +219,14 @@
     
     NSDictionary *result = [parser objectWithString:response];
     
-    [dwollaAPI setTestResult:result];
+
     
     DwollaTransactionStats* stats = [dwollaAPI getTransactionStats:@"" end:@""];
     
     
     DwollaTransactionStats* stats2 = [[DwollaTransactionStats alloc] initWithSuccess:YES count:@"1" total:@"0.3"];
     
-    STAssertTrue([stats isEqualTo:stats2], @"NOT EQUAL");
+    GHAssertTrue([stats isEqualTo:stats2], @"NOT EQUAL");
     
 }
 
