@@ -11,7 +11,7 @@
 		4E070BB716812B5400EF0E0D /* libOCMock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E070BAD16812B5400EF0E0D /* libOCMock.a */; };
 		4E1385B516812D0E00089E6D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E1385B416812D0E00089E6D /* QuartzCore.framework */; };
 		4E1385B916812DA800089E6D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1385B816812DA800089E6D /* main.m */; };
-		4E1385C516815E0100089E6D /* DwollaOAuthTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1385C416815E0100089E6D /* DwollaOAuthTests.m */; };
+		4E1385C516815E0100089E6D /* Models_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1385C416815E0100089E6D /* Models_Tests.m */; };
 		4E1385C616815F1600089E6D /* libDwollaOAuthLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 889FF8A4166699B40037DC40 /* libDwollaOAuthLib.a */; };
 		4E1385DD16816E7400089E6D /* OAuthTokenRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1385DC16816E7400089E6D /* OAuthTokenRepository.m */; };
 		4E1385E2168174CC00089E6D /* HttpRequestRepository.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1385E1168174CC00089E6D /* HttpRequestRepository.m */; };
@@ -91,7 +91,7 @@
 		4E070BAD16812B5400EF0E0D /* libOCMock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libOCMock.a; sourceTree = "<group>"; };
 		4E1385B416812D0E00089E6D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		4E1385B816812DA800089E6D /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		4E1385C416815E0100089E6D /* DwollaOAuthTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DwollaOAuthTests.m; sourceTree = "<group>"; };
+		4E1385C416815E0100089E6D /* Models_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Models_Tests.m; sourceTree = "<group>"; };
 		4E1385DB16816E7400089E6D /* OAuthTokenRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthTokenRepository.h; sourceTree = "<group>"; };
 		4E1385DC16816E7400089E6D /* OAuthTokenRepository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OAuthTokenRepository.m; sourceTree = "<group>"; };
 		4E1385E0168174CC00089E6D /* HttpRequestRepository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpRequestRepository.h; sourceTree = "<group>"; };
@@ -289,7 +289,7 @@
 		4EDBE3DF16811A71007FD655 /* Test */ = {
 			isa = PBXGroup;
 			children = (
-				4E1385C416815E0100089E6D /* DwollaOAuthTests.m */,
+				4E1385C416815E0100089E6D /* Models_Tests.m */,
 				4E070BAA16812B5400EF0E0D /* libraries */,
 				4E427F8316811F5100031A35 /* TestTest.m */,
 				4EDBE3E016811A71007FD655 /* Supporting Files */,
@@ -584,7 +584,7 @@
 			files = (
 				4E427F8416811F5100031A35 /* TestTest.m in Sources */,
 				4E1385B916812DA800089E6D /* main.m in Sources */,
-				4E1385C516815E0100089E6D /* DwollaOAuthTests.m in Sources */,
+				4E1385C516815E0100089E6D /* Models_Tests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

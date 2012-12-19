@@ -12,13 +12,13 @@
 
 
 
-@interface DwollaOAuthTests : GHTestCase {}
+@interface Models_Tests : GHTestCase {}
 @property (retain) DwollaAPI *dwollaAPI;
 @property (retain) id mockTokenRepository;
 @property (retain) id mockHttpRequestRepository;
 @end
 
-@implementation DwollaOAuthTests
+@implementation Models_Tests
 
 @synthesize dwollaAPI, mockTokenRepository, mockHttpRequestRepository;
 
