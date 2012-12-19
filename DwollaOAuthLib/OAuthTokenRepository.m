@@ -53,4 +53,17 @@
 -(NSString*) getClientSecret {
        return [[NSUserDefaults standardUserDefaults] objectForKey:@"secret"];
 }
+
+-(void) setClientKey: (NSString*) token
+{
+    [[NSUserDefaults standardUserDefaults] setObject:token forKey:@"key"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+-(void) setClientSecret: (NSString*) token
+{
+    [[NSUserDefaults standardUserDefaults] setObject:token forKey:@"secret"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 @end

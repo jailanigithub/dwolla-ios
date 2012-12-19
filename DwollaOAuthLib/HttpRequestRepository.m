@@ -10,6 +10,16 @@
 
 @implementation HttpRequestRepository
 
+@synthesize httpRequestHelper;
+
+-(id) init {
+    self = [super self];
+    if(self){
+        self.httpRequestHelper = [[HttpRequestHelper alloc] init];
+    }
+    return self;
+}
+
 -(NSDictionary*)postRequest: (NSString*) url
                    withBody: (NSData *) body
 {
@@ -26,7 +36,7 @@
     
     NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
     
-    return [self generateDictionaryWithData:result];
+    return [self.httpRequestHelper generateDictionaryWithData:result];
 }
 
 -(NSDictionary*)getRequest: (NSString*) url
@@ -42,17 +52,7 @@
     
     NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
     
-    return [self generateDictionaryWithData:result];
-}
-
--(NSDictionary*)generateDictionaryWithData:(NSData*)data
-{
-    NSString *dataString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-    SBJsonParser *parser = [[SBJsonParser alloc] init];
-    
-    NSDictionary *dictionary = [parser objectWithString:dataString];
-    
-    return dictionary;
+    return [self.httpRequestHelper generateDictionaryWithData:result];
 }
 
 @end

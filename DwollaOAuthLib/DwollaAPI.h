@@ -17,15 +17,22 @@
 #import "DwollaContacts.h"
 #import "OAuthTokenRepository.h"
 #import "HttpRequestRepository.h"
+#import "HttpRequestHelper.h"
 
 static NSString *const dwollaAPIBaseURL;
 
 @interface DwollaAPI : NSObject
 @property (retain) OAuthTokenRepository *oAuthTokenRepository;
 @property (retain) HttpRequestRepository *httpRequestRepository;
+@property (retain) HttpRequestHelper *httpRequestHelper;
 
 +(id) sharedInstance;
 +(void) setSharedInstance:(DwollaAPI*)_instance;
+
+-(void)setAccessToken:(NSString*) token;
+-(void)clearAccessToken;
+-(void) setClientKey: (NSString*) token;
+-(void) setClientSecret: (NSString*) token;
 
 /**
  * sends money to the indicated user

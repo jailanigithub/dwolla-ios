@@ -11,7 +11,7 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
 
 @implementation DwollaAPI
 
-@synthesize oAuthTokenRepository, httpRequestRepository;
+@synthesize oAuthTokenRepository, httpRequestRepository, httpRequestHelper;
 
 static DwollaAPI* sharedInstance;
 
@@ -20,6 +20,7 @@ static DwollaAPI* sharedInstance;
     if(self){
         self.oAuthTokenRepository = [[OAuthTokenRepository alloc] init];
         self.httpRequestRepository = [[HttpRequestRepository alloc] init];
+        self.httpRequestHelper = [[HttpRequestHelper alloc] init];
     }
     return self;
 }
@@ -491,16 +492,7 @@ static DwollaAPI* sharedInstance;
     
     NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/users/%@?client_id=%@&client_secret=%@", accountID, key, secret]; 
     
-    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
-    
-    [request setHTTPMethod: @"GET"];
-    
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
-    
-    NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
-    
-    NSDictionary* dictionary = [self generateDictionaryWithData:result];
+    NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
     
     return dictionary;
 }
@@ -510,10 +502,10 @@ static DwollaAPI* sharedInstance;
     NSDictionary* dictionary;
     
     dictionary = [self getJSONBasicInfoWithAccountID:accountID];
+
+    NSDictionary* values = [dictionary valueForKey:@"Response"];
     
-    NSString* data = [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
-    
-    NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
+    NSString* success = [self.httpRequestHelper getStringFromDictionary:dictionary ForKey:@"Success"];
     
     if ([success isEqualToString:@"0"]) 
     {
@@ -521,11 +513,10 @@ static DwollaAPI* sharedInstance;
         @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:message userInfo:dictionary];
     }
     
-    NSArray* values = [data componentsSeparatedByString:@"\n"];
-    NSString* userID = [self findValue:[values objectAtIndex:1]];
-    NSString* latitude = [self findValue:[values objectAtIndex:2]];
-    NSString* longitude = [self findValue:[values objectAtIndex:3]];
-    NSString* name = [self findValue:[values objectAtIndex:4]];
+    NSString* userID = [self.httpRequestHelper getStringFromDictionary:values ForKey:@"Id"];
+    NSString* latitude = [self.httpRequestHelper getStringFromDictionary:values ForKey:@"Latitude"];
+    NSString* longitude = [self.httpRequestHelper getStringFromDictionary:values ForKey:@"Longitude"];
+    NSString* name = [self.httpRequestHelper getStringFromDictionary:values ForKey:@"Name"];
     
     return [[DwollaUser alloc] initWithUserID:userID name:name city:nil state:nil 
                                      latitude:latitude longitude:longitude type:nil];
@@ -953,6 +944,19 @@ static DwollaAPI* sharedInstance;
                                                                                              CFSTR(":/=,!$&'()*+;[]@#?"),
                                                                                              kCFStringEncodingUTF8);
 	return result;
+}
+
+-(void)setAccessToken:(NSString*) token{
+    [self.oAuthTokenRepository setAccessToken:token];
+}
+-(void)clearAccessToken{
+    [self.oAuthTokenRepository clearAccessToken];
+}
+-(void) setClientKey: (NSString*) token{
+    [self.oAuthTokenRepository setClientKey:token];
+}
+-(void) setClientSecret: (NSString*) token{
+    [self.oAuthTokenRepository setClientSecret:token];
 }
 
 @end

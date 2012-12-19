@@ -15,4 +15,6 @@
 -(void)clearAccessToken;
 -(NSString*)getClientKey;
 -(NSString*)getClientSecret;
+-(void) setClientKey: (NSString*) token;
+-(void) setClientSecret: (NSString*) token;
 @end

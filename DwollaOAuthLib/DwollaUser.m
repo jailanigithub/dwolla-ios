@@ -64,14 +64,10 @@
 
 -(BOOL)isEqualTo:(DwollaUser*)_user
 {
-    if (![name isEqualToString:[_user getName]] || ![userID isEqualToString:[_user getUserID]] || ![type isEqualToString:[_user getType]]) 
-    {
-        return NO;
-    }
-    else 
-    {
+    if ([name isEqualToString:[_user getName]] || [userID isEqualToString:[_user getUserID]] || ((type == nil && [_user getType] == nil) || [userID isEqualToString:[_user getUserID]]))
         return YES;
-    }
+
+    return NO;
 }
 
 @end

@@ -219,6 +219,29 @@
     GHAssertTrue([user isEqualTo:user2], @"NOT EQUAL");
 }
 
+
+-(void)testGetBasicAccountInfo_WithSuccessfulResponse_ShouldReturnValidBasicAccountInformation
+{
+    [self Setup_WithAccessToken_ClientKey_ClientSecret];
+    
+    NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message",
+                            [[NSDictionary alloc] initWithObjectsAndKeys:
+                             @"Personal", @"Type",
+                             @"812-570-5285", @"Id",
+                             @"Nick Schulze", @"Name",
+                             @"0", @"Latitude",
+                             @"0", @"Longitude",
+                             nil], @"Response", nil];
+
+    [self Setup_GetRequest_WithDictionary:result];
+    
+    DwollaUser* user = [dwollaAPI getBasicInfoWithAccountID:@"1"];
+    
+    DwollaUser* user2 = [[DwollaUser alloc] initWithUserID:@"812-570-5285" name:@"Nick Schulze" city:nil state:nil latitude:@"0" longitude:@"0" type:nil];
+    
+    GHAssertTrue([user isEqualTo:user2], @"NOT EQUAL");
+}
+
 -(void)testGetTransactions_WithSuccessfulResponse_ShouldReturnValidTransactions
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
