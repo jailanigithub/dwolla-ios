@@ -63,6 +63,29 @@
     [self Setup_GetRequest_WithDictionary:result];
 }
 
+- (void) Setup_GetRequest_WithTransactionDictionary {
+    NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message",
+                            [[NSArray alloc]initWithObjects:[self GetTransactionDictionary], nil], @"Response", nil];
+    [self Setup_GetRequest_WithDictionary:result];
+}
+
+- (NSDictionary *) GetTransactionDictionary {
+    return [[NSDictionary alloc] initWithObjectsAndKeys:
+    @"1.91", @"Amount",
+    @"7/18/2012 1:45:36 PM", @"Date",
+    @"money_sent", @"Type",
+    @"Dwolla", @"UserType",
+    @"812-737-5434", @"DestinationId",
+    @"Timbuktuu Coffee", @"DestinationName",
+    @"", @"SourceId",
+    @"", @"SourceName",
+    @"", @"ClearingDate",
+    @"From iPhone", @"Notes",
+    @"1226108", @"Id",
+    @"processed", @"Status",
+    nil];
+}
+
 - (DwollaContacts *)Get_Mocked_DwollaContacts
 {
     DwollaContact* one = [[DwollaContact alloc] initWithUserID:@"12345" name:@"Ben Facebook Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Facebook" address:@"" longitude:@"" latitude:@""];
@@ -73,7 +96,7 @@
 }
 
 
--(void)testSendMoney
+-(void)testSend_WithSuccessfulResponse_ShouldReturnValidTransactionId
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
     NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message", @"12345", @"Response",  nil];
@@ -83,7 +106,7 @@
     NSString* response = [dwollaAPI sendMoneyWithPIN:@"5211" destinationID:@"812-111-1111" destinationType:@"dwolla" amount:@"0.00" facilitatorAmount:@"" assumeCosts:@"" notes:@"" fundingSourceID:@""];
     GHAssertTrue([response isEqualToString:@"12345"],@"INCORRECT ID");
 }
--(void)testRequestMoney
+-(void)testRequest_WithSuccessfulResponse_ShouldReturnValidRequestId
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
     NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message", @"12345", @"Response", nil];
@@ -93,7 +116,7 @@
     GHAssertTrue([response isEqualToString:@"12345"],@"INCORRECT ID");
 }
 
--(void)testGetBalance
+-(void)testGetBalance_WithSuccessfulResponse_ShouldReturnValidBalance
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
     NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message", @"55.76", @"Response", nil];
@@ -105,7 +128,7 @@
 }
 
 
--(void)testGetContacts
+-(void)testGetContacts_WithSuccessfulResponse_ShouldReturnValidContacts
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
     [self Setup_GetRequest_WithContactsDictionary];
@@ -116,7 +139,7 @@
     GHAssertTrue([contacts isEqualTo:contacts2],@"NOT EQUAL!");
 }
 
--(void)testGetNearby
+-(void)testGetNearby_WithSuccessfulResponse_ShouldReturnValidContacts
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
     [self Setup_GetRequest_WithContactsDictionary];
@@ -127,7 +150,7 @@
     GHAssertTrue([contacts isEqualTo:contacts2],@"NOT EQUAL!");
 }
 
--(void)testGetFundingSources
+-(void)testGetFundingSources_WithSuccessfulResponse_ShouldReturnValidFundingSources
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
     
@@ -173,7 +196,7 @@
     GHAssertTrue([source isEqualTo:one],@"NOT EQUAL!");
 }
 
--(void)testGetAccountInfo
+-(void)testGetAccountInfo_WithSuccessfulResponse_ShouldReturnValidAccountInformation
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
     
@@ -196,28 +219,11 @@
     GHAssertTrue([user isEqualTo:user2], @"NOT EQUAL");
 }
 
--(void)testGetTransactions
+-(void)testGetTransactions_WithSuccessfulResponse_ShouldReturnValidTransactions
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
+    [self Setup_GetRequest_WithTransactionDictionary];
     
-    NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message",
-                            [[NSArray alloc]initWithObjects:[[NSDictionary alloc] initWithObjectsAndKeys:
-                             @"1.91", @"Amount",
-                             @"7/18/2012 1:45:36 PM", @"Date",
-                             @"money_sent", @"Type",
-                             @"Dwolla", @"UserType",
-                             @"812-737-5434", @"DestinationId",
-                             @"Timbuktuu Coffee", @"DestinationName",
-                             @"", @"SourceId",
-                             @"", @"SourceName",
-                             @"", @"ClearingDate",
-                             @"From iPhone", @"Notes",
-                             @"1226108", @"Id",
-                             @"processed", @"Status",
-                             nil], nil], @"Response", nil];
-    
-    [self Setup_GetRequest_WithDictionary:result];
-
     DwollaTransactions* transactions = [dwollaAPI getTransactionsSince:@"" limit:@"" skip:@""];
     
     DwollaTransaction* transaction = [[DwollaTransaction alloc] initWithAmount:@"1.91" clearingDate:@"" date:@"7/18/2012 1:45:36 PM" destinationID:@"812-737-5434" destinationName:@"Timbuktuu Coffee" transactionID:@"1226108" notes:@"" sourceID:@"" sourceName:@"" status:@"processed" type:@"money_sent" userType:@"Dwolla"];
@@ -227,36 +233,19 @@
     GHAssertTrue([transactions isEqualTo:transactions2],@"NOT EQUAL");
 }
 
--(void)testGetTransaction
+-(void)testGetTransaction_WithSuccessfulResponse_ShouldReturnValidTransaction
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
-    
-    NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message",
-                            [[NSDictionary alloc] initWithObjectsAndKeys:
-                                                             @"1.92", @"Amount",
-                                                             @"7/18/2012 1:45:36 PM", @"Date",
-                                                             @"money_sent", @"Type",
-                                                             @"Dwolla", @"UserType",
-                                                             @"812-737-5434", @"DestinationId",
-                                                             @"Timbuktuu Coffee", @"DestinationName",
-                                                             @"", @"SourceId",
-                                                             @"", @"SourceName",
-                                                             @"", @"ClearingDate",
-                                                             @"From iPhone", @"Notes",
-                                                             @"1226108", @"Id",
-                                                             @"processed", @"Status",
-                                                             nil], @"Response", nil];
-
-    [self Setup_GetRequest_WithDictionary:result];
+    [self Setup_GetRequest_WithDictionary:[self GetTransactionDictionary]];
 
     DwollaTransaction* transaction = [dwollaAPI getTransaction:@""];
     
-    DwollaTransaction* transaction2 = [[DwollaTransaction alloc] initWithAmount:@"1.92" clearingDate:@"" date:@"7/18/2012 1:45:36 PM" destinationID:@"812-737-5434" destinationName:@"Timbuktuu Coffee" transactionID:@"1226108" notes:@"" sourceID:@"" sourceName:@"" status:@"processed" type:@"money_sent" userType:@"Dwolla"];
+    DwollaTransaction* transaction2 = [[DwollaTransaction alloc] initWithAmount:@"1.91" clearingDate:@"" date:@"7/18/2012 1:45:36 PM" destinationID:@"812-737-5434" destinationName:@"Timbuktuu Coffee" transactionID:@"1226108" notes:@"" sourceID:@"" sourceName:@"" status:@"processed" type:@"money_sent" userType:@"Dwolla"];
     
     GHAssertTrue([transaction isEqualTo:transaction2], @"NOT EQUAL");
 }
 
--(void)testGetTransactionStats
+-(void)testGetTransactionStats_WithSuccessfulResponse_ShouldReturnValidTransactionStats
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
     
