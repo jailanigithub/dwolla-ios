@@ -351,15 +351,6 @@ static NSString *const dwollaAPIBaseURL;
                             scopes:(NSArray*)scopes;
 
 /**
- * helper method that generates a url request
- *
- * @param request the string to be used to generate the url
- *
- * @return ur request to be run by the methods
- **/
--(NSMutableURLRequest*)generateRequestWithString:(NSString*)request;
-
-/**
  * helper method that generates a dictionary given the data returned by the request
  *
  * @param data: the data returned by the request
