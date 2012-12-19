@@ -14,26 +14,31 @@
 
 @interface DwollaOAuthTests : GHTestCase {}
 @property (retain) DwollaAPI *dwollaAPI;
+@property (retain) id mockNSUserDefaults;
 @end
 
 @implementation DwollaOAuthTests
 
-@synthesize dwollaAPI;
+@synthesize dwollaAPI, mockNSUserDefaults;
 
 - (void)setUp
 {
     [super setUp];
     dwollaAPI = [DwollaAPI sharedInstance];
+    mockNSUserDefaults = [OCMockObject mockForClass:[NSUserDefaults class]];
     // Set-up code here.
 }
 
 - (void)tearDown
 {
     // Tear-down code here.
-    
     [super tearDown];
 }
 
+- (void) setup_AccessToken_true {
+    [[[self.mockNSUserDefaults stub] andReturn:@"123456789"] objectForKey:@"token"];
+    [[[self.mockNSUserDefaults stub] andReturn:[NSUserDefaults alloc]] standardUserDefaults];
+}
 
 -(void) Send_WithNoAccessToken_ThrowError
 {
@@ -44,6 +49,7 @@
 
 -(void)testSendMoney
 {
+    [self setup_AccessToken_true];
     NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message", @"12345", @"Response",  nil];
 
     

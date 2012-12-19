@@ -15,39 +15,15 @@
 #import "DwollaFundingSources.h"
 #import "DwollaTransactionStats.h"
 #import "DwollaContacts.h"
+#import "AccessTokenRepository.h"
 
 static NSString *const dwollaAPIBaseURL;
 
 @interface DwollaAPI : NSObject
+@property (retain) AccessTokenRepository *accessTokenRepository;
 
 +(id) sharedInstance;
 +(void) setSharedInstance:(DwollaAPI*)_instance;
-
-/**
- * checks to see if the user has a valid access token
- *
- * @return YES if a valid access token is present, false otherwise
- **/
--(BOOL)hasToken;
-
-/**
- * gets the stored access token
- *
- * @return a string representing the access token
- **/
--(NSString*)getAccessToken;
-
-/**
- * sets the access token
- *
- * @param token: the string representing the token
- **/
--(void)setAccessToken:(NSString*) token;
-
-/**
- * clears the access token
- **/
--(void)clearAccessToken;
 
 /**
  * sends money to the indicated user

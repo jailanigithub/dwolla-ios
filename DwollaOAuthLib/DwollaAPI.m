@@ -11,6 +11,8 @@ static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
 
 @implementation DwollaAPI
 
+@synthesize accessTokenRepository;
+
 static DwollaAPI* sharedInstance;
 
 +(id) sharedInstance {
@@ -22,42 +24,6 @@ static DwollaAPI* sharedInstance;
 
 +(void) setSharedInstance:(DwollaAPI *)_instance {
     sharedInstance = _instance;
-}
-
--(BOOL)hasToken
-{
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
-    
-    if(token == nil)
-    {
-        return NO;
-    }
-    else 
-    {
-        return YES;
-    }
-}
-
--(NSString*)getAccessToken
-{
-    if (![self hasToken])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
-                                       reason:@"oauth_token is invalid" userInfo:nil];
-    }
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"token"];
-    return token;
-}
-
--(void)setAccessToken:(NSString*) token
-{
-    [[NSUserDefaults standardUserDefaults] setObject:token forKey:@"token"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
--(void)clearAccessToken
-{
-    [[NSUserDefaults standardUserDefaults]setObject:nil forKey:@"token"];
 }
 
 -(NSDictionary*)postRequest: (NSString*) url
@@ -90,12 +56,12 @@ static DwollaAPI* sharedInstance;
 {
     NSDictionary* dictionary;
     
-    if (![self hasToken])
+    if (![self.accessTokenRepository hasAccessToken])
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION"
                                            reason:@"oauth_token is invalid" userInfo:nil]; 
     }
-    NSString* token = [self getAccessToken];
+    NSString* token = [self.accessTokenRepository getAccessToken];
         
     NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/transactions/send?oauth_token=%@", token];
         
@@ -164,13 +130,13 @@ static DwollaAPI* sharedInstance;
 {
     NSDictionary* dictionary;
     
-        if (![self hasToken])
+        if (![self.accessTokenRepository hasAccessToken])
         {
             @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                            reason:@"oauth_token is invalid" userInfo:nil];
         }
         
-        NSString* token = [self getAccessToken];
+        NSString* token = [self.accessTokenRepository getAccessToken];
         
         NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/transactions/request?oauth_token=%@", token]; 
         
@@ -238,7 +204,7 @@ static DwollaAPI* sharedInstance;
 
 -(NSDictionary*)getJSONBalance
 {
-    if (![self hasToken])
+    if (![self.accessTokenRepository hasAccessToken])
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
@@ -281,7 +247,7 @@ static DwollaAPI* sharedInstance;
                                 types:(NSString*)types
                                 limit:(NSString*)limit
 {
-    if (![self hasToken])
+    if (![self.accessTokenRepository hasAccessToken])
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
@@ -421,7 +387,7 @@ static DwollaAPI* sharedInstance;
 
 -(NSDictionary*)getJSONFundingSources
 {
-    if (![self hasToken])
+    if (![self.accessTokenRepository hasAccessToken])
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
@@ -469,7 +435,7 @@ static DwollaAPI* sharedInstance;
 
 -(NSDictionary*)getJSONFundingSource:(NSString*)sourceID
 {
-    if (![self hasToken])
+    if (![self.accessTokenRepository hasAccessToken])
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
@@ -519,7 +485,7 @@ static DwollaAPI* sharedInstance;
 
 -(NSDictionary*)getJSONAccountInfo
 {
-    if (![self hasToken])
+    if (![self.accessTokenRepository hasAccessToken])
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
@@ -760,7 +726,7 @@ static DwollaAPI* sharedInstance;
                                    limit:(NSString*)limit
                                     skip:(NSString*)skip
 {
-    if (![self hasToken]) 
+    if (![self.accessTokenRepository hasAccessToken]) 
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
@@ -840,7 +806,7 @@ static DwollaAPI* sharedInstance;
 
 -(NSDictionary*)getJSONTransaction:(NSString*)transactionID
 {
-    if (![self hasToken]) 
+    if (![self.accessTokenRepository hasAccessToken]) 
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
@@ -885,7 +851,7 @@ static DwollaAPI* sharedInstance;
 -(NSDictionary*)getJSONTransactionStats:(NSString*)start
                                     end:(NSString*)end
 {
-    if (![self hasToken]) 
+    if (![self.accessTokenRepository hasAccessToken])
     {
         @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
                                        reason:@"oauth_token is invalid" userInfo:nil];
