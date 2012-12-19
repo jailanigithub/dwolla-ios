@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TokenRepository : NSObject
+@interface OAuthTokenRepository : NSObject
 -(BOOL)hasAccessToken;
 -(NSString*)getAccessToken;
 -(void)setAccessToken:(NSString*) token;

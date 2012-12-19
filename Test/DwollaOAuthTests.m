@@ -26,10 +26,10 @@
 {
     [super setUp];
     self.dwollaAPI = [DwollaAPI sharedInstance];
-    self.mockTokenRepository = [OCMockObject mockForClass:[TokenRepository class]];
+    self.mockTokenRepository = [OCMockObject mockForClass:[OAuthTokenRepository class]];
     self.mockHttpRequestRepository = [OCMockObject mockForClass:[HttpRequestRepository class]];
     
-    [dwollaAPI setTokenRepository:self.mockTokenRepository];
+    [dwollaAPI setOAuthTokenRepository:self.mockTokenRepository];
     [dwollaAPI setHttpRequestRepository:self.mockHttpRequestRepository];
 }
 

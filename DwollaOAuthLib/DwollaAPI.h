@@ -15,13 +15,13 @@
 #import "DwollaFundingSources.h"
 #import "DwollaTransactionStats.h"
 #import "DwollaContacts.h"
-#import "TokenRepository.h"
+#import "OAuthTokenRepository.h"
 #import "HttpRequestRepository.h"
 
 static NSString *const dwollaAPIBaseURL;
 
 @interface DwollaAPI : NSObject
-@property (retain) TokenRepository *tokenRepository;
+@property (retain) OAuthTokenRepository *oAuthTokenRepository;
 @property (retain) HttpRequestRepository *httpRequestRepository;
 
 +(id) sharedInstance;

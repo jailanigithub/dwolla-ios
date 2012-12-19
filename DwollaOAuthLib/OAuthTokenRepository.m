@@ -6,9 +6,9 @@
 //
 //
 
-#import "TokenRepository.h"
+#import "OAuthTokenRepository.h"
 
-@implementation TokenRepository
+@implementation OAuthTokenRepository
 
 -(BOOL)hasAccessToken
 {
