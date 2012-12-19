@@ -15,41 +15,17 @@
 #import "DwollaFundingSources.h"
 #import "DwollaTransactionStats.h"
 #import "DwollaContacts.h"
+#import "OAuthTokenRepository.h"
+#import "HttpRequestRepository.h"
 
 static NSString *const dwollaAPIBaseURL;
-static BOOL isTest;
-static NSDictionary* testResult;
 
 @interface DwollaAPI : NSObject
+@property (retain) OAuthTokenRepository *oAuthTokenRepository;
+@property (retain) HttpRequestRepository *httpRequestRepository;
 
 +(id) sharedInstance;
 +(void) setSharedInstance:(DwollaAPI*)_instance;
-
-/**
- * checks to see if the user has a valid access token
- *
- * @return YES if a valid access token is present, false otherwise
- **/
--(BOOL)hasToken;
-
-/**
- * gets the stored access token
- *
- * @return a string representing the access token
- **/
--(NSString*)getAccessToken;
-
-/**
- * sets the access token
- *
- * @param token: the string representing the token
- **/
--(void)setAccessToken:(NSString*) token;
-
-/**
- * clears the access token
- **/
--(void)clearAccessToken;
 
 /**
  * sends money to the indicated user
@@ -393,15 +369,6 @@ static NSDictionary* testResult;
 -(NSDictionary*)generateDictionaryWithData:(NSData*)data;
 
 /**
- * helper method that generates a DwollaContact from the given string
- *
- * @param contact: the string containing the DwollaContact data
- *
- * @return DwollaContact object containing the contents of the string
- **/
--(DwollaContact*)generateContactWithString:(NSString*)contact;
-
-/**
  * helper method that generates a DwollaTransaction from the given string
  *
  * @param transasction: the string containing the DwollaTransaction data
@@ -437,9 +404,6 @@ static NSDictionary* testResult;
  **/
 -(NSString*)encodedURLParameterString:(NSString*)string;
 
--(void)isTest;
-
--(void)setTestResult:(NSDictionary*)dictionary;
 -(DwollaContact*) generateContactWithDictionary:(NSDictionary*)dictionary;
 
 @end

@@ -10,13 +10,13 @@
 
 @implementation DwollaOAuth2Client
 
-@synthesize dwollaAPI;
+@synthesize dwollaAPI, oAuthTokenRepository;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        oAuthTokenRepository = [[OAuthTokenRepository alloc] init];
     }
     return self;
 }
@@ -64,12 +64,12 @@
 
 -(void)logout
 {
-    [dwollaAPI clearAccessToken];
+    [oAuthTokenRepository clearAccessToken];
 }
 
 -(BOOL)isAuthorized
 {
-    return [dwollaAPI hasToken];
+    return [oAuthTokenRepository hasAccessToken];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)req navigationType:(UIWebViewNavigationType)navigationType
@@ -139,7 +139,7 @@
     
     token = [dwollaAPI encodedURLParameterString:token];
     
-    [dwollaAPI setAccessToken:token];
+    [oAuthTokenRepository setAccessToken:token];
     
     [receiver successfulLogin];
     [self removeFromSuperview];
