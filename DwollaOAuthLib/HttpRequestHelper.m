@@ -9,6 +9,8 @@
 #import "HttpRequestHelper.h"
 #import <Foundation/NSJSONSerialization.h>
 
+static NSString *const QUERY_STRING_SEPERATOR = @"&";
+
 @implementation HttpRequestHelper
 
 -(NSDictionary*)generateDictionaryWithData:(NSData*)data
@@ -50,6 +52,20 @@
     if ([[[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]] isEqualToString:@"false"])
         @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:[self getJSONStringFromNSDictionary:dictionary] userInfo:nil];
     return dictionary;
+}
+
+-(NSString*) getQueryParametersFroNSDictionary:(NSDictionary*)dictionary {
+    NSMutableArray *parts = [NSMutableArray array];
+    for (id key in dictionary) {
+        NSString* value = [self encodeString:[dictionary objectForKey: key]];
+        [parts addObject: [NSString stringWithFormat: @"%@=%@", key, value]];
+    }
+    return [parts componentsJoinedByString: QUERY_STRING_SEPERATOR];
+}
+
+-(NSString*) encodeString: (NSString*) string
+{
+    return (__bridge NSString *) CFURLCreateStringByAddingPercentEscapes( NULL, (CFStringRef)string, NULL, (CFStringRef)@"!’\"();:@&=+$,/?%#[]% ", kCFStringEncodingISOLatin1);
 }
 
 @end

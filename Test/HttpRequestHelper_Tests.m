@@ -29,7 +29,7 @@
 }
 
 
--(void)testSend_WithNoAccessToken_ShouldThrowException
+-(void)testgetJSONDataFromNsDictionary_WithValidDictionary_ShouldReturnValidJSON
 {
     NSMutableDictionary* parameterDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                                 @"1111", @"pin",
@@ -42,6 +42,30 @@
                                              encoding:NSUTF8StringEncoding];
     
     GHAssertTrue([jsonString isEqualToString: @"{\"pin\":\"1111\",\"destinationId\":\"812-111-1111\",\"amount\":\"1.00\"}"], @"JSON data does not match");
+}
+
+-(void)testgetQueryParametersFroNSDictionary_WithValidDictionary_ShouldReturnValidQueryString
+{
+    NSDictionary* parameterDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                                @"hot", @"dog",
+                                                @"schonfeld", @"michael",
+                                                @"awesome", @"dwolla", nil];
+    
+    NSString* queryString = [self.httpRequestHelper getQueryParametersFroNSDictionary:parameterDictionary];
+    
+    GHAssertTrue([queryString isEqualToString:@"dog=hot&michael=schonfeld&dwolla=awesome"], @"Query string was not generated correctly");
+}
+
+-(void)testgetQueryParametersFroNSDictionary_WithCharacterNeedingEncoded_ShouldReturnValidQueryString
+{
+    NSDictionary* parameterDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                         @"h/o$t", @"dog",
+                                         @"schonfeld", @"michael",
+                                         @"awesome", @"dwolla", nil];
+    
+    NSString* queryString = [self.httpRequestHelper getQueryParametersFroNSDictionary:parameterDictionary];
+    
+    GHAssertEqualStrings(queryString, @"dog=h%2Fo%24t&michael=schonfeld&dwolla=awesome", @"Query string was not generated correctly");
 }
 
 @end
