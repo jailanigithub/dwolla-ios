@@ -9,6 +9,7 @@
 static NSString *const DWOLLA_API_BASEURL = @"https://www.dwolla.com/oauth/rest";
 static NSString *const SEND_URL = @"/transactions/send";
 static NSString *const REQUEST_URL = @"/transactions/request";
+static NSString *const BALANCE_URL = @"/balance";
 
 static NSString *const RESPONSE_RESULT_PARAMETER = @"Response";
 

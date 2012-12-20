@@ -23,6 +23,7 @@
 		4E13861C168357DA00089E6D /* DwollaAPI_Send_Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E13861B168357DA00089E6D /* DwollaAPI_Send_Test.m */; };
 		4E13862016835A2800089E6D /* DwollaAPI_Request_Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E13861F16835A2800089E6D /* DwollaAPI_Request_Test.m */; };
 		4E13862416835BC700089E6D /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E13862316835BC700089E6D /* Constants.m */; };
+		4E1386271683609E00089E6D /* DwollaAPI_Balance_Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E1386261683609D00089E6D /* DwollaAPI_Balance_Test.m */; };
 		4E427F8416811F5100031A35 /* TestTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E427F8316811F5100031A35 /* TestTest.m */; };
 		4EDBE3DC16811A71007FD655 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F534DB9E157EB04E000E2BF8 /* UIKit.framework */; };
 		4EDBE3DD16811A71007FD655 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F534DBA0157EB04E000E2BF8 /* Foundation.framework */; };
@@ -115,6 +116,7 @@
 		4E13861D1683599C00089E6D /* DwollaAPI_Base_Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DwollaAPI_Base_Test.h; sourceTree = "<group>"; };
 		4E13861F16835A2800089E6D /* DwollaAPI_Request_Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DwollaAPI_Request_Test.m; sourceTree = "<group>"; };
 		4E13862316835BC700089E6D /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		4E1386261683609D00089E6D /* DwollaAPI_Balance_Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DwollaAPI_Balance_Test.m; sourceTree = "<group>"; };
 		4E427F8316811F5100031A35 /* TestTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestTest.m; sourceTree = "<group>"; };
 		4EDBE3DA16811A71007FD655 /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EDBE3E116811A71007FD655 /* Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Test-Info.plist"; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 			children = (
 				4E13861B168357DA00089E6D /* DwollaAPI_Send_Test.m */,
 				4E13861F16835A2800089E6D /* DwollaAPI_Request_Test.m */,
+				4E1386261683609D00089E6D /* DwollaAPI_Balance_Test.m */,
 			);
 			name = DwollaAPI;
 			sourceTree = "<group>";
@@ -636,6 +639,7 @@
 				4E1386181682D77100089E6D /* HttpRequestRepository_Test.m in Sources */,
 				4E13861C168357DA00089E6D /* DwollaAPI_Send_Test.m in Sources */,
 				4E13862016835A2800089E6D /* DwollaAPI_Request_Test.m in Sources */,
+				4E1386271683609E00089E6D /* DwollaAPI_Balance_Test.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

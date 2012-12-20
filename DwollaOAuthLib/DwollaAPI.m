@@ -108,15 +108,8 @@ static DwollaAPI* sharedInstance;
 
 -(NSDictionary*)getJSONBalance
 {
-    if (![self.oAuthTokenRepository hasAccessToken])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
-                                       reason:@"oauth_token is invalid" userInfo:nil];
-    }
-    
     NSString* token = [self.oAuthTokenRepository getAccessToken];
-    
-    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/balance?oauth_token=%@", token];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", BALANCE_URL, token];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
     return dictionary;
