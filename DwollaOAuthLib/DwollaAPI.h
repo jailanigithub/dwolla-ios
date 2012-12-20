@@ -138,13 +138,6 @@ static NSString *const DWOLLA_API_BASEURL;
  **/
 -(DwollaFundingSource*)getFundingSource:(NSString*)sourceID;
 
-/**
- * gets the account information of the user
- *
- * @return JSON representation of the request see https://www.dwolla.com/developers/endpoints/users/accountinformation
- * @throws NSException if no access token is available, or request fails
- **/
--(NSDictionary*)getJSONAccountInfo;
 
 /**
  * gets the account information of the user
@@ -154,15 +147,6 @@ static NSString *const DWOLLA_API_BASEURL;
  **/
 -(DwollaUser*)getAccountInfo;
 
-/**
- * gets the account information of the user with the given id
- *
- * @param accountID: a string representation of the id of the account
- *
- * @return JSON representation of the request see https://www.dwolla.com/developers/endpoints/users/basicinformation
- * @throws NSException if parameters are invalid, no access token is available, or request fails
- **/
--(NSDictionary*)getJSONBasicInfoWithAccountID:(NSString*)accountID;
 
 /**
  * gets the account information of the user with the given id
@@ -173,46 +157,6 @@ static NSString *const DWOLLA_API_BASEURL;
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
 -(DwollaUser*)getBasicInfoWithAccountID:(NSString*)accountID;
-
-/**
- * registers a new user
- *
- * @param email: the email of the new user (required)
- * @param password: the password of the new user (required)
- * @param pin: the pin of the new user (required)
- * @param firstName: the first name of the new user (required)
- * @param lastName:  the last name of the new user (required)n
- * @param address:  the street address of the new user (required) 
- * @param address2: the secondary street address of the new user, may be null
- * @param city:  the city of the new user (required)
- * @param state: the state of the new user (required) -> uses two character identifier ex: IA == Iowa
- * @param zip:  the zip code of the new user (required)
- * @param phone: the phone number of the new user (required) -> formatted like **********
- * @param birthDate: the birthday of the new user (required) -> formatted like **-**-**** month-day-year
- * @param type:  the account type of the new user, may be null
- * @param organization:  the organization of the new user (required for commercial and nonprofit) 
- * @param ein: the ein of the new user (required for commercial and nonprofit)
- * @param accept: if the user accepts the terms, must be YES
- *
- * @return a DwollaUser object containing the result of the request
- * @throws NSException if parameters are invalid, no access token is available, accept terms is NO, or request fails
- **/
--(DwollaUser*)registerUserWithEmail:(NSString*)email
-                           password:(NSString*)password 
-                                pin:(NSString*)pin
-                          firstName:(NSString*)first
-                           lastName:(NSString*)last
-                            address:(NSString*)address
-                           address2:(NSString*)address2
-                               city:(NSString*)city
-                              state:(NSString*)state
-                                zip:(NSString*)zip
-                              phone:(NSString*)phone
-                          birthDate:(NSString*)dob
-                               type:(NSString*)type
-                       organization:(NSString*)organization
-                                ein:(NSString*)ein
-                        acceptTerms:(BOOL)accept;
 
 /**
  * gets recent transactions
