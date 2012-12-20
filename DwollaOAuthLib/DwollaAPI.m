@@ -9,11 +9,13 @@
 #import "DwollaAPI.h"
 static NSString *const DWOLLA_API_BASEURL = @"https://www.dwolla.com/oauth/rest";
 static NSString *const SEND_URL = @"/transactions/send";
+static NSString *const REQUEST_URL = @"/transactions/request";
 
 static NSString *const RESPONSE_RESULT_PARAMETER = @"Response";
 
 static NSString *const PIN_ERROR_NAME = @"PIN";
 static NSString *const DESTINATION_ID_ERROR_NAME = @"Destination Id";
+static NSString *const SOURCE_ID_ERROR_NAME = @"Source Id";
 static NSString *const AMOUNT_ERROR_NAME = @"Amount";
 
 static NSString *const PIN_PARAMETER_NAME = @"pin";
@@ -24,6 +26,8 @@ static NSString *const FACILITATOR_AMOUNT_PARAMETER_NAME = @"facilitatorAmount";
 static NSString *const ASSUME_COSTS_PARAMETER_NAME = @"assumeCosts";
 static NSString *const NOTES_PARAMETER_NAME = @"notes";
 static NSString *const FUNDING_SOURCE_PARAMETER_NAME = @"fundsSource";
+
+
 
 
 @implementation DwollaAPI
@@ -96,25 +100,14 @@ static DwollaAPI* sharedInstance;
         facilitatorAmount:(NSString*)facAmount
                     notes:(NSString*)notes
 {
-   NSString* token = [self.oAuthTokenRepository getAccessToken];
-        
-    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/transactions/request?oauth_token=%@", token];
+    NSString* token = [self.oAuthTokenRepository getAccessToken];
     
-    if(pin == nil || [pin isEqualToString:@""])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION"
-                                           reason:@"pin is either nil or empty" userInfo:nil];  
-    }
-    if (sourceID == nil || [sourceID isEqualToString:@""])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION"
-                                           reason:@"sourceID is either nil or empty" userInfo:nil];
-    }
-    if (amount == nil || [amount isEqualToString:@""])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION"
-                                           reason:@"amount is either nil or empty" userInfo:nil];
-    }
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", REQUEST_URL, token];
+    
+    //Checking Parameters
+    [self isParameterNullOrEmpty: pin andThrowErrorWithName: PIN_ERROR_NAME];
+    [self isParameterNullOrEmpty: sourceID andThrowErrorWithName: SOURCE_ID_ERROR_NAME];
+    [self isParameterNullOrEmpty: amount andThrowErrorWithName: AMOUNT_ERROR_NAME];
     
     //Creating Parameters Dictionary
     NSMutableDictionary* parameterDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
@@ -125,19 +118,12 @@ static DwollaAPI* sharedInstance;
     if (type != nil && ![type isEqualToString:@""]) [parameterDictionary setObject:type forKey:@"sourceType"];
     if (facAmount != nil && ![facAmount isEqualToString:@""]) [parameterDictionary setObject:facAmount forKey:@"facilitatorAmount"];
     if (notes != nil && ![notes isEqualToString:@""]) [parameterDictionary setObject:notes forKey:@"notes"];
-        
+    
+    //Making the POST Request && Verifying
     NSDictionary* dictionary = [httpRequestRepository postRequest: url withParameterDictionary: parameterDictionary];
-
-    NSString* data = [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
     
-    NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
-    
-    if ([success isEqualToString:@"0"]) 
-    {
-        @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:data userInfo:nil];
-    }
-    
-    return data;  
+    //Parsing and responding
+    return [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
 }
 
 -(NSDictionary*)getJSONBalance
