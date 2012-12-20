@@ -12,6 +12,7 @@ static NSString *const REQUEST_URL = @"/transactions/request";
 static NSString *const BALANCE_URL = @"/balance";
 static NSString *const CONTACTS_URL = @"/contact";
 static NSString *const NEARBY_URL = @"/contacts/nearby";
+static NSString *const FUNDING_SOURCES_URL = @"/fundingsources";
 
 static NSString *const RESPONSE_RESULT_PARAMETER = @"Response";
 

@@ -20,7 +20,7 @@
         sourceID = _sourceID;
         name = _name;
         type = _type;
-        if ([_verified isEqualToString:@"1"]) 
+        if ([_verified isEqualToString:@"true"]) 
         {
             verified = YES;
         }

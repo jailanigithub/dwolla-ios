@@ -123,18 +123,10 @@ static NSString *const DWOLLA_API_BASEURL;
 /**
  * gets the funding sources of the current user
  *
- * @return JSON representation of the request see https://www.dwolla.com/developers/endpoints/fundingsources/list
- * @throws NSException if no access token is available, or request fails
- **/
--(NSDictionary*)getJSONFundingSources;
-
-/**
- * gets the funding sources of the current user
- *
  * @return a DwollaFundingSources object containing the results of the request
  * @throws NSException if no access token is available, or request fails
  **/
--(DwollaFundingSources*)getFundingSources;
+-(NSArray*)getFundingSources;
 
 /**
  * gets the funding source details of the provided funding source
@@ -354,7 +346,7 @@ static NSString *const DWOLLA_API_BASEURL;
  *
  * @return DwollaFundingSource object containing the contents of the string
  **/
--(DwollaFundingSource*)generateSourceWithString:(NSString*)source;
+-(DwollaFundingSource*)generateSourceWithDictionary:(NSDictionary*)dictionary;
 
 /**
  * helper method that encodes the url

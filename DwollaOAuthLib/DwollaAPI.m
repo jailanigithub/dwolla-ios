@@ -174,47 +174,24 @@ static DwollaAPI* sharedInstance;
     return contacts;
 }
 
--(NSDictionary*)getJSONFundingSources
+-(NSArray*)getFundingSources
 {
-    if (![self.oAuthTokenRepository hasAccessToken])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
-                                       reason:@"oauth_token is invalid" userInfo:nil];
-    }
     
     NSString* token = [self.oAuthTokenRepository getAccessToken];
     
-    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/fundingsources?oauth_token=%@", token];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", FUNDING_SOURCES_URL, token];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
-    
-    return dictionary;
-}
 
--(DwollaFundingSources*)getFundingSources
-{
-    NSDictionary* dictionary;
-    
-    dictionary = [self getJSONFundingSources];
-    
     NSArray* data =[dictionary valueForKey:@"Response"];
-    
-    NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
-    
-    if ([success isEqualToString:@"0"]) 
-    {
-        NSString* message = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Message"]];
-        @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:message userInfo:dictionary];
-    }
     
     NSMutableArray* sources = [[NSMutableArray alloc] initWithCapacity:[data count]];
     for (int i = 0; i < [data count]; i++)
     {
-        NSString* info = [[NSString alloc] initWithFormat:@"%@", [data objectAtIndex:i]];
-        [sources addObject:[self generateSourceWithString:info]];
+        [sources addObject:[self generateSourceWithDictionary:[data objectAtIndex:i]]];
     }
     
-    return [[DwollaFundingSources alloc] initWithSuccess:YES sources:sources];
+    return sources;
 }
 
 -(NSDictionary*)getJSONFundingSource:(NSString*)sourceID
@@ -258,8 +235,7 @@ static DwollaAPI* sharedInstance;
         @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:message userInfo:dictionary];
     }
     
-    NSString* info = [[NSString alloc] initWithFormat:@"%@", [data objectAtIndex:0]];
-    return [self generateSourceWithString:info];
+    return [self generateSourceWithDictionary:[data objectAtIndex:0]];
 }
 
 -(NSDictionary*)getJSONAccountInfo
@@ -723,14 +699,13 @@ static DwollaAPI* sharedInstance;
     return [[DwollaContact alloc] initWithUserID:userId name:name image:image city:city state:state type:type address:address longitude:longitude latitude:latitude];
 }
 
--(DwollaFundingSource*)generateSourceWithString:(NSString*)string
+-(DwollaFundingSource*)generateSourceWithDictionary:(NSDictionary*)dictionary
 {
-    NSArray* info = [string componentsSeparatedByString:@"\n"];
     
-    NSString* sourceID = [self findValue:[info objectAtIndex:1]];
-    NSString* name = [self findValue:[info objectAtIndex:2]];
-    NSString* type = [self findValue:[info objectAtIndex:3]];
-    NSString* verified = [self findValue:[info objectAtIndex:4]];
+    NSString* sourceID = [dictionary objectForKey:@"Id"];
+    NSString* name = [dictionary objectForKey:@"Name"];
+    NSString* type = [dictionary objectForKey:@"Type"];
+    NSString* verified = [dictionary objectForKey:@"Verified"];
     
     return [[DwollaFundingSource alloc] initWithSourceID:sourceID name:name type:type verified:verified];
 }

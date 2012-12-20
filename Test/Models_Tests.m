@@ -185,14 +185,16 @@
 
     [self Setup_GetRequest_WithDictionary:result];
     
-    DwollaFundingSources* sources = [dwollaAPI getFundingSources];
+    NSArray* actual = [self.dwollaAPI getFundingSources];
     
-    DwollaFundingSource* one = [[DwollaFundingSource alloc] initWithSourceID:@"TVmMwlKz1z6HmOK1np8NFA==" name:@"Donations Collection Fund - Savings" type:@"Savings" verified:@"true"];
+    DwollaFundingSource* expectedSource = [[DwollaFundingSource alloc] initWithSourceID:@"TVmMwlKz1z6HmOK1np8NFA==" name:@"Donations Collection Fund - Savings" type:@"Savings" verified:@"true"];
     
-    DwollaFundingSources* sources2 = [[DwollaFundingSources alloc] initWithSuccess:YES sources:[[NSMutableArray alloc] initWithObjects:one, nil]];
-    
-    GHAssertTrue([sources isEqualTo:sources2],@"NOT EQUAL!");
+    DwollaFundingSource* actualSource = [actual objectAtIndex:0];
 
+    GHAssertEqualStrings([actualSource getSourceID], [expectedSource getSourceID], @"Id expected does not match");
+    GHAssertEqualStrings([actualSource getName], [expectedSource getName], @"Name expected does not match");
+    GHAssertEqualStrings([actualSource getType], [expectedSource getType], @"Type expected does not match");
+    GHAssertTrue([actualSource isVerified], @"Verified expected does not match");
 }
 
 -(void)testGetFundingSource_WithValidFundingSource_ShouldReturnValidFundingSource
