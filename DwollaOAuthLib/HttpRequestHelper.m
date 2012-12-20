@@ -13,8 +13,6 @@
 
 -(NSDictionary*)generateDictionaryWithData:(NSData*)data
 {
-    NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    
     NSError* error;
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
     
@@ -34,6 +32,24 @@
                               ForKey:(NSString*) key
 {
     return [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:key]];
+}
+
+-(NSString*) getJSONStringFromNSDictionary:(NSDictionary*)dictionary
+{
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary options:kNilOptions error:nil];
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+}
+
+-(NSData*) getJSONDataFromNsDictionary:(NSDictionary*)dictionary
+{
+    return [[self getJSONStringFromNSDictionary:dictionary] dataUsingEncoding:NSUTF8StringEncoding];
+}
+
+-(NSDictionary*) checkRequestForSuccessAndReturn:(NSDictionary*) dictionary
+{
+    if ([[[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]] isEqualToString:@"false"])
+        @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:[self getJSONStringFromNSDictionary:dictionary] userInfo:nil];
+    return dictionary;
 }
 
 @end

@@ -9,12 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "SBJson.h"
 #import "HttpRequestHelper.h"
+#import "NSURLConnectionRepository.h"
 
 @interface HttpRequestRepository : NSObject
 @property (retain) HttpRequestHelper *httpRequestHelper;
+@property (retain) NSURLConnectionRepository *nsURLConnectionRepository;
 
 -(NSDictionary*)postRequest: (NSString*) url
-                   withBody: (NSData *) body;
+    withParameterDictionary: (NSDictionary*) parameterDictionary;
 
 -(NSDictionary*)getRequest: (NSString*) url;
 

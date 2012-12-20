@@ -17,4 +17,7 @@
 -(NSString*) getStringFromDictionary:(NSDictionary*)dictionary
                               ForKey:(NSString*) key;
 
+-(NSData*) getJSONDataFromNsDictionary:(NSDictionary*)dictionary;
+-(NSDictionary*) checkRequestForSuccessAndReturn:(NSDictionary*) dictionary;
+
 @end

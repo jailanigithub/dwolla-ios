@@ -10,19 +10,22 @@
 
 @implementation HttpRequestRepository
 
-@synthesize httpRequestHelper;
+@synthesize httpRequestHelper, nsURLConnectionRepository;
 
 -(id) init {
     self = [super self];
     if(self){
         self.httpRequestHelper = [[HttpRequestHelper alloc] init];
+        self.nsURLConnectionRepository = [[NSURLConnectionRepository alloc] init];
     }
     return self;
 }
 
 -(NSDictionary*)postRequest: (NSString*) url
-                   withBody: (NSData *) body
+    withParameterDictionary: (NSDictionary*) parameterDictionary
 {
+    NSData* body = [httpRequestHelper getJSONDataFromNsDictionary:parameterDictionary];
+    
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
     
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
@@ -31,12 +34,9 @@
     
     [request setHTTPBody:body];
     
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
+    NSDictionary *resultDictionary = [self.nsURLConnectionRepository sendSynchronousRequest:request];
     
-    NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
-    
-    return [self.httpRequestHelper generateDictionaryWithData:result];
+    return [self.httpRequestHelper checkRequestForSuccessAndReturn: resultDictionary];
 }
 
 -(NSDictionary*)getRequest: (NSString*) url
@@ -54,5 +54,7 @@
     
     return [self.httpRequestHelper generateDictionaryWithData:result];
 }
+
+
 
 @end

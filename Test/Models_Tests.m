@@ -14,6 +14,7 @@
 
 @interface Models_Tests : GHTestCase {}
 @property (retain) DwollaAPI *dwollaAPI;
+@property (retain) HttpRequestHelper *httpRequestHelper;
 @property (retain) id mockTokenRepository;
 @property (retain) id mockHttpRequestRepository;
 @end
@@ -28,9 +29,11 @@
     self.dwollaAPI = [DwollaAPI sharedInstance];
     self.mockTokenRepository = [OCMockObject mockForClass:[OAuthTokenRepository class]];
     self.mockHttpRequestRepository = [OCMockObject mockForClass:[HttpRequestRepository class]];
+    self.httpRequestHelper = [[HttpRequestHelper alloc] init];
     
     [dwollaAPI setOAuthTokenRepository:self.mockTokenRepository];
     [dwollaAPI setHttpRequestRepository:self.mockHttpRequestRepository];
+    [dwollaAPI setHttpRequestHelper:self.httpRequestHelper];
 }
 
 - (void)tearDown
@@ -48,7 +51,7 @@
 }
 
 - (void) Setup_PostRequest_WithDictionary: (NSDictionary *) result {
-    [[[self.mockHttpRequestRepository stub] andReturn:result] postRequest:OCMOCK_ANY withBody:OCMOCK_ANY];
+    [[[self.mockHttpRequestRepository stub] andReturn:result] postRequest:OCMOCK_ANY withParameterDictionary:OCMOCK_ANY];
 }
 
 - (void) Setup_GetRequest_WithDictionary: (NSDictionary *) result {
@@ -259,7 +262,11 @@
 -(void)testGetTransaction_WithSuccessfulResponse_ShouldReturnValidTransaction
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
-    [self Setup_GetRequest_WithDictionary:[self GetTransactionDictionary]];
+    [self Setup_GetRequest_WithDictionary:[[NSDictionary alloc]
+                                           initWithObjectsAndKeys:
+                                           @"true", @"Success",
+                                           @"Success", @"Message",
+                                           [self GetTransactionDictionary], @"Response", nil]];
 
     DwollaTransaction* transaction = [dwollaAPI getTransaction:@""];
     

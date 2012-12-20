@@ -45,71 +45,29 @@ static DwollaAPI* sharedInstance;
                        notes:(NSString*)notes
              fundingSourceID:(NSString*)fundingID
 {
-    NSDictionary* dictionary;
+    //Setting Up URL
+    NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/transactions/send?oauth_token=%@", [self.oAuthTokenRepository getAccessToken]];
     
-    if (![self.oAuthTokenRepository hasAccessToken])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION"
-                                           reason:@"oauth_token is invalid" userInfo:nil]; 
-    }
-    NSString* token = [self.oAuthTokenRepository getAccessToken];
+    //Checking Parameters
+    [self isParameterNullOrEmpty: pin andThrowErrorWithName: @"PIN"];
+    [self isParameterNullOrEmpty: destinationID andThrowErrorWithName: @"Destination Id"];
+    [self isParameterNullOrEmpty: amount andThrowErrorWithName: @"Amount"];
+    
+    //Creating Parameters Dictionary
+    NSMutableDictionary* parameterDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                         pin, @"pin",
+                                         destinationID, @"destinationId",
+                                         amount, @"amount", nil];
+    
+    if (type != nil && ![type isEqualToString:@""]) [parameterDictionary setObject:type forKey:@"destinationType"];
+    if (facAmount != nil && ![facAmount isEqualToString:@""]) [parameterDictionary setObject:facAmount forKey:@"facilitatorAmount"];
+    if (assumeCosts != nil && ![assumeCosts isEqualToString:@""]) [parameterDictionary setObject:assumeCosts forKey:@"assumeCosts"];
+    if (notes != nil && ![notes isEqualToString:@""]) [parameterDictionary setObject:notes forKey:@"notes"];
+    if (fundingID != nil && ![fundingID isEqualToString:@""]) [parameterDictionary setObject:fundingID forKey:@"fundsSource"];
         
-    NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/transactions/send?oauth_token=%@", token];
-        
-    if(pin == nil || [pin isEqualToString:@""])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION"
-                                           reason:@"pin is either nil or empty" userInfo:nil];
-    }
-    if (destinationID == nil || [destinationID isEqualToString:@""])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION"
-                                           reason:@"destinationID is either nil or empty" userInfo:nil];   
-    }
-    if (amount == nil || [amount isEqualToString:@""])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION"
-                                           reason:@"amount is either nil or empty" userInfo:nil];    
-    }
-    NSString* json = [NSString stringWithFormat:@"{\"pin\":\"%@\", \"destinationId\":\"%@\", \"amount\":%@", pin, destinationID, amount];
-    if (type != nil && ![type isEqualToString:@""])
-    {
-        json = [json stringByAppendingFormat: @", \"destinationType\":\"%@\"", type];
-    }
-    if (facAmount != nil && ![facAmount isEqualToString:@""])
-    {
-        json = [json stringByAppendingFormat: @", \"facilitatorAmount\":\"%@\"", facAmount];
-    }
-    if (assumeCosts != nil && ![assumeCosts isEqualToString:@""])
-    {
-        json = [json stringByAppendingFormat: @", \"assumeCosts\":\"%@\"", assumeCosts];
-    }
-    if (notes != nil && ![notes isEqualToString:@""])
-    {
-        json = [json stringByAppendingFormat: @", \"notes\":\"%@\"", notes];
-    }
-    if (fundingID != nil && ![fundingID isEqualToString:@""])
-    {
-        json = [json stringByAppendingFormat: @", \"fundsSource\":\"%@\"", fundingID];
-    }
-    json = [json stringByAppendingFormat: @"}"];
-        
-    NSData* body = [json dataUsingEncoding:NSUTF8StringEncoding];
-        
-    dictionary = [httpRequestRepository postRequest: url withBody: body];
+    NSDictionary* dictionary = [httpRequestRepository postRequest: url withParameterDictionary:parameterDictionary];
     
-    NSLog(@"%@", dictionary);
-    
-    NSString* data = [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
-    
-    NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
-    
-    if ([success isEqualToString:@"0"]) 
-    {
-        @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:data userInfo:nil];
-    }
-    
-    return data;  
+    return [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
 }
 
 -(NSString*)requestMoneyWithPIN:(NSString*)pin
@@ -119,15 +77,7 @@ static DwollaAPI* sharedInstance;
         facilitatorAmount:(NSString*)facAmount
                     notes:(NSString*)notes
 {
-    NSDictionary* dictionary;
-    
-    if (![self.oAuthTokenRepository hasAccessToken])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION"
-                                           reason:@"oauth_token is invalid" userInfo:nil];
-    }
-        
-    NSString* token = [self.oAuthTokenRepository getAccessToken];
+   NSString* token = [self.oAuthTokenRepository getAccessToken];
         
     NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/transactions/request?oauth_token=%@", token];
     
@@ -146,28 +96,19 @@ static DwollaAPI* sharedInstance;
         @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION"
                                            reason:@"amount is either nil or empty" userInfo:nil];
     }
-    NSString* json = [NSString stringWithFormat:@"{\"pin\":\"%@\", \"sourceId\":\"%@\", \"amount\":%@", pin, sourceID, amount];
     
-    if (type != nil && ![type isEqualToString:@""])
-    {
-        json = [json stringByAppendingFormat: @", \"destinationType\":\"%@\"", type];
-    }
-    if (facAmount != nil && ![facAmount isEqualToString:@""])
-    {
-        json = [json stringByAppendingFormat: @", \"facilitatorAmount\":\"%@\"", facAmount];
-    }
-    if (notes != nil && ![notes isEqualToString:@""])
-    {
-        json = [json stringByAppendingFormat: @", \"notes\":\"%@\"", notes];
-    }
-    json = [json stringByAppendingFormat: @"}"];
+    //Creating Parameters Dictionary
+    NSMutableDictionary* parameterDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                                pin, @"pin",
+                                                sourceID, @"sourceId",
+                                                amount, @"amount", nil];
+    
+    if (type != nil && ![type isEqualToString:@""]) [parameterDictionary setObject:type forKey:@"sourceType"];
+    if (facAmount != nil && ![facAmount isEqualToString:@""]) [parameterDictionary setObject:facAmount forKey:@"facilitatorAmount"];
+    if (notes != nil && ![notes isEqualToString:@""]) [parameterDictionary setObject:notes forKey:@"notes"];
         
-    NSData* body = [json dataUsingEncoding:NSUTF8StringEncoding];
-        
-    dictionary = [httpRequestRepository postRequest: url withBody: body];
+    NSDictionary* dictionary = [httpRequestRepository postRequest: url withParameterDictionary: parameterDictionary];
 
-    NSLog(@"%@", dictionary);
-    
     NSString* data = [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
     
     NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
@@ -957,6 +898,18 @@ static DwollaAPI* sharedInstance;
 }
 -(void) setClientSecret: (NSString*) token{
     [self.oAuthTokenRepository setClientSecret:token];
+}
+
+-(BOOL) isParameterNullOrEmpty: (NSString*) value
+andThrowErrorWithName: (NSString*) name
+{
+    if(value == nil || [value isEqualToString:@""])
+    {
+        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION"
+                                       reason:[[NSString alloc] initWithFormat:@"%@ is either nil or empty", name] userInfo:nil];
+        return false;
+    }
+    return true;
 }
 
 @end
