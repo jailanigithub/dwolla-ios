@@ -208,100 +208,33 @@ static DwollaAPI* sharedInstance;
     return [self generateSourceWithDictionary:[dictionary valueForKey:@"Response"]];
 }
 
--(NSDictionary*)getJSONAccountInfo
-{
-    if (![self.oAuthTokenRepository hasAccessToken])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
-                                       reason:@"oauth_token is invalid" userInfo:nil];
-    }
-    
-    NSString* token = [self.oAuthTokenRepository getAccessToken];
-    
-    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/users?oauth_token=%@", token];
-    
-    NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
-    
-    return dictionary;
-}
-
 -(DwollaUser*)getAccountInfo
 {
-    NSDictionary* dictionary;
+    NSString* token = [self.oAuthTokenRepository getAccessToken];
     
-    dictionary = [self getJSONAccountInfo];
-    
-    NSString* data = [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
-    
-    NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
-    
-    if ([success isEqualToString:@"0"]) 
-    {
-        NSString* message = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Message"]];
-        @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:message userInfo:dictionary];
-    }
-    
-    NSArray* values = [data componentsSeparatedByString:@"\n"];
-    NSString* city = [self findValue:[values objectAtIndex:1]];
-    NSString* userID = [self findValue:[values objectAtIndex:2]];
-    NSString* latitude = [self findValue:[values objectAtIndex:3]];
-    NSString* longitude = [self findValue:[values objectAtIndex:4]];
-    NSString* name = [self findValue:[values objectAtIndex:5]];
-    NSString* state = [self findValue:[values objectAtIndex:6]];
-    NSString* type = [self findValue:[values objectAtIndex:7]];
-    
-    return [[DwollaUser alloc] initWithUserID:userID name:name city:city state:state 
-                                     latitude:latitude longitude:longitude type:type];
-}
-
--(NSDictionary*)getJSONBasicInfoWithAccountID:(NSString*)accountID
-{    
-    NSString* key = [self.oAuthTokenRepository getClientKey];
-    NSString* secret = [self.oAuthTokenRepository getClientSecret];
-    
-    if (key == nil || secret == nil) 
-    {
-        @throw [NSException exceptionWithName:@"INVALID_APPLICATION_CREDENTIALS_EXCEPTION" 
-                                       reason:@"either your application key or application secret is invalid" 
-                                     userInfo:nil];   
-    }
-    if (accountID == nil || [accountID isEqualToString:@""])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
-                                       reason:@"accountID is either nil or empty" userInfo:nil];
-    }
-    
-    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/users/%@?client_id=%@&client_secret=%@", accountID, key, secret]; 
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", USERS_URL, token];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
     
-    return dictionary;
+    NSDictionary* response = [dictionary valueForKey:@"Response"];
+
+    return [[DwollaUser alloc] initWithUserID:[response valueForKey:@"Id"] name:[response valueForKey:@"Name"] city:[response valueForKey:@"City"] state:[response valueForKey:@"State"] latitude:[response valueForKey:@"Latitude"] longitude:[response valueForKey:@"Longitude"] type:[response valueForKey:@"Type"]];
 }
 
 -(DwollaUser*)getBasicInfoWithAccountID:(NSString*)accountID
 {
-    NSDictionary* dictionary;
+    NSString* key = [self.oAuthTokenRepository getClientKey];
+    NSString* secret = [self.oAuthTokenRepository getClientSecret];
+
     
-    dictionary = [self getJSONBasicInfoWithAccountID:accountID];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@/%@?client_id=%@&client_secret=%@", USERS_URL, accountID, key, secret];
+    
+    NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
 
     NSDictionary* values = [dictionary valueForKey:@"Response"];
     
-    NSString* success = [self.httpRequestHelper getStringFromDictionary:dictionary ForKey:@"Success"];
-    
-    if ([success isEqualToString:@"0"]) 
-    {
-        NSString* message = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Message"]];
-        @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:message userInfo:dictionary];
-    }
-    
-    NSString* userID = [self.httpRequestHelper getStringFromDictionary:values ForKey:@"Id"];
-    NSString* latitude = [self.httpRequestHelper getStringFromDictionary:values ForKey:@"Latitude"];
-    NSString* longitude = [self.httpRequestHelper getStringFromDictionary:values ForKey:@"Longitude"];
-    NSString* name = [self.httpRequestHelper getStringFromDictionary:values ForKey:@"Name"];
-    
-    return [[DwollaUser alloc] initWithUserID:userID name:name city:nil state:nil 
-                                     latitude:latitude longitude:longitude type:nil];
-
+    return [[DwollaUser alloc] initWithUserID:[values valueForKey:@"Id"] name:[values valueForKey:@"Name"] city:nil state:nil
+                                     latitude:[values valueForKey:@"Latitude"] longitude:[values valueForKey:@"Longitude"] type:nil];
 }
 
 -(DwollaUser*)registerUserWithEmail:(NSString*) email
