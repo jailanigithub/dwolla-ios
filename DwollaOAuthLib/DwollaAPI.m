@@ -64,9 +64,11 @@ static DwollaAPI* sharedInstance;
     if (assumeCosts != nil && ![assumeCosts isEqualToString:@""]) [parameterDictionary setObject:assumeCosts forKey:@"assumeCosts"];
     if (notes != nil && ![notes isEqualToString:@""]) [parameterDictionary setObject:notes forKey:@"notes"];
     if (fundingID != nil && ![fundingID isEqualToString:@""]) [parameterDictionary setObject:fundingID forKey:@"fundsSource"];
-        
+    
+    //Making the POST Request && Verifying
     NSDictionary* dictionary = [httpRequestRepository postRequest: url withParameterDictionary:parameterDictionary];
     
+    //Parsing and responding
     return [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
 }
 
