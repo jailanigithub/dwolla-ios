@@ -194,48 +194,18 @@ static DwollaAPI* sharedInstance;
     return sources;
 }
 
--(NSDictionary*)getJSONFundingSource:(NSString*)sourceID
+-(DwollaFundingSource*)getFundingSource:(NSString*)sourceID
 {
-    if (![self.oAuthTokenRepository hasAccessToken])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
-                                       reason:@"oauth_token is invalid" userInfo:nil];
-    }
-    
-    if ([sourceID isEqualToString:@""] || sourceID == nil) 
-    {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
-                                       reason:@"sourceID is either nil or empty" userInfo:nil];  
-    }
-    
-    NSString* encodedID = [self encodedURLParameterString:sourceID];
-    
+
     NSString* token = [self.oAuthTokenRepository getAccessToken];
     
-    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/fundingsources/%@?oauth_token=%@", encodedID, token];
+    [self isParameterNullOrEmpty: sourceID andThrowErrorWithName: SOURCE_ID_ERROR_NAME];
+      
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@/%@?oauth_token=%@", FUNDING_SOURCES_URL, [self encodedURLParameterString:sourceID], token];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
     
-    return dictionary;   
-}
-
--(DwollaFundingSource*)getFundingSource:(NSString*)sourceID
-{
-    NSDictionary* dictionary;
-
-    dictionary = [self getJSONFundingSource:sourceID];
-    
-    NSArray* data =[dictionary valueForKey:@"Response"];
-    
-    NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
-    
-    if ([success isEqualToString:@"0"]) 
-    {
-        NSString* message = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Message"]];
-        @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:message userInfo:dictionary];
-    }
-    
-    return [self generateSourceWithDictionary:[data objectAtIndex:0]];
+    return [self generateSourceWithDictionary:[dictionary valueForKey:@"Response"]];
 }
 
 -(NSDictionary*)getJSONAccountInfo

@@ -202,21 +202,24 @@
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
     
     NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message",
-                            [[NSArray alloc] initWithObjects:[[NSDictionary alloc] initWithObjectsAndKeys:
+                            [[NSDictionary alloc] initWithObjectsAndKeys:
                                                               @"TVmMwlKz1z6HmOK1np8NFA==", @"Id",
                                                               @"Donations Collection Fund - Savings", @"Name",
                                                               @"Savings", @"Type",
                                                               @"true", @"Verified",
-                                                              nil], nil], @"Response", nil];
+                                                              nil], @"Response", nil];
     
     [self Setup_GetRequest_WithDictionary: result];
     
-    DwollaFundingSource* source = [dwollaAPI getFundingSource:@"123"];
+    DwollaFundingSource* actual = [dwollaAPI getFundingSource:@"123"];
     
-    DwollaFundingSource* one = [[DwollaFundingSource alloc] initWithSourceID:@"TVmMwlKz1z6HmOK1np8NFA==" name:@"Donations Collection Fund - Savings" type:@"Savings" verified:@"true"];
+    DwollaFundingSource* expected = [[DwollaFundingSource alloc] initWithSourceID:@"TVmMwlKz1z6HmOK1np8NFA==" name:@"Donations Collection Fund - Savings" type:@"Savings" verified:@"true"];
     
     
-    GHAssertTrue([source isEqualTo:one],@"NOT EQUAL!");
+    GHAssertEqualStrings([actual getSourceID], [expected getSourceID], @"Id expected does not match");
+    GHAssertEqualStrings([actual getName], [expected getName], @"Name expected does not match");
+    GHAssertEqualStrings([actual getType], [expected getType], @"Type expected does not match");
+    GHAssertTrue([actual isVerified], @"Verified expected does not match");
 }
 
 -(void)testGetAccountInfo_WithSuccessfulResponse_ShouldReturnValidAccountInformation

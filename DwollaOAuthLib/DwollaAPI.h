@@ -133,16 +133,6 @@ static NSString *const DWOLLA_API_BASEURL;
  *
  * @param sourceID: a string representation of the id of the funding source
  *
- * @return JSON representation of the request see https://www.dwolla.com/developers/endpoints/fundingsources/details
- * @throws NSException if parameters are invalid, no access token is available, or request fails
- **/
--(NSDictionary*)getJSONFundingSource:(NSString*)sourceID;
-
-/**
- * gets the funding source details of the provided funding source
- *
- * @param sourceID: a string representation of the id of the funding source
- *
  * @return a DwollaFundingSource object containing the result of the request
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/

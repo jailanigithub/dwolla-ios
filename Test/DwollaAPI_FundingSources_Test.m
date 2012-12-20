@@ -29,7 +29,7 @@
     [self.mockHttpRequestRepository verify];
 }
 
--(void)testFundingSources_WithValidData_ShouldReturnBalance
+-(void)testFundingSources_WithValidData_ShouldReturnCorrectFundingSource
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
     
@@ -50,6 +50,53 @@
     NSArray* fundingSources = [self.dwollaAPI getFundingSources];
     
     DwollaFundingSource *fundingSource = [fundingSources objectAtIndex:0];
+    
+    GHAssertEqualStrings([fundingSource getSourceID], expectedId, @"Id expected does not match");
+    GHAssertEqualStrings([fundingSource getName], expectedName, @"Name expected does not match");
+    GHAssertEqualStrings([fundingSource getType], expectedType, @"Type expected does not match");
+    GHAssertTrue([fundingSource isVerified], @"Verified expected does not match");
+}
+
+//GetFundingSource
+
+-(void)testFundingSource_WithNoAccessToken_ShouldThrowException
+{
+    GHAssertThrows([self.dwollaAPI getFundingSource:@"123"], @"No Exception was through when no AccessToken was passed in");
+}
+-(void)testSend_WithNoSourceId_ShouldThrowException
+{
+    [self Setup_WithAccessToken_ClientKey_ClientSecret];
+    GHAssertThrows([self.dwollaAPI getFundingSource:@""], @"No Exception was through when no Source Id was passed in");
+}
+-(void)testFundingSource_WithValidData_ShouldCallHttpRequestRepository
+{
+    [self Setup_WithAccessToken_ClientKey_ClientSecret];
+    
+    [[self.mockHttpRequestRepository expect] getRequest:@"https://www.dwolla.com/oauth/rest/fundingsources/123?oauth_token=123456789"];
+    
+    [self.dwollaAPI getFundingSource:@"123"];
+    
+    [self.mockHttpRequestRepository verify];
+}
+-(void)testFundingSource_WithValidData_ShouldReturnCorrectFundingSource
+{
+    [self Setup_WithAccessToken_ClientKey_ClientSecret];
+    
+    NSString* expectedId = @"TVmMwlKz1z6HmOK1np8NFA==";
+    NSString* expectedName = @"Donations Collection Fund - Savings";
+    NSString* expectedType = @"Savings";
+    NSString* expectedVerified = @"true";
+    
+    [[[self.mockHttpRequestRepository stub] andReturn:[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                                       @"true", @"Success",
+                                                       [[NSDictionary alloc] initWithObjectsAndKeys:
+                                                                                         expectedId, @"Id",
+                                                                                         expectedName, @"Name",
+                                                                                         expectedType, @"Type",
+                                                                                         expectedVerified, @"Verified",
+                                                                                         nil], @"Response", nil]] getRequest:@"https://www.dwolla.com/oauth/rest/fundingsources/123?oauth_token=123456789"];
+    
+    DwollaFundingSource* fundingSource = [self.dwollaAPI getFundingSource: @"123"];
     
     GHAssertEqualStrings([fundingSource getSourceID], expectedId, @"Id expected does not match");
     GHAssertEqualStrings([fundingSource getName], expectedName, @"Name expected does not match");
