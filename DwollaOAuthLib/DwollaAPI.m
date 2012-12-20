@@ -7,7 +7,24 @@
 //
 
 #import "DwollaAPI.h"
-static NSString *const dwollaAPIBaseURL = @"https://www.dwolla.com/oauth/rest";
+static NSString *const DWOLLA_API_BASEURL = @"https://www.dwolla.com/oauth/rest";
+static NSString *const SEND_URL = @"/transactions/send";
+
+static NSString *const RESPONSE_RESULT_PARAMETER = @"Response";
+
+static NSString *const PIN_ERROR_NAME = @"PIN";
+static NSString *const DESTINATION_ID_ERROR_NAME = @"Destination Id";
+static NSString *const AMOUNT_ERROR_NAME = @"Amount";
+
+static NSString *const PIN_PARAMETER_NAME = @"pin";
+static NSString *const DESTINATION_ID_PARAMETER_NAME = @"destinationId";
+static NSString *const AMOUNT_PARAMETER_NAME = @"amount";
+static NSString *const DESTINATION_TYPE_PARAMETER_NAME = @"destinationType";
+static NSString *const FACILITATOR_AMOUNT_PARAMETER_NAME = @"facilitatorAmount";
+static NSString *const ASSUME_COSTS_PARAMETER_NAME = @"assumeCosts";
+static NSString *const NOTES_PARAMETER_NAME = @"notes";
+static NSString *const FUNDING_SOURCE_PARAMETER_NAME = @"fundsSource";
+
 
 @implementation DwollaAPI
 
@@ -46,30 +63,30 @@ static DwollaAPI* sharedInstance;
              fundingSourceID:(NSString*)fundingID
 {
     //Setting Up URL
-    NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/transactions/send?oauth_token=%@", [self.oAuthTokenRepository getAccessToken]];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", SEND_URL, [self.oAuthTokenRepository getAccessToken]];
     
     //Checking Parameters
-    [self isParameterNullOrEmpty: pin andThrowErrorWithName: @"PIN"];
-    [self isParameterNullOrEmpty: destinationID andThrowErrorWithName: @"Destination Id"];
-    [self isParameterNullOrEmpty: amount andThrowErrorWithName: @"Amount"];
+    [self isParameterNullOrEmpty: pin andThrowErrorWithName: PIN_ERROR_NAME];
+    [self isParameterNullOrEmpty: destinationID andThrowErrorWithName: DESTINATION_ID_ERROR_NAME];
+    [self isParameterNullOrEmpty: amount andThrowErrorWithName: AMOUNT_ERROR_NAME];
     
     //Creating Parameters Dictionary
     NSMutableDictionary* parameterDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                         pin, @"pin",
-                                         destinationID, @"destinationId",
-                                         amount, @"amount", nil];
+                                         pin, PIN_PARAMETER_NAME,
+                                         destinationID, DESTINATION_ID_PARAMETER_NAME,
+                                         amount, AMOUNT_PARAMETER_NAME, nil];
     
-    if (type != nil && ![type isEqualToString:@""]) [parameterDictionary setObject:type forKey:@"destinationType"];
-    if (facAmount != nil && ![facAmount isEqualToString:@""]) [parameterDictionary setObject:facAmount forKey:@"facilitatorAmount"];
-    if (assumeCosts != nil && ![assumeCosts isEqualToString:@""]) [parameterDictionary setObject:assumeCosts forKey:@"assumeCosts"];
-    if (notes != nil && ![notes isEqualToString:@""]) [parameterDictionary setObject:notes forKey:@"notes"];
-    if (fundingID != nil && ![fundingID isEqualToString:@""]) [parameterDictionary setObject:fundingID forKey:@"fundsSource"];
+    if (type != nil && ![type isEqualToString:@""]) [parameterDictionary setObject:type forKey:DESTINATION_TYPE_PARAMETER_NAME];
+    if (facAmount != nil && ![facAmount isEqualToString:@""]) [parameterDictionary setObject:facAmount forKey:FACILITATOR_AMOUNT_PARAMETER_NAME];
+    if (assumeCosts != nil && ![assumeCosts isEqualToString:@""]) [parameterDictionary setObject:assumeCosts forKey:ASSUME_COSTS_PARAMETER_NAME];
+    if (notes != nil && ![notes isEqualToString:@""]) [parameterDictionary setObject:notes forKey:NOTES_PARAMETER_NAME];
+    if (fundingID != nil && ![fundingID isEqualToString:@""]) [parameterDictionary setObject:fundingID forKey:FUNDING_SOURCE_PARAMETER_NAME];
     
     //Making the POST Request && Verifying
     NSDictionary* dictionary = [httpRequestRepository postRequest: url withParameterDictionary:parameterDictionary];
     
     //Parsing and responding
-    return [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
+    return [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:RESPONSE_RESULT_PARAMETER]];
 }
 
 -(NSString*)requestMoneyWithPIN:(NSString*)pin
@@ -81,7 +98,7 @@ static DwollaAPI* sharedInstance;
 {
    NSString* token = [self.oAuthTokenRepository getAccessToken];
         
-    NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/transactions/request?oauth_token=%@", token];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/transactions/request?oauth_token=%@", token];
     
     if(pin == nil || [pin isEqualToString:@""])
     {
@@ -133,7 +150,7 @@ static DwollaAPI* sharedInstance;
     
     NSString* token = [self.oAuthTokenRepository getAccessToken];
     
-    NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/balance?oauth_token=%@", token];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/balance?oauth_token=%@", token];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
     return dictionary;
@@ -169,7 +186,7 @@ static DwollaAPI* sharedInstance;
     }
     NSString* token = [self.oAuthTokenRepository getAccessToken];
     
-    NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/contact?oauth_token=%@", token];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/contact?oauth_token=%@", token];
     
     if (name != nil && ![name isEqualToString:@""]) 
     {
@@ -231,7 +248,7 @@ static DwollaAPI* sharedInstance;
                                      userInfo:nil];
     }
     
-    NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/contacts/nearby?client_id=%@&client_secret=%@", key, secret]; 
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/contacts/nearby?client_id=%@&client_secret=%@", key, secret]; 
     
     if(lat == nil || [lat isEqualToString:@""] || lon == nil || [lon isEqualToString:@""])
     {
@@ -292,7 +309,7 @@ static DwollaAPI* sharedInstance;
     
     NSString* token = [self.oAuthTokenRepository getAccessToken];
     
-    NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/fundingsources?oauth_token=%@", token];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/fundingsources?oauth_token=%@", token];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
     
@@ -343,7 +360,7 @@ static DwollaAPI* sharedInstance;
     
     NSString* token = [self.oAuthTokenRepository getAccessToken];
     
-    NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/fundingsources/%@?oauth_token=%@", encodedID, token];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/fundingsources/%@?oauth_token=%@", encodedID, token];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
     
@@ -380,7 +397,7 @@ static DwollaAPI* sharedInstance;
     
     NSString* token = [self.oAuthTokenRepository getAccessToken];
     
-    NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/users?oauth_token=%@", token];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/users?oauth_token=%@", token];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
     
@@ -433,7 +450,7 @@ static DwollaAPI* sharedInstance;
                                        reason:@"accountID is either nil or empty" userInfo:nil];
     }
     
-    NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/users/%@?client_id=%@&client_secret=%@", accountID, key, secret]; 
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/users/%@?client_id=%@&client_secret=%@", accountID, key, secret]; 
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
     
@@ -495,7 +512,7 @@ static DwollaAPI* sharedInstance;
     
     NSString* acceptTerms = @"false";
     
-    NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/register/?client_id=%@&client_secret=%@", key, secret]; 
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/register/?client_id=%@&client_secret=%@", key, secret]; 
     
     if(email == nil || password == nil || pin == nil || first == nil || last == nil || address == nil || 
        city == nil || state == nil || zip == nil || phone == nil || dob == nil || [email isEqualToString:@""] || 
@@ -677,7 +694,7 @@ static DwollaAPI* sharedInstance;
     
     NSString* token = [self.oAuthTokenRepository getAccessToken];
     
-    NSString* url = [dwollaAPIBaseURL stringByAppendingFormat:@"/transactions/%@?oauth_token=%@", transactionID, token];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/transactions/%@?oauth_token=%@", transactionID, token];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
     
@@ -908,7 +925,7 @@ andThrowErrorWithName: (NSString*) name
     if(value == nil || [value isEqualToString:@""])
     {
         @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION"
-                                       reason:[[NSString alloc] initWithFormat:@"%@ is either nil or empty", name] userInfo:nil];
+                                       reason:[[NSString alloc] initWithFormat:@"%@ is required", name] userInfo:nil];
         return false;
     }
     return true;

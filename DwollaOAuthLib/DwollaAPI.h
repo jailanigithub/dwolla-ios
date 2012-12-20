@@ -19,7 +19,7 @@
 #import "HttpRequestRepository.h"
 #import "HttpRequestHelper.h"
 
-static NSString *const dwollaAPIBaseURL;
+static NSString *const DWOLLA_API_BASEURL;
 
 @interface DwollaAPI : NSObject
 @property (retain) OAuthTokenRepository *oAuthTokenRepository;
