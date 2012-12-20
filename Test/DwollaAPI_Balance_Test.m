@@ -29,4 +29,18 @@
     [self.mockHttpRequestRepository verify];
 }
 
+-(void)testRequest_WithValidData_ShouldReturnBalance
+{
+    [self Setup_WithAccessToken_ClientKey_ClientSecret];
+    
+    [[[self.mockHttpRequestRepository stub] andReturn:[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                                       @"true", @"Success",
+                                                       @"10.00", @"Response", nil]]
+     getRequest:@"https://www.dwolla.com/oauth/rest/balance?oauth_token=123456789"];
+    
+    NSString* balance = [self.dwollaAPI getBalance];
+    
+    GHAssertTrue([balance isEqualToString:@"10.00"], @"Balance does not equal the correct balance");
+}
+
 @end

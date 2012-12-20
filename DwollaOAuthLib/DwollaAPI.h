@@ -84,14 +84,6 @@ static NSString *const DWOLLA_API_BASEURL;
 /**
  * shows the balance of the current user
  *
- * @return JSON representation of the request see: https://www.dwolla.com/developers/endpoints/balance/account
- * @throws NSException if no access token is available, or request fails
- **/
--(NSDictionary*)getJSONBalance;
-
-/**
- * shows the balance of the current user
- *
  * @return string representation of the balance
  * @throws NSException if no access token is available, or request fails
  **/

@@ -106,32 +106,13 @@ static DwollaAPI* sharedInstance;
     return [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
 }
 
--(NSDictionary*)getJSONBalance
+-(NSString*)getBalance
 {
     NSString* token = [self.oAuthTokenRepository getAccessToken];
     NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", BALANCE_URL, token];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
-    return dictionary;
-}
-
--(NSString*)getBalance
-{
-    NSDictionary* dictionary;
-
-    dictionary = [self getJSONBalance];
-
-    NSString* data = [[NSString alloc]initWithFormat:@"%@", [dictionary objectForKey:@"Response"]];
-    NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
-    
-    if ([success isEqualToString:@"0"]) 
-    {
-        @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:data userInfo:nil];
-    }
-    else
-    {        
-        return data;
-    }
+    return [[NSString alloc]initWithFormat:@"%@", [dictionary objectForKey:@"Response"]];
 }
 
 -(NSDictionary*)getJSONContactsByName:(NSString*)name
