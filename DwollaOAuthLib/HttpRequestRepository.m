@@ -47,14 +47,15 @@
 
     [request setHTTPMethod: @"GET"];
     
-    NSError *requestError;
-    NSURLResponse *urlResponse = nil;
+    NSDictionary *result = [self.nsURLConnectionRepository sendSynchronousRequest:request];
     
-    NSData *result = [NSURLConnection sendSynchronousRequest:request returningResponse:&urlResponse error:&requestError];
-    
-    return [self.httpRequestHelper generateDictionaryWithData:result];
+    return result;
 }
 
-
+-(NSDictionary*)getRequest: (NSString*) url
+withQueryParameterDictionary: (NSDictionary*) dictionary
+{
+    return [self getRequest: [url stringByAppendingFormat:@"?%@", [self.httpRequestHelper getQueryParametersFroNSDictionary:dictionary]]];
+}
 
 @end

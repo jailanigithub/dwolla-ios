@@ -64,7 +64,7 @@
                                                @"false", @"Success",
                                                @"asdf", @"Response", nil];
     
-    [self Setup_HttpRequestRepository_WithNSURLConnectionRepositoryMock_WithResponseDictionary:responseDictionary];
+    [self Setup_HttpRequestRepository_WithNSURLConnectionRepositoryMock_WithResponseDictionary:responseDictionary withRequest:OCMOCK_ANY];
     
     GHAssertThrows([self.dwollaAPI sendMoneyWithPIN:@"1111" destinationID:@"812-111-1111" destinationType:@"dwolla" amount:@"1.00" facilitatorAmount:@"" assumeCosts:@"" notes:@"" fundingSourceID:@""], @"No Exception was through when Response came back with Success is false");
 }
@@ -78,7 +78,7 @@
                                                @"true", @"Success",
                                                @"1010101", @"Response", nil];
     
-    [self Setup_HttpRequestRepository_WithNSURLConnectionRepositoryMock_WithResponseDictionary:responseDictionary];
+    [self Setup_HttpRequestRepository_WithNSURLConnectionRepositoryMock_WithResponseDictionary:responseDictionary withRequest:OCMOCK_ANY];
     
     NSString *result = [self.dwollaAPI sendMoneyWithPIN:@"1111" destinationID:@"812-111-1111" destinationType:@"dwolla" amount:@"1.00" facilitatorAmount:@"" assumeCosts:@"" notes:@"" fundingSourceID:@""];
     

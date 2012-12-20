@@ -14,7 +14,7 @@
 #import "DwollaTransactions.h"
 #import "DwollaFundingSources.h"
 #import "DwollaTransactionStats.h"
-#import "DwollaContacts.h"
+#import "DwollaContact.h"
 #import "OAuthTokenRepository.h"
 #import "HttpRequestRepository.h"
 #import "HttpRequestHelper.h"
@@ -89,19 +89,6 @@ static NSString *const DWOLLA_API_BASEURL;
  **/
 -(NSString*)getBalance;
 
-/**
- * gets users contacts
- *
- * @param name: search term to search the contacts, may be null
- * @param types: the types of account to be returned, may be null
- * @param limit: the number of contacts to be returned
- *
- * @return JSON representation of the request see: https://www.dwolla.com/developers/endpoints/contacts/user
- * @throws NSException if parameters are invalid, no access token is available, or request fails
- **/
--(NSDictionary*)getJSONContactsByName:(NSString*)name
-                                types:(NSString*)types
-                                limit:(NSString*)limit;
 
 /**
  * gets users contacts
@@ -113,7 +100,7 @@ static NSString *const DWOLLA_API_BASEURL;
  * @return a DwollaContacts object containing the results of the request
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
--(DwollaContacts*)getContactsByName:(NSString*)name
+-(NSMutableArray*)getContactsByName:(NSString*)name
                               types:(NSString*)types
                               limit:(NSString*)limit;
 
@@ -125,26 +112,10 @@ static NSString *const DWOLLA_API_BASEURL;
  * @param limit: the number of contacts to be returned
  * @param range: the distance a contact may be from the latitude and longitude
  *
- * @return JSON representation of the request see: https://www.dwolla.com/developers/endpoints/contacts/nearby
- * @throws NSException if parameters are invalid, no access token is available, or request fails
- **/
--(NSDictionary*)getJSONNearbyWithLatitude:(NSString*)lat
-                                Longitude:(NSString*)lon
-                                    Limit:(NSString*)limit
-                                    Range:(NSString*)range;
-
-/**
- * gets nearby contacts
- *
- * @param latitude: the latitude to search from
- * @param longitude: the longitude to search from
- * @param limit: the number of contacts to be returned
- * @param range: the distance a contact may be from the latitude and longitude
- *
  * @return a DwollaContacts object containing the results of the request
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
--(DwollaContacts*)getNearbyWithLatitude:(NSString*)lat
+-(NSMutableArray*)getNearbyWithLatitude:(NSString*)lat
                             Longitude:(NSString*)lon
                                 Limit:(NSString*)limit
                                 Range:(NSString*)range;
@@ -393,7 +364,5 @@ static NSString *const DWOLLA_API_BASEURL;
  * @return the correctly encoded string
  **/
 -(NSString*)encodedURLParameterString:(NSString*)string;
-
--(DwollaContact*) generateContactWithDictionary:(NSDictionary*)dictionary;
 
 @end

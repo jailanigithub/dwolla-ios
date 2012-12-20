@@ -115,128 +115,63 @@ static DwollaAPI* sharedInstance;
     return [[NSString alloc]initWithFormat:@"%@", [dictionary objectForKey:@"Response"]];
 }
 
--(NSDictionary*)getJSONContactsByName:(NSString*)name
-                                types:(NSString*)types
-                                limit:(NSString*)limit
-{
-    if (![self.oAuthTokenRepository hasAccessToken])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
-                                       reason:@"oauth_token is invalid" userInfo:nil];
-    }
-    NSString* token = [self.oAuthTokenRepository getAccessToken];
-    
-    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/contact?oauth_token=%@", token];
-    
-    if (name != nil && ![name isEqualToString:@""]) 
-    {
-        url = [url stringByAppendingFormat: @"&search=%@", name];
-    }
-    if (types != nil && ![types isEqualToString:@""]) 
-    {
-        url = [url stringByAppendingFormat: @"&types=%@", types];
-    }
-    if (limit != nil && ![limit isEqualToString:@""])
-    {
-        url = [url stringByAppendingFormat: @"&limit=%@", limit];
-    }
-    
-    NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
-
-    return dictionary;
-}
-
--(DwollaContacts*)getContactsByName:(NSString*)name
+-(NSMutableArray*)getContactsByName:(NSString*)name
                               types:(NSString*)types
                               limit:(NSString*)limit
 {
-    NSDictionary* dictionary;
-
-    dictionary = [self getJSONContactsByName:name types:types limit:limit];
+    //Creating Parameters Dictionary
+    NSMutableDictionary* parameterDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                                [self.oAuthTokenRepository getAccessToken], OAUTH_TOKEN_PARAMETER_NAME, nil];
+    
+    if (name != nil && ![name isEqualToString:@""]) [parameterDictionary setObject:name forKey:NAME_PARAMETER_NAME];
+    if (types != nil && ![types isEqualToString:@""]) [parameterDictionary setObject:types forKey:TYPES_PARAMETER_NAME];
+    if (limit != nil && ![limit isEqualToString:@""]) [parameterDictionary setObject:limit forKey:LIMIT_PARAMETER_NAME];
+    
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingString:CONTACTS_URL];
+    
+    //Make GET Request and Verify
+    NSDictionary* dictionary = [self.httpRequestRepository getRequest:url withQueryParameterDictionary:parameterDictionary];
     
     NSArray* data =[dictionary valueForKey:@"Response"];
     
-    NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
-    
-    if ([success isEqualToString:@"0"]) 
-    {
-        NSString* message = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Message"]];
-        @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:message userInfo:dictionary];
-    }
     NSMutableArray* contacts = [[NSMutableArray alloc] initWithCapacity:[data count]];
     
+    //Setup All of the Contacts
     for (int i = 0; i < [data count]; i++)
-    {
-        NSDictionary *info = [data objectAtIndex:i];
-        [contacts addObject:[self generateContactWithDictionary:info]];
-    }
-    return [[DwollaContacts alloc] initWithSuccess:YES contacts:contacts];
+        [contacts addObject:[self generateContactWithDictionary:[data objectAtIndex:i]]];
+    
+    return contacts;
 }
 
--(NSDictionary*)getJSONNearbyWithLatitude:(NSString*)lat
-                                Longitude:(NSString*)lon
-                                    Limit:(NSString*)limit
-                                    Range:(NSString*)range
-{
-    NSString* key = [self.oAuthTokenRepository getClientKey];
-    NSString* secret = [self.oAuthTokenRepository getClientSecret];
-    
-    if (key == nil || secret == nil) 
-    {
-        @throw [NSException exceptionWithName:@"INVALID_APPLICATION_CREDENTIALS_EXCEPTION"
-                                       reason:@"either your application key or application secret is invalid" 
-                                     userInfo:nil];
-    }
-    
-    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/contacts/nearby?client_id=%@&client_secret=%@", key, secret]; 
-    
-    if(lat == nil || [lat isEqualToString:@""] || lon == nil || [lon isEqualToString:@""])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
-                                       reason:@"latitude or longitude is either nil or empty" userInfo:nil];
-    }
-    url = [url stringByAppendingFormat:@"&latitude=%@&longitude=%@", lat, lon];
-    
-    if (range != nil && ![range isEqualToString:@""]) 
-    {
-        url = [url stringByAppendingFormat:@"&range=%@", range];
-    }
-    if (limit != nil && ![limit isEqualToString:@""]) 
-    {
-        url = [url stringByAppendingFormat:@"&limit=%@", limit];
-    }
-
-    NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
-    
-    return dictionary;
-}
-
--(DwollaContacts*)getNearbyWithLatitude:(NSString*)lat
+-(NSMutableArray*)getNearbyWithLatitude:(NSString*)lat
                             Longitude:(NSString*)lon
                                 Limit:(NSString*)limit
                                 Range:(NSString*)range
 {
-    NSDictionary* dictionary;
+    //Creating Parameters Dictionary
+    NSMutableDictionary* parameterDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                                [self.oAuthTokenRepository getClientKey], CLIENT_ID_PARAMETER_NAME,
+                                                [self.oAuthTokenRepository getClientSecret], CLIENT_SECRET_PARAMETER_NAME, nil];
     
-    dictionary = [self getJSONNearbyWithLatitude:lat Longitude:lon Limit:limit Range:range];
-
+    if (lat != nil && ![lat isEqualToString:@""]) [parameterDictionary setObject:lat forKey:LATITUDE_PARAMETER_NAME];
+    if (lon != nil && ![lon isEqualToString:@""]) [parameterDictionary setObject:lon forKey:LONGITUDE_PARAMETER_NAME];
+    if (limit != nil && ![limit isEqualToString:@""]) [parameterDictionary setObject:limit forKey:LIMIT_PARAMETER_NAME];
+    if (range != nil && ![range isEqualToString:@""]) [parameterDictionary setObject:range forKey:RANGE_PARAMETER_NAME];
+    
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingString:NEARBY_URL];
+    
+    //Make GET Request and Verify
+    NSDictionary* dictionary = [self.httpRequestRepository getRequest:url withQueryParameterDictionary:parameterDictionary];
+    
     NSArray* data =[dictionary valueForKey:@"Response"];
     
-    NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
-    
-    if ([success isEqualToString:@"0"]) 
-    {
-        NSString* message = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Message"]];
-        @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:message userInfo:dictionary];
-    }
-    
     NSMutableArray* contacts = [[NSMutableArray alloc] initWithCapacity:[data count]];
+    
+    //Setup All of the Contacts
     for (int i = 0; i < [data count]; i++)
-    {        
-        NSDictionary *info = [data objectAtIndex:i];
-        [contacts addObject:[self generateContactWithDictionary:info]];
-    }
-    return [[DwollaContacts alloc] initWithSuccess:YES contacts:contacts];
+        [contacts addObject:[self generateContactWithDictionary:[data objectAtIndex:i]]];
+    
+    return contacts;
 }
 
 -(NSDictionary*)getJSONFundingSources

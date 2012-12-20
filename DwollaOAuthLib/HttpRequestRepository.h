@@ -20,4 +20,7 @@
 
 -(NSDictionary*)getRequest: (NSString*) url;
 
+-(NSDictionary*)getRequest: (NSString*) url
+withQueryParameterDictionary: (NSDictionary*) dictionary;
+
 @end

@@ -16,5 +16,9 @@
 - (void) Setup_WithAccessToken_ClientKey_ClientSecret;
 - (void) Setup_PostRequest_WithDictionary: (NSDictionary *) result;
 - (void) Setup_GetRequest_WithDictionary: (NSDictionary *) result;
-- (void) Setup_HttpRequestRepository_WithNSURLConnectionRepositoryMock_WithResponseDictionary:(NSDictionary*) responseDictionary;
+- (void) Setup_HttpRequestRepository_WithNSURLConnectionRepositoryMock_WithResponseDictionary:(NSDictionary*) responseDictionary
+                                                                                 withRequest:(NSMutableURLRequest*) request;
+- (NSMutableArray *)Get_Mocked_DwollaContacts;
+- (NSMutableArray *)Get_Mocked_DwollaContactsResponse;
+
 @end

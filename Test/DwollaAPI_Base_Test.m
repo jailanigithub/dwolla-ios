@@ -52,13 +52,52 @@
 }
 
 -(void) Setup_HttpRequestRepository_WithNSURLConnectionRepositoryMock_WithResponseDictionary:(NSDictionary*) responseDictionary
+                                                                                 withRequest:(NSMutableURLRequest*) request
 {
-    [[[self.mockNSURLConnectionRepository stub] andReturn:responseDictionary] sendSynchronousRequest:OCMOCK_ANY];
+    [[[self.mockNSURLConnectionRepository stub] andReturn:responseDictionary] sendSynchronousRequest:request];
     
     //Mocked out NSURLConnection and passed it to a real HttpRequestRepository to test Logic
     HttpRequestRepository *httpRequestRepository = [[HttpRequestRepository alloc] init];
     [httpRequestRepository setNsURLConnectionRepository:self.mockNSURLConnectionRepository];
     [dwollaAPI setHttpRequestRepository:httpRequestRepository];
+}
+
+- (NSMutableArray *)Get_Mocked_DwollaContacts
+{
+    DwollaContact* one = [[DwollaContact alloc] initWithUserID:@"12345" name:@"Ben Facebook Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Facebook" address:@"" longitude:@"" latitude:@""];
+    
+    DwollaContact* two = [[DwollaContact alloc] initWithUserID:@"812-111-111" name:@"Ben Dwolla Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Dwolla" address:@"" longitude:@"" latitude:@""];
+    
+    return [[NSMutableArray alloc] initWithObjects:one, two, nil];
+}
+
+- (NSMutableArray *)Get_Mocked_DwollaContactsResponse
+{
+    NSDictionary* one = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                         @"12345", @"Id",
+                         @"Ben Facebook Test", @"Name",
+                         @"", @"Image",
+                         @"Des Moines", @"City",
+                         @"IA", @"State",
+                         @"Facebook", @"Type",
+                         @"", @"Address",
+                         @"", @"Longitude",
+                         @"", @"Latitude",
+                         nil];
+ 
+    NSDictionary* two = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                         @"812-111-111", @"Id",
+                         @"Ben Dwolla Test", @"Name",
+                         @"", @"Image",
+                         @"Des Moines", @"City",
+                         @"IA", @"State",
+                         @"Dwolla", @"Type",
+                         @"", @"Address",
+                         @"", @"Longitude",
+                         @"", @"Latitude",
+                         nil];
+    
+      return [[NSMutableArray alloc] initWithObjects:one, two, nil];
 }
 
 @end

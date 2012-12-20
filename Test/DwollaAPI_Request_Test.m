@@ -64,7 +64,7 @@
                                                @"false", @"Success",
                                                @"asdf", @"Response", nil];
     
-    [self Setup_HttpRequestRepository_WithNSURLConnectionRepositoryMock_WithResponseDictionary:responseDictionary];
+    [self Setup_HttpRequestRepository_WithNSURLConnectionRepositoryMock_WithResponseDictionary:responseDictionary withRequest:OCMOCK_ANY];
     
     GHAssertThrows([self.dwollaAPI requestMoneyWithPIN:@"1111" sourceID:@"812-111-1111" sourceType:@"dwolla" amount:@"1.00" facilitatorAmount:@"" notes:@""], @"No Exception was through when Response came back with Success is false");
 }
@@ -72,13 +72,12 @@
 -(void)testRequest_WithValidData_ShouldReturnValidDictionaryResponse
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
-    [[[self.mockHttpRequestHelper stub] andReturn:[NSData alloc]]getJSONDataFromNsDictionary: OCMOCK_ANY];
     
     NSMutableDictionary* responseDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                                @"true", @"Success",
                                                @"0101010", @"Response", nil];
     
-    [self Setup_HttpRequestRepository_WithNSURLConnectionRepositoryMock_WithResponseDictionary:responseDictionary];
+    [self Setup_HttpRequestRepository_WithNSURLConnectionRepositoryMock_WithResponseDictionary:responseDictionary withRequest:OCMOCK_ANY];
     
     NSString *result = [self.dwollaAPI requestMoneyWithPIN:@"1111" sourceID:@"812-111-1111" sourceType:@"dwolla" amount:@"1.00" facilitatorAmount:@"" notes:@""];
     

@@ -58,18 +58,22 @@
     [[[self.mockHttpRequestRepository stub] andReturn:result] getRequest:OCMOCK_ANY];
 }
 
-- (void) Setup_GetRequest_WithContactsDictionary {
-    NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message",
-                            [[NSArray alloc] initWithObjects:
-                             [[NSDictionary alloc] initWithObjectsAndKeys:@"Ben Facebook Test", @"Name", @"12345", @"Id", @"Facebook", @"Type", @"", @"Image", @"Des Moines", @"City", @"IA", @"State", nil],
-                             [[NSDictionary alloc] initWithObjectsAndKeys:@"Ben Dwolla Test", @"Name", @"812-111-111", @"Id", @"Dwolla", @"Type", @"", @"Image", @"Des Moines", @"City", @"IA", @"State", nil], nil], @"Response", nil];
-    [self Setup_GetRequest_WithDictionary:result];
+- (void) Setup_GetRequestWithParameterDictionary_WithDictionary: (NSDictionary *) result {
+    [[[self.mockHttpRequestRepository stub] andReturn:result] getRequest:OCMOCK_ANY withQueryParameterDictionary:OCMOCK_ANY];
 }
+
 
 - (void) Setup_GetRequest_WithTransactionDictionary {
     NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message",
                             [[NSArray alloc]initWithObjects:[self GetTransactionDictionary], nil], @"Response", nil];
     [self Setup_GetRequest_WithDictionary:result];
+}
+
+- (NSDictionary*) GetContactsDictionary {
+    return [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message",
+                            [[NSArray alloc] initWithObjects:
+                             [[NSDictionary alloc] initWithObjectsAndKeys:@"Ben Facebook Test", @"Name", @"12345", @"Id", @"Facebook", @"Type", @"", @"Image", @"Des Moines", @"City", @"IA", @"State", nil],
+                             [[NSDictionary alloc] initWithObjectsAndKeys:@"Ben Dwolla Test", @"Name", @"812-111-111", @"Id", @"Dwolla", @"Type", @"", @"Image", @"Des Moines", @"City", @"IA", @"State", nil], nil], @"Response", nil];
 }
 
 - (NSDictionary *) GetTransactionDictionary {
@@ -89,13 +93,13 @@
     nil];
 }
 
-- (DwollaContacts *)Get_Mocked_DwollaContacts
+- (NSMutableArray *)Get_Mocked_DwollaContacts
 {
     DwollaContact* one = [[DwollaContact alloc] initWithUserID:@"12345" name:@"Ben Facebook Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Facebook" address:@"" longitude:@"" latitude:@""];
     
     DwollaContact* two = [[DwollaContact alloc] initWithUserID:@"812-111-111" name:@"Ben Dwolla Test" image:@"" city:@"Des Moines" state:@"IA" type:@"Dwolla" address:@"" longitude:@"" latitude:@""];
     
-    return [[DwollaContacts alloc] initWithSuccess:YES contacts:[[NSMutableArray alloc] initWithObjects:one, two, nil]];
+    return [[NSMutableArray alloc] initWithObjects:one, two, nil];
 }
 
 
@@ -134,23 +138,37 @@
 -(void)testGetContacts_WithSuccessfulResponse_ShouldReturnValidContacts
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
-    [self Setup_GetRequest_WithContactsDictionary];
+    [self Setup_GetRequestWithParameterDictionary_WithDictionary: [self GetContactsDictionary]];
     
-    DwollaContacts* contacts = [dwollaAPI getContactsByName:@"" types:@"" limit:@""];
-    DwollaContacts *contacts2 = [self Get_Mocked_DwollaContacts];
+    NSMutableArray* actual = [dwollaAPI getContactsByName:@"" types:@"" limit:@""];
+    NSMutableArray *expecting = [self Get_Mocked_DwollaContacts];
     
-    GHAssertTrue([contacts isEqualTo:contacts2],@"NOT EQUAL!");
+    DwollaContact* expecting1 = [expecting objectAtIndex:0];
+    DwollaContact* expecting2 = [expecting objectAtIndex:1];
+ 
+    DwollaContact* actual1 = [actual objectAtIndex:0];
+    DwollaContact* actual2 = [actual objectAtIndex:1];
+    
+    GHAssertTrue([expecting1 isEqualTo:actual1],@"NOT EQUAL!");
+    GHAssertTrue([expecting2 isEqualTo:actual2],@"NOT EQUAL!");
 }
 
 -(void)testGetNearby_WithSuccessfulResponse_ShouldReturnValidContacts
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
-    [self Setup_GetRequest_WithContactsDictionary];
+    [self Setup_GetRequestWithParameterDictionary_WithDictionary:[self GetContactsDictionary]];
 
-    DwollaContacts* contacts = [dwollaAPI getNearbyWithLatitude:@"10.00" Longitude:@"10.00" Limit:@"" Range:@""];
-    DwollaContacts *contacts2 = [self Get_Mocked_DwollaContacts];
+    NSMutableArray* actual = [dwollaAPI getNearbyWithLatitude:@"10.00" Longitude:@"10.00" Limit:@"" Range:@""];
+    NSMutableArray* expecting = [self Get_Mocked_DwollaContacts];
     
-    GHAssertTrue([contacts isEqualTo:contacts2],@"NOT EQUAL!");
+    DwollaContact* expecting1 = [expecting objectAtIndex:0];
+    DwollaContact* expecting2 = [expecting objectAtIndex:1];
+    
+    DwollaContact* actual1 = [actual objectAtIndex:0];
+    DwollaContact* actual2 = [actual objectAtIndex:1];
+    
+    GHAssertTrue([expecting1 isEqualTo:actual1],@"NOT EQUAL!");
+    GHAssertTrue([expecting2 isEqualTo:actual2],@"NOT EQUAL!");
 }
 
 -(void)testGetFundingSources_WithSuccessfulResponse_ShouldReturnValidFundingSources
