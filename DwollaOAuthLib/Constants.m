@@ -15,6 +15,7 @@ static NSString *const NEARBY_URL = @"/contacts/nearby";
 static NSString *const FUNDING_SOURCES_URL = @"/fundingsources";
 static NSString *const USERS_URL = @"/users";
 static NSString *const TRANSACTIONS_URL = @"/transactions";
+static NSString *const TRANSACTIONS_STATS_URL = @"/transactions/stats";
 
 static NSString *const RESPONSE_RESULT_PARAMETER = @"Response";
 
@@ -41,3 +42,5 @@ static NSString *const RANGE_PARAMETER_NAME = @"range";
 static NSString *const LATITUDE_PARAMETER_NAME = @"latitude";
 static NSString *const LONGITUDE_PARAMETER_NAME = @"longitude";
 static NSString *const SKIP_PARAMETER_NAME = @"skip";
+static NSString *const START_DATE_PARAMETER_NAME = @"startDate";
+static NSString *const END_DATE_PARAMETER_NAME = @"endDate";

@@ -189,39 +189,12 @@ static NSString *const DWOLLA_API_BASEURL;
  * @param start: the date to begin pulling the stats from
  * @param end: the date to stop pulling the stats from
  *
- * @return JSON representation of the request see https://www.dwolla.com/developers/endpoints/transactions/stats
- * @throws NSException if parameters are invalid, no access token is available, or request fails
- **/
--(NSDictionary*)getJSONTransactionStats:(NSString*)start
-                                    end:(NSString*)end;
-
-/**
- * gets the transaction stats for the user
- *
- * @param start: the date to begin pulling the stats from
- * @param end: the date to stop pulling the stats from
- *
  * @return a DwollaTransactionStats object containing the results of the request
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
--(DwollaTransactionStats*)getTransactionStats:(NSString*)start
-                                          end:(NSString*)end;
-
-/**
- * helper class used to generate the url to request an oauth token
- *
- * @param key: the application key provided to the developer
- * @param redirect: the url to redirect the user to
- * @param response: the response the developer expects -> should be @"code"
- * @param redirect: the url to redirect the user to
- *
- * @return url request to be run by the client
- * @throws NSException if parameters are invalid, or if key or secret are invalid
- **/
--(NSURLRequest*)generateURLWithKey:(NSString*)key
-                          redirect:(NSString*)redirect
-                          response:(NSString*)response
-                            scopes:(NSArray*)scopes;
+-(DwollaTransactionStats*)getTransactionStatsWithStart:(NSString*)start
+                                               withEnd:(NSString*)end
+                                             withTypes:(NSString*)types;
 
 /**
  * helper method that generates a dictionary given the data returned by the request
@@ -240,15 +213,6 @@ static NSString *const DWOLLA_API_BASEURL;
  * @return DwollaTransaction object containing the contents of the string
  **/
 -(DwollaTransaction*)generateTransactionWithDictionary:(NSDictionary*)dictionary;
-
-/**
- * helper method that parses the string to get the needed value
- *
- * @param string: the string to parse the value from
- *
- * @return a string representation of the value
- **/
--(NSString*)findValue:(NSString*)string;
 
 /**
  * helper method that generates a DwollaFundingSource from the given string

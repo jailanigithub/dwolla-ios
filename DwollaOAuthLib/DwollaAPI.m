@@ -275,106 +275,24 @@ static DwollaAPI* sharedInstance;
     return [self generateTransactionWithDictionary:[dictionary valueForKey:@"Response"]];
 }
 
--(NSDictionary*)getJSONTransactionStats:(NSString*)start
-                                    end:(NSString*)end
+-(DwollaTransactionStats*)getTransactionStatsWithStart:(NSString*)start
+                                               withEnd:(NSString*)end
+                                             withTypes:(NSString*)types
 {
-    if (![self.oAuthTokenRepository hasAccessToken])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
-                                       reason:@"oauth_token is invalid" userInfo:nil];
-    }
+    NSMutableDictionary* parameterDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                                [self.oAuthTokenRepository getAccessToken], OAUTH_TOKEN_PARAMETER_NAME, nil];
     
-    NSMutableArray* parameters = [[NSMutableArray alloc] initWithCapacity:3];
+    if (start != nil && ![start isEqualToString:@""]) [parameterDictionary setObject:start forKey:START_DATE_PARAMETER_NAME];
+    if (end != nil && ![end isEqualToString:@""]) [parameterDictionary setObject:end forKey:END_DATE_PARAMETER_NAME];
+    if (types != nil && ![types isEqualToString:@""]) [parameterDictionary setObject:types forKey:TYPES_PARAMETER_NAME];
     
-    if (start != nil  && ![start isEqualToString:@""]) 
-    {
-        NSString* param = @"startdate=";
-        [parameters addObject:[param stringByAppendingString:start]];
-    }
-    if (end != nil  && ![end isEqualToString:@""])
-    {
-        NSString* param = @"enddate=";
-        [parameters addObject:[param stringByAppendingString:end]];
-    }
-    [parameters addObject:@"oauth_token="];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@", TRANSACTIONS_STATS_URL];
     
-    NSString* url = @"/transactions/stats?";
+    NSDictionary* dictionary = [self.httpRequestRepository getRequest:url withQueryParameterDictionary: parameterDictionary];
     
-    for (int i = 0; i < [parameters count]; i++) 
-    {
-        url = [url stringByAppendingString:[parameters objectAtIndex:i]];
-        if (i < [parameters count]-1)
-        {
-            url = [url stringByAppendingString:@"&"];
-        }
-    }
-    
-    NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
-    
-    return dictionary;
-
-}
-
--(DwollaTransactionStats*)getTransactionStats:(NSString*)start
-                                          end:(NSString*)end
-{
-    NSDictionary* dictionary;
-    
-    dictionary = [self getJSONTransactionStats:start end:end];
-    
-    NSArray* pull =[dictionary valueForKey:@"Response"];
-    NSString* data = [[NSString alloc] initWithFormat:@"%@", pull];
-    
-    NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
-    
-    if ([success isEqualToString:@"0"]) 
-    {
-        NSString* message = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Message"]];
-        @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:message userInfo:dictionary];
-    }
-    
-    NSArray* values = [data componentsSeparatedByString:@"\n"];
-    
-    NSString* count = [self findValue:[values objectAtIndex:1]];
-    NSString* total = [self findValue:[values objectAtIndex:2]];
-
-    return [[DwollaTransactionStats alloc] initWithSuccess:YES count:count total:total];
-}
-
-
--(NSURLRequest*)generateURLWithKey:(NSString*)key
-                          redirect:(NSString*)redirect
-                          response:(NSString*)response
-                            scopes:(NSArray*)scopes
-{   
-    if (key == nil || [key isEqualToString:@""])
-    {
-        @throw [NSException exceptionWithName:@"INVALID_APPLICATION_CREDENTIALS_EXCEPTION" 
-                                       reason:@"your application key is invalid" 
-                                     userInfo:nil];
-    }
-    if(redirect == nil || [redirect isEqualToString:@""] || response == nil || 
-        [response isEqualToString:@""] || scopes == nil || [scopes count] == 0) 
-    {
-        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION" 
-                                       reason:@"either redirect, response, or scopes is nil or empty" userInfo:nil];
-    }
-    NSString* url = [NSString stringWithFormat:@"https://www.dwolla.com/oauth/v2/authenticate?client_id=%@&response_type=%@&redirect_uri=%@&scope=", key, response, redirect];
-    
-    for (int i = 0; i < [scopes count]; i++) 
-    {
-        url = [url stringByAppendingString:[scopes objectAtIndex:i]];
-        if([scopes count] > 0 && i < [scopes count]-1)
-        {
-            url = [url stringByAppendingString:@"%7C"];
-        }
-    }
-    
-    NSURL* fullURL = [[NSURL alloc] initWithString:url];
-    
-    NSURLRequest* returnURL = [[NSURLRequest alloc] initWithURL:fullURL cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:100];
-   
-    return returnURL;
+    NSArray* result =[dictionary valueForKey:@"Response"];
+ 
+    return [[DwollaTransactionStats alloc] initWithSuccess:YES count:[result valueForKey:@"TransactionsCount"] total:[result valueForKey:@"TransactionsTotal"]];
 }
 
 -(NSDictionary*)generateDictionaryWithData:(NSData*)data
@@ -428,21 +346,6 @@ static DwollaAPI* sharedInstance;
     NSString* userType = [dictionary objectForKey:@"UserType"];
 
     return [[DwollaTransaction alloc] initWithAmount:amount clearingDate:clearingDate date:date destinationID:destinationID destinationName:destinationName transactionID:transactionID notes:notes sourceID:sourceID sourceName:sourceName status:status type:type userType:userType];
-}
-
--(NSString*)findValue:(NSString*)string
-{
-    NSArray* split = [string componentsSeparatedByString:@"= "];
-    NSArray* trimmed = [[split objectAtIndex:1] componentsSeparatedByString:@"\""];
-    if ([trimmed count] == 3) 
-    {
-        return [trimmed objectAtIndex:1];
-    }
-    else 
-    {
-        NSArray* removed = [[trimmed objectAtIndex:0] componentsSeparatedByString:@";"];
-        return (NSString*)[removed objectAtIndex:0];
-    }
 }
 
 -(NSString *)encodedURLParameterString:(NSString*)string

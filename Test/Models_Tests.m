@@ -317,9 +317,9 @@
                              @"0.3", @"TransactionsTotal",
                              nil], @"Response", nil];
     
-    [self Setup_GetRequest_WithDictionary:result];
+    [self Setup_GetRequestWithParameterDictionary_WithDictionary:result];
     
-    DwollaTransactionStats* stats = [dwollaAPI getTransactionStats:@"" end:@""];
+    DwollaTransactionStats* stats = [dwollaAPI getTransactionStatsWithStart:@"" withEnd:@"" withTypes:@""];
     
     DwollaTransactionStats* stats2 = [[DwollaTransactionStats alloc] initWithSuccess:YES count:@"1" total:@"0.3"];
     
