@@ -236,115 +236,43 @@ static DwollaAPI* sharedInstance;
     return [[DwollaUser alloc] initWithUserID:[values valueForKey:@"Id"] name:[values valueForKey:@"Name"] city:nil state:nil
                                      latitude:[values valueForKey:@"Latitude"] longitude:[values valueForKey:@"Longitude"] type:nil];
 }
--(NSDictionary*)getJSONTransactionsSince:(NSString*)date
-                                   limit:(NSString*)limit
-                                    skip:(NSString*)skip
+
+-(NSArray*)getTransactionsSince:(NSString*)date
+                                  withType:(NSString*)type
+                                 withLimit:(NSString*)limit
+                                  withSkip:(NSString*)skip;
 {
-    if (![self.oAuthTokenRepository hasAccessToken]) 
-    {
-        @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
-                                       reason:@"oauth_token is invalid" userInfo:nil];
-    }
+    NSMutableDictionary* parameterDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                                                [self.oAuthTokenRepository getAccessToken], OAUTH_TOKEN_PARAMETER_NAME, nil];
     
-    NSMutableArray* parameters = [[NSMutableArray alloc] initWithCapacity:4];
+    if (date != nil && ![date isEqualToString:@""]) [parameterDictionary setObject:date forKey:LATITUDE_PARAMETER_NAME];
+    if (limit != nil && ![limit isEqualToString:@""]) [parameterDictionary setObject:limit forKey:LIMIT_PARAMETER_NAME];
+    if (skip != nil && ![skip isEqualToString:@""]) [parameterDictionary setObject:skip forKey:SKIP_PARAMETER_NAME];
+    if (type != nil && ![type isEqualToString:@""]) [parameterDictionary setObject:type forKey:TYPES_PARAMETER_NAME];
     
-    if (date != nil  && ![date isEqualToString:@""]) 
-    {
-        NSString* param = @"sincedate=";
-        [parameters addObject:[param stringByAppendingString:date]];
-    }
-    if (limit != nil  && ![limit isEqualToString:@""])
-    {
-        NSString* param = @"limit=";
-        [parameters addObject:[param stringByAppendingString:limit]];
-    }
-    if (skip != nil  && ![skip isEqualToString:@""])
-    {
-        NSString* param = @"skip=";
-        [parameters addObject:[param stringByAppendingString:skip]];
-    }
-    [parameters addObject:@"oauth_token="];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@", TRANSACTIONS_URL];
     
-    NSString* url = @"/transactions?";
+    NSDictionary* dictionary = [self.httpRequestRepository getRequest:url withQueryParameterDictionary: parameterDictionary];
     
-    for (int i = 0; i < [parameters count]; i++) 
-    {
-        url = [url stringByAppendingString:[parameters objectAtIndex:i]];
-        if (i < [parameters count]-1)
-        {
-            url = [url stringByAppendingString:@"&"];
-        }
-    }
-
-    NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
-    
-    return dictionary;
-}
-
--(DwollaTransactions*)getTransactionsSince:(NSString*)date
-                                     limit:(NSString*)limit
-                                      skip:(NSString*)skip
-{
-    NSDictionary* dictionary;
- 
-    dictionary = [self getJSONTransactionsSince:date limit:limit skip:skip];
-
     NSArray* data =[dictionary valueForKey:@"Response"];
-    
-    NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
-    
-    if ([success isEqualToString:@"0"]) 
-    {
-        NSString* message = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Message"]];
-        @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:message userInfo:dictionary];
-    }
     
     NSMutableArray* transactions = [[NSMutableArray alloc] initWithCapacity:[data count]];
     for (int i = 0; i < [data count]; i++)
-    {
-        NSString* info = [[NSString alloc] initWithFormat:@"%@", [data objectAtIndex:i]];
-        [transactions addObject:[self generateTransactionWithString:info]];
-    }
+        [transactions addObject:[self generateTransactionWithDictionary:[data objectAtIndex:i]]];
     
-   return [[DwollaTransactions alloc] initWithSuccess:YES transactions:transactions];
+   return transactions;
 }
 
--(NSDictionary*)getJSONTransaction:(NSString*)transactionID
-{
-    if (![self.oAuthTokenRepository hasAccessToken]) 
-    {
-        @throw [NSException exceptionWithName:@"INVALID_TOKEN_EXCEPTION" 
-                                       reason:@"oauth_token is invalid" userInfo:nil];
-    }
-    
-    NSString* token = [self.oAuthTokenRepository getAccessToken];
-    
-    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"/transactions/%@?oauth_token=%@", transactionID, token];
-    
-    NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
-    
-    return dictionary; 
-}
 
 -(DwollaTransaction*)getTransaction:(NSString*)transactionID
 {
-    NSDictionary* dictionary;
+    NSString* token = [self.oAuthTokenRepository getAccessToken];
+    
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@/%@?oauth_token=%@", TRANSACTIONS_URL, transactionID, token];
+    
+    NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
 
-    dictionary = [self getJSONTransaction:transactionID];
-
-    NSArray* pull =[dictionary valueForKey:@"Response"];
-    NSString* data = [[NSString alloc] initWithFormat:@"%@", pull];
-    
-    NSString* success = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]];
-    
-    if ([success isEqualToString:@"0"]) 
-    {
-        NSString* message = [[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Message"]];
-        @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:message userInfo:dictionary];
-    }
-    
-    DwollaTransaction* transaction = [self generateTransactionWithString:data];
-    return transaction;
+    return [self generateTransactionWithDictionary:[dictionary valueForKey:@"Response"]];
 }
 
 -(NSDictionary*)getJSONTransactionStats:(NSString*)start
@@ -484,24 +412,21 @@ static DwollaAPI* sharedInstance;
     return [[DwollaFundingSource alloc] initWithSourceID:sourceID name:name type:type verified:verified];
 }
 
--(DwollaTransaction*)generateTransactionWithString:(NSString*)string
+-(DwollaTransaction*)generateTransactionWithDictionary:(NSDictionary*) dictionary
 {
-    NSArray* info = [string componentsSeparatedByString:@"\n"];
-    
-    NSString* amount = [self findValue:[info objectAtIndex:1]];
-    NSString* clearingDate = [self findValue:[info objectAtIndex:2]];
-    NSString* date = [self findValue:[info objectAtIndex:3]];
-    NSString* destinationID = [self findValue:[info objectAtIndex:4]];
-    NSString* destinationName = [self findValue:[info objectAtIndex:5]];
-    NSString* transactionID =  [self findValue:[info objectAtIndex:6]];
-    NSString* notes = [self findValue:[info objectAtIndex:7]];
-    NSString* sourceID = [self findValue:[info objectAtIndex:8]];
-    NSString* sourceName =  [self findValue:[info objectAtIndex:9]];
-    NSString* status =  [self findValue:[info objectAtIndex:10]];
-    NSString* type =  [self findValue:[info objectAtIndex:11]];
-    NSString* userType =  [self findValue:[info objectAtIndex:12]];
+    NSString* amount = [dictionary objectForKey:@"Amount"];
+    NSString* clearingDate = [dictionary objectForKey:@"ClearingDate"];
+    NSString* date = [dictionary objectForKey:@"Date"];
+    NSString* destinationID = [dictionary objectForKey:@"DestinationId"];
+    NSString* destinationName = [dictionary objectForKey:@"DestinationName"];
+    NSString* transactionID =  [dictionary objectForKey:@"Id"];
+    NSString* notes = [dictionary objectForKey:@"Notes"];
+    NSString* sourceID = [dictionary objectForKey:@"SourceId"];
+    NSString* sourceName =  [dictionary objectForKey:@"SourceName"];
+    NSString* status =  [dictionary objectForKey:@"Status"];
+    NSString* type =  [dictionary objectForKey:@"Type"];
+    NSString* userType = [dictionary objectForKey:@"UserType"];
 
-    
     return [[DwollaTransaction alloc] initWithAmount:amount clearingDate:clearingDate date:date destinationID:destinationID destinationName:destinationName transactionID:transactionID notes:notes sourceID:sourceID sourceName:sourceName status:status type:type userType:userType];
 }
 

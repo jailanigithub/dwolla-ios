@@ -62,11 +62,9 @@
     [[[self.mockHttpRequestRepository stub] andReturn:result] getRequest:OCMOCK_ANY withQueryParameterDictionary:OCMOCK_ANY];
 }
 
-
-- (void) Setup_GetRequest_WithTransactionDictionary {
-    NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message",
+- (NSDictionary*) GetTransactionResponseDictionary {
+    return [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message",
                             [[NSArray alloc]initWithObjects:[self GetTransactionDictionary], nil], @"Response", nil];
-    [self Setup_GetRequest_WithDictionary:result];
 }
 
 - (NSDictionary*) GetContactsDictionary {
@@ -271,15 +269,26 @@
 -(void)testGetTransactions_WithSuccessfulResponse_ShouldReturnValidTransactions
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
-    [self Setup_GetRequest_WithTransactionDictionary];
+    [self Setup_GetRequestWithParameterDictionary_WithDictionary:[self GetTransactionResponseDictionary]];
     
-    DwollaTransactions* transactions = [dwollaAPI getTransactionsSince:@"" limit:@"" skip:@""];
+    NSArray* transactions = [dwollaAPI getTransactionsSince:@"" withType:@"" withLimit:@"" withSkip:@""];
     
-    DwollaTransaction* transaction = [[DwollaTransaction alloc] initWithAmount:@"1.91" clearingDate:@"" date:@"7/18/2012 1:45:36 PM" destinationID:@"812-737-5434" destinationName:@"Timbuktuu Coffee" transactionID:@"1226108" notes:@"" sourceID:@"" sourceName:@"" status:@"processed" type:@"money_sent" userType:@"Dwolla"];
+    DwollaTransaction* actual = [transactions objectAtIndex:0];
     
-    DwollaTransactions* transactions2 = [[DwollaTransactions alloc] initWithSuccess:YES transactions:[[NSMutableArray alloc] initWithObjects:transaction, nil]];
+    DwollaTransaction* expected = [[DwollaTransaction alloc] initWithAmount:@"1.91" clearingDate:@"" date:@"7/18/2012 1:45:36 PM" destinationID:@"812-737-5434" destinationName:@"Timbuktuu Coffee" transactionID:@"1226108" notes:@"From iPhone" sourceID:@"" sourceName:@"" status:@"processed" type:@"money_sent" userType:@"Dwolla"];
     
-    GHAssertTrue([transactions isEqualTo:transactions2],@"NOT EQUAL");
+    GHAssertEqualStrings([actual getAmount], [expected getAmount], @"Amount expected does not match");
+    GHAssertEqualStrings([actual getClearingDate], [expected getClearingDate], @"Clearing Date expected does not match");
+    GHAssertEqualStrings([actual getDate], [expected getDate], @"Date expected does not match");
+    GHAssertEqualStrings([actual getDestinationID], [expected getDestinationID], @"Destination Id expected does not match");
+    GHAssertEqualStrings([actual getDestinationName], [expected getDestinationName], @"Destination Name expected does not match");
+    GHAssertEqualStrings([actual getTransactionID], [expected getTransactionID], @"Transaction Id expected does not match");
+    GHAssertEqualStrings([actual getNotes], [expected getNotes], @"Notes expected does not match");
+    GHAssertEqualStrings([actual getSourceID], [expected getSourceID], @"Source Id expected does not match");
+    GHAssertEqualStrings([actual getSourceName], [expected getSourceName], @"Source Name expected does not match");
+    GHAssertEqualStrings([actual getStatus], [expected getStatus], @"Status expected does not match");
+    GHAssertEqualStrings([actual getType], [expected getType], @"Type expected does not match");
+    GHAssertEqualStrings([actual getUserType], [expected getUserType], @"User Type expected does not match");
 }
 
 -(void)testGetTransaction_WithSuccessfulResponse_ShouldReturnValidTransaction

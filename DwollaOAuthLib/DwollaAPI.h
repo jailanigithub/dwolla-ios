@@ -165,36 +165,13 @@ static NSString *const DWOLLA_API_BASEURL;
  * @param limit: the number of transactions to be returned
  * @param skip: the number of transactions to skip
  *
- * @return JSON representation of the request see: https://www.dwolla.com/developers/endpoints/transactions/list
- * @throws NSException if parameters are invalid, no access token is available, or request fails
- **/
--(NSDictionary*)getJSONTransactionsSince:(NSString*)date
-                                   limit:(NSString*)limit
-                                    skip:(NSString*)skip;
-
-/**
- * gets recent transactions
- *
- * @param date: the date to begin pulling transactions from 
- * @param limit: the number of transactions to be returned
- * @param skip: the number of transactions to skip
- *
  * @return a DwollaTransactions object contiaining the results of the request
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
--(DwollaTransactions*)getTransactionsSince:(NSString*)date
-                                     limit:(NSString*)limit
-                                      skip:(NSString*)skip;
-
-/**
- * gets the transaction details of the provided transactionID
- *
- * @param transactionID: a string representation of the id of the transaction
- *
- * @return JSON representation of the request see https://www.dwolla.com/developers/endpoints/transactions/details
- * @throws NSException if parameters are invalid, no access token is available, or request fails
- **/
--(NSDictionary*)getJSONTransaction:(NSString*)transactionID;
+-(NSArray*)getTransactionsSince:(NSString*)date
+                                  withType:(NSString*)type
+                                 withLimit:(NSString*)limit
+                                  withSkip:(NSString*)skip;
 
 /**
  * gets the transaction details of the provided transactionID
@@ -262,7 +239,7 @@ static NSString *const DWOLLA_API_BASEURL;
  *
  * @return DwollaTransaction object containing the contents of the string
  **/
--(DwollaTransaction*)generateTransactionWithString:(NSString*)transasction;
+-(DwollaTransaction*)generateTransactionWithDictionary:(NSDictionary*)dictionary;
 
 /**
  * helper method that parses the string to get the needed value
