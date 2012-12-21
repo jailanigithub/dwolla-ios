@@ -54,14 +54,13 @@
     DwollaUser *expecting = [[DwollaUser alloc] initWithUserID:@"812-111-1111" name:@"Ben Facebook Test" city:@"Des Moines" state:@"IA"
                                                       latitude:@"" longitude:@"" type:@"Dwolla"];
     
-    GHAssertEqualStrings([actual getUserID], [expecting getUserID], @"Id expected does not match");
-    GHAssertEqualStrings([actual getName], [expecting getName], @"Name expected does not match");
-    GHAssertEqualStrings([actual getCity], [expecting getCity], @"City expected does not match");
-    GHAssertEqualStrings([actual getState], [expecting getState], @"City expected does not match");
-    GHAssertEqualStrings([actual getType], [expecting getType], @"Type expected does not match");
-    GHAssertEqualStrings([actual getLatitude], [expecting getLatitude], @"Latitude expected does not match");
-    GHAssertEqualStrings([actual getLongitude], [expecting getLongitude], @"Longitude expected does not match");
-   
+    GHAssertEqualStrings([actual userID], [expecting userID], @"Id expected does not match");
+    GHAssertEqualStrings([actual name], [expecting name], @"Name expected does not match");
+    GHAssertEqualStrings([actual city], [expecting city], @"City expected does not match");
+    GHAssertEqualStrings([actual state], [expecting state], @"City expected does not match");
+    GHAssertEqualStrings([actual type], [expecting type], @"Type expected does not match");
+    GHAssertEqualStrings([actual latitude], [expecting latitude], @"Latitude expected does not match");
+    GHAssertEqualStrings([actual longitude], [expecting longitude], @"Longitude expected does not match");
 }
 
 
@@ -102,14 +101,13 @@
     DwollaUser *expecting = [[DwollaUser alloc] initWithUserID:@"812-111-1111" name:@"Ben Facebook Test" city:nil state:nil
                                                       latitude:@"2.0" longitude:@"1.0" type:nil];
     
-    GHAssertEqualStrings([actual getUserID], [expecting getUserID], @"Id expected does not match");
-    GHAssertEqualStrings([actual getName], [expecting getName], @"Name expected does not match");
-    GHAssertEqualStrings([actual getCity], [expecting getCity], @"City expected does not match");
-    GHAssertEqualStrings([actual getState], [expecting getState], @"City expected does not match");
-    GHAssertEqualStrings([actual getType], [expecting getType], @"Type expected does not match");
-    GHAssertEqualStrings([actual getLatitude], [expecting getLatitude], @"Latitude expected does not match");
-    GHAssertEqualStrings([actual getLongitude], [expecting getLongitude], @"Longitude expected does not match");
-    
+    GHAssertEqualStrings([actual userID], [expecting userID], @"Id expected does not match");
+    GHAssertEqualStrings([actual name], [expecting name], @"Name expected does not match");
+    GHAssertEqualStrings([actual city], [expecting city], @"City expected does not match");
+    GHAssertEqualStrings([actual state], [expecting state], @"City expected does not match");
+    GHAssertEqualStrings([actual type], [expecting type], @"Type expected does not match");
+    GHAssertEqualStrings([actual latitude], [expecting latitude], @"Latitude expected does not match");
+    GHAssertEqualStrings([actual longitude], [expecting longitude], @"Longitude expected does not match");
 }
 
 

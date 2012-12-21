@@ -7,22 +7,23 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Constants.m"
 
 @interface DwollaTransaction : NSObject
-{
-    NSString* amount;
-    NSString* clearingDate;
-    NSString* date;
-    NSString* destinationID;
-    NSString* destinationName;
-    NSString* transactionID;
-    NSString* notes;
-    NSString* sourceID;
-    NSString* sourceName;
-    NSString* status;
-    NSString* type;
-    NSString* userType;
-}
+
+@property (retain) NSString *amount;
+@property (retain) NSString *clearingDate;
+@property (retain) NSString *date;
+@property (retain) NSString *destinationID;
+@property (retain) NSString *destinationName;
+@property (retain) NSString *transactionID;
+@property (retain) NSString *notes;
+@property (retain) NSString *sourceID;
+@property (retain) NSString *sourceName;
+@property (retain) NSString *status;
+@property (retain) NSString *type;
+@property (retain) NSString *userType;
+
 
 /**
  * initializes a new DwollaTransaction with the given parameters
@@ -55,65 +56,7 @@
                type:(NSString*)type 
            userType:(NSString*)userType;
 
-/**
- * @return amount
- **/
--(NSString*)getAmount;
-
-/**
- * @return clearingDate
- **/
--(NSString*)getClearingDate;
-
-/**
- * @return date
- **/
--(NSString*)getDate;
-
-/**
- * @return destinationID
- **/
--(NSString*)getDestinationID;
-
-/**
- * @return destinationName
- **/
--(NSString*)getDestinationName;
-
-/**
- * @return transactionID
- **/
--(NSString*)getTransactionID;
-
-/**
- * @return notes
- **/
--(NSString*)getNotes;
-
-/**
- * @return sourceID
- **/
--(NSString*)getSourceID;
-
-/**
- * @return sourceName
- **/
--(NSString*)getSourceName;
-
-/**
- * @return status
- **/
--(NSString*)getStatus;
-
-/**
- * @return type
- **/
--(NSString*)getType;
-
-/**
- * @return userType
- **/
--(NSString*)getUserType;
+-(id)initWithDictionary:(NSDictionary*) dictionary;
 
 -(BOOL)isEqualTo:(DwollaTransaction*)_transaction;
 

@@ -56,7 +56,7 @@
     
     DwollaTransactionStats *expecting = [[DwollaTransactionStats alloc] initWithSuccess:true count:@"1" total:@"1000.00"];
     
-    GHAssertEqualStrings([actual getCount], [expecting getCount], @"Amount expected does not match");
-    GHAssertEqualStrings([actual getTotal], [expecting getTotal], @"Clearing Date expected does not match");
+    GHAssertEqualStrings([actual count], [expecting count], @"Amount expected does not match");
+    GHAssertEqualStrings([actual total], [expecting total], @"Clearing Date expected does not match");
 }
 @end

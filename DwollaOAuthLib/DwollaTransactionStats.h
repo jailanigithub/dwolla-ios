@@ -7,13 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Constants.m"
 
 @interface DwollaTransactionStats : NSObject
-{
-    BOOL success;
-    NSString* count;
-    NSString* total;
-}
+
+@property (retain) NSString *count;
+@property (retain) NSString *total;
 
 /**
  * initializes a new DwollTransactionStats with the given parameters
@@ -28,21 +27,8 @@
                count:(NSString*)count
                total:(NSString*)total;
 
-/**
- * @return success
- **/
--(BOOL)wasSuccessful;
-
-/**
- * @return count
- **/
--(NSString*)getCount;
-
-/**
- * @return total
- **/
--(NSString*)getTotal;
-
 -(BOOL)isEqualTo:(DwollaTransactionStats*)_stats;
+
+-(id)initWithDictionary:(NSDictionary*) dictionary;
 
 @end

@@ -10,6 +10,8 @@
 
 @implementation DwollaContact
 
+@synthesize userID, name, image, city, state, type, address, longitude, latitude;
+
 -(id)initWithUserID:(NSString*)_userID 
                name:(NSString*)_name
               image:(NSString*)_image 
@@ -35,53 +37,28 @@
     return self;
 }
 
--(NSString*)getName
+-(id)initWithDictionary:(NSDictionary*) dictionary
 {
-    return name;
-}
-
--(NSString*)getUserID
-{
-    return userID;
-}
-
--(NSString*)getImageURL
-{
-    return image;
-}
-
--(NSString*)getCity
-{
-    return city;
-}
-
--(NSString*)getState
-{
-    return state;
-}
-
--(NSString*)getType
-{
-    return type;
-}
-
--(NSString*) getAddress {
-    return address;
-}
-
--(NSString*) getLongitude {
-    return longitude;
-}
-
--(NSString*) getLatitude {
-    return latitude;
+    if (self)
+    {
+        userID = [dictionary objectForKey:ID_RESPONSE_NAME];
+        name = [dictionary objectForKey:NAME_RESPONSE_NAME];
+        image = [dictionary objectForKey:IMAGE_RESPONSE_NAME];
+        city = [dictionary objectForKey:CITY_RESPONSE_NAME];
+        state = [dictionary objectForKey:STATE_RESPONSE_NAME];
+        type = [dictionary objectForKey:TYPE_RESPONSE_NAME];
+        address = [dictionary objectForKey:ADDRESS_RESPONSE_NAME];
+        longitude = [dictionary objectForKey:LONGITUDE_PARAMETER_NAME];
+        latitude = [dictionary objectForKey:LATITUDE_RESPONSE_NAME];
+    }
+    return self;
 }
 
 -(BOOL) isEqualTo:(DwollaContact*)_contact
 {
-    if (![name isEqualToString:[_contact getName]] ||
-        ![userID isEqualToString:[_contact getUserID]] ||
-        ![type isEqualToString:[_contact getType]])
+    if (![name isEqualToString:[_contact name]] ||
+        ![userID isEqualToString:[_contact userID]] ||
+        ![type isEqualToString:[_contact type]])
     {
         return NO;
     }

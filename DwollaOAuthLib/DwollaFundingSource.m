@@ -10,6 +10,8 @@
 
 @implementation DwollaFundingSource
 
+@synthesize sourceID, name, type, verified;
+
 -(id)initWithSourceID:(NSString*)_sourceID 
                  name:(NSString*)_name 
                  type:(NSString*)_type 
@@ -20,41 +22,26 @@
         sourceID = _sourceID;
         name = _name;
         type = _type;
-        if ([_verified isEqualToString:@"true"]) 
-        {
-            verified = YES;
-        }
-        else
-        {
-            verified = NO;
-        }
+        verified = [_verified isEqualToString:@"true"];
     }
     return self;
 }
 
--(NSString*)getSourceID
+-(id)initWithDictionary:(NSDictionary*)dictionary
 {
-    return sourceID;
-}
-
--(NSString*)getName
-{
-    return name;
-}
-
--(NSString*)getType
-{
-    return type;
-}
-
--(BOOL)isVerified
-{
-    return verified;
+    if (self)
+    {
+        sourceID = [dictionary objectForKey:ID_RESPONSE_NAME];
+        name = [dictionary objectForKey:NAME_RESPONSE_NAME];
+        type = [dictionary objectForKey:TYPE_RESPONSE_NAME];
+        verified = [[dictionary objectForKey:VERIFIED_RESPONSE_NAME] isEqualToString:@"true"];
+    }
+    return self;
 }
 
 -(BOOL)isEqualTo:(DwollaFundingSource*)_source
 {
-    if (![sourceID isEqualToString:[_source getSourceID]] || ![name isEqualToString:[_source getName]] || ![type isEqualToString:[_source getType]] || verified != [_source isVerified]) 
+    if (![sourceID isEqualToString:[_source sourceID]] || ![name isEqualToString:[_source name]] || ![type isEqualToString:[_source type]] || verified != [_source isVerified])
     {
         return NO;
     }

@@ -20,5 +20,6 @@
 -(NSData*) getJSONDataFromNsDictionary:(NSDictionary*)dictionary;
 -(NSDictionary*) checkRequestForSuccessAndReturn:(NSDictionary*) dictionary;
 
--(NSString*) getQueryParametersFroNSDictionary:(NSDictionary*)dictionary; 
+-(NSString*) getQueryParametersFroNSDictionary:(NSDictionary*)dictionary;
+-(NSString*) encodeString: (NSString*) string;
 @end

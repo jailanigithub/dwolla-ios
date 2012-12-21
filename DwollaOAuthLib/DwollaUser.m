@@ -10,6 +10,8 @@
 
 @implementation DwollaUser
 
+@synthesize userID, name, city, state, latitude, longitude, type;
+
 -(id)initWithUserID:(NSString*)_userID name:(NSString*)_name city:(NSString*)_city state:(NSString*)_state 
            latitude:(NSString*)_latitude longitude:(NSString*)_longitude type:(NSString*)_type
 {
@@ -26,45 +28,24 @@
     return self;
 }
 
-
--(NSString*)getName
+-(id)initWithDictionary:(NSDictionary*) dictionary
 {
-    return name;
-}
-
--(NSString*)getUserID
-{
-    return userID;
-}
-
--(NSString*)getCity
-{
-    return city;
-}
-
--(NSString*)getState
-{
-    return state;
-}
-
--(NSString*)getLongitude
-{
-    return longitude;
-}
-
--(NSString*)getLatitude
-{
-    return latitude;
-}
-
--(NSString*)getType
-{
-    return type;
+    if (self)
+    {
+        userID = [dictionary valueForKey:ID_RESPONSE_NAME];
+        name = [dictionary valueForKey:NAME_RESPONSE_NAME];
+        city = [dictionary valueForKey:CITY_RESPONSE_NAME];
+        state = [dictionary valueForKey:STATE_RESPONSE_NAME];
+        latitude = [dictionary valueForKey:LATITUDE_RESPONSE_NAME] ;
+        longitude = [dictionary valueForKey:LONGITUDE_RESPONSE_NAME];
+        type = [dictionary valueForKey:TYPE_RESPONSE_NAME];
+    }
+    return self;
 }
 
 -(BOOL)isEqualTo:(DwollaUser*)_user
 {
-    if ([name isEqualToString:[_user getName]] || [userID isEqualToString:[_user getUserID]] || ((type == nil && [_user getType] == nil) || [userID isEqualToString:[_user getUserID]]))
+    if ([name isEqualToString:[_user name]] || [userID isEqualToString:[_user userID]] || ((type == nil && [_user type] == nil) || [userID isEqualToString:[_user userID]]))
         return YES;
 
     return NO;

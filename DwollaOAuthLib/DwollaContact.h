@@ -7,19 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Constants.m"
 
 @interface DwollaContact : NSObject
-{
-    NSString* userID;
-    NSString* name;
-    NSString* image;
-    NSString* city;
-    NSString* state;
-    NSString* type;
-    NSString* address;
-    NSString* longitude;
-    NSString* latitude;
-}
+
+    @property (retain) NSString *userID;
+    @property (retain) NSString *name;
+    @property (retain) NSString *image;
+    @property (retain) NSString *city;
+    @property (retain) NSString *state;
+    @property (retain) NSString *type;
+    @property (retain) NSString *address;
+    @property (retain) NSString *longitude;
+    @property (retain) NSString *latitude;
 
 /**
  * initializes a new DwollaContact with the given parameters
@@ -43,39 +43,7 @@
           longitude:(NSString*)longitude
            latitude:(NSString*)latitude;
 
-/**
- * @return name
- **/
--(NSString*)getName;
-
-/**
- * @return userID
- **/
--(NSString*)getUserID;
-
-/**
- * @return image
- **/
--(NSString*)getImageURL;
-
-/**
- * @return city
- **/
--(NSString*)getCity; 
-
-/**
- * @return state
- **/
--(NSString*)getState;
-
-/**
- * @return type
- **/
--(NSString*)getType;
-
--(NSString*) getAddress;
--(NSString*) getLongitude;
--(NSString*) getLatitude;
+-(id)initWithDictionary:(NSDictionary*)dictionary;
 
 -(BOOL) isEqualTo:(DwollaContact*)_contact;
 

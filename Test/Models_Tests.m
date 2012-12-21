@@ -189,9 +189,9 @@
     
     DwollaFundingSource* actualSource = [actual objectAtIndex:0];
 
-    GHAssertEqualStrings([actualSource getSourceID], [expectedSource getSourceID], @"Id expected does not match");
-    GHAssertEqualStrings([actualSource getName], [expectedSource getName], @"Name expected does not match");
-    GHAssertEqualStrings([actualSource getType], [expectedSource getType], @"Type expected does not match");
+    GHAssertEqualStrings([actualSource sourceID], [expectedSource sourceID], @"Id expected does not match");
+    GHAssertEqualStrings([actualSource name], [expectedSource name], @"Name expected does not match");
+    GHAssertEqualStrings([actualSource type], [expectedSource type], @"Type expected does not match");
     GHAssertTrue([actualSource isVerified], @"Verified expected does not match");
 }
 
@@ -214,9 +214,9 @@
     DwollaFundingSource* expected = [[DwollaFundingSource alloc] initWithSourceID:@"TVmMwlKz1z6HmOK1np8NFA==" name:@"Donations Collection Fund - Savings" type:@"Savings" verified:@"true"];
     
     
-    GHAssertEqualStrings([actual getSourceID], [expected getSourceID], @"Id expected does not match");
-    GHAssertEqualStrings([actual getName], [expected getName], @"Name expected does not match");
-    GHAssertEqualStrings([actual getType], [expected getType], @"Type expected does not match");
+    GHAssertEqualStrings([actual sourceID], [expected sourceID], @"Id expected does not match");
+    GHAssertEqualStrings([actual name], [expected name], @"Name expected does not match");
+    GHAssertEqualStrings([actual type], [expected type], @"Type expected does not match");
     GHAssertTrue([actual isVerified], @"Verified expected does not match");
 }
 
@@ -277,18 +277,18 @@
     
     DwollaTransaction* expected = [[DwollaTransaction alloc] initWithAmount:@"1.91" clearingDate:@"" date:@"7/18/2012 1:45:36 PM" destinationID:@"812-737-5434" destinationName:@"Timbuktuu Coffee" transactionID:@"1226108" notes:@"From iPhone" sourceID:@"" sourceName:@"" status:@"processed" type:@"money_sent" userType:@"Dwolla"];
     
-    GHAssertEqualStrings([actual getAmount], [expected getAmount], @"Amount expected does not match");
-    GHAssertEqualStrings([actual getClearingDate], [expected getClearingDate], @"Clearing Date expected does not match");
-    GHAssertEqualStrings([actual getDate], [expected getDate], @"Date expected does not match");
-    GHAssertEqualStrings([actual getDestinationID], [expected getDestinationID], @"Destination Id expected does not match");
-    GHAssertEqualStrings([actual getDestinationName], [expected getDestinationName], @"Destination Name expected does not match");
-    GHAssertEqualStrings([actual getTransactionID], [expected getTransactionID], @"Transaction Id expected does not match");
-    GHAssertEqualStrings([actual getNotes], [expected getNotes], @"Notes expected does not match");
-    GHAssertEqualStrings([actual getSourceID], [expected getSourceID], @"Source Id expected does not match");
-    GHAssertEqualStrings([actual getSourceName], [expected getSourceName], @"Source Name expected does not match");
-    GHAssertEqualStrings([actual getStatus], [expected getStatus], @"Status expected does not match");
-    GHAssertEqualStrings([actual getType], [expected getType], @"Type expected does not match");
-    GHAssertEqualStrings([actual getUserType], [expected getUserType], @"User Type expected does not match");
+    GHAssertEqualStrings([actual amount], [expected amount], @"Amount expected does not match");
+    GHAssertEqualStrings([actual clearingDate], [expected clearingDate], @"Clearing Date expected does not match");
+    GHAssertEqualStrings([actual date], [expected date], @"Date expected does not match");
+    GHAssertEqualStrings([actual destinationID], [expected destinationID], @"Destination Id expected does not match");
+    GHAssertEqualStrings([actual destinationName], [expected destinationName], @"Destination Name expected does not match");
+    GHAssertEqualStrings([actual transactionID], [expected transactionID], @"Transaction Id expected does not match");
+    GHAssertEqualStrings([actual notes], [expected notes], @"Notes expected does not match");
+    GHAssertEqualStrings([actual sourceID], [expected sourceID], @"Source Id expected does not match");
+    GHAssertEqualStrings([actual sourceName], [expected sourceName], @"Source Name expected does not match");
+    GHAssertEqualStrings([actual status], [expected status], @"Status expected does not match");
+    GHAssertEqualStrings([actual type], [expected type], @"Type expected does not match");
+    GHAssertEqualStrings([actual userType], [expected userType], @"User Type expected does not match");
 }
 
 -(void)testGetTransaction_WithSuccessfulResponse_ShouldReturnValidTransaction

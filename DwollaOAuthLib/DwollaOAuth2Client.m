@@ -10,13 +10,14 @@
 
 @implementation DwollaOAuth2Client
 
-@synthesize dwollaAPI, oAuthTokenRepository;
+@synthesize oAuthTokenRepository, httpRequestHelper;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         oAuthTokenRepository = [[OAuthTokenRepository alloc] init];
+        httpRequestHelper = [[HttpRequestHelper alloc] init];
     }
     return self;
 }
@@ -33,9 +34,8 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        dwollaAPI = [DwollaAPI sharedInstance];
-        key = [dwollaAPI encodedURLParameterString:_key];
-        secret = [dwollaAPI encodedURLParameterString:_secret];
+        key = [self.httpRequestHelper encodeString:_key];
+        secret = [self.httpRequestHelper encodeString:_secret];
         [[NSUserDefaults standardUserDefaults] setObject:key forKey:@"key"];
         [[NSUserDefaults standardUserDefaults] setObject:secret forKey:@"secret"];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -137,7 +137,7 @@
     
     NSString* token =[dictionary objectForKey:@"access_token"];
     
-    token = [dwollaAPI encodedURLParameterString:token];
+    token = [self.httpRequestHelper encodeString:token];
     
     [oAuthTokenRepository setAccessToken:token];
     

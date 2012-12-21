@@ -51,9 +51,9 @@
     
     DwollaFundingSource *fundingSource = [fundingSources objectAtIndex:0];
     
-    GHAssertEqualStrings([fundingSource getSourceID], expectedId, @"Id expected does not match");
-    GHAssertEqualStrings([fundingSource getName], expectedName, @"Name expected does not match");
-    GHAssertEqualStrings([fundingSource getType], expectedType, @"Type expected does not match");
+    GHAssertEqualStrings([fundingSource sourceID], expectedId, @"Id expected does not match");
+    GHAssertEqualStrings([fundingSource name], expectedName, @"Name expected does not match");
+    GHAssertEqualStrings([fundingSource type], expectedType, @"Type expected does not match");
     GHAssertTrue([fundingSource isVerified], @"Verified expected does not match");
 }
 
@@ -71,6 +71,7 @@
 -(void)testFundingSource_WithValidData_ShouldCallHttpRequestRepository
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
+    [[[self.mockHttpRequestHelper stub] andReturn:@"123"] encodeString:@"123"];
     
     [[self.mockHttpRequestRepository expect] getRequest:@"https://www.dwolla.com/oauth/rest/fundingsources/123?oauth_token=123456789"];
     
@@ -81,6 +82,7 @@
 -(void)testFundingSource_WithValidData_ShouldReturnCorrectFundingSource
 {
     [self Setup_WithAccessToken_ClientKey_ClientSecret];
+    [[[self.mockHttpRequestHelper stub] andReturn:@"123"] encodeString:@"123"];
     
     NSString* expectedId = @"TVmMwlKz1z6HmOK1np8NFA==";
     NSString* expectedName = @"Donations Collection Fund - Savings";
@@ -98,9 +100,9 @@
     
     DwollaFundingSource* fundingSource = [self.dwollaAPI getFundingSource: @"123"];
     
-    GHAssertEqualStrings([fundingSource getSourceID], expectedId, @"Id expected does not match");
-    GHAssertEqualStrings([fundingSource getName], expectedName, @"Name expected does not match");
-    GHAssertEqualStrings([fundingSource getType], expectedType, @"Type expected does not match");
+    GHAssertEqualStrings([fundingSource sourceID], expectedId, @"Id expected does not match");
+    GHAssertEqualStrings([fundingSource name], expectedName, @"Name expected does not match");
+    GHAssertEqualStrings([fundingSource type], expectedType, @"Type expected does not match");
     GHAssertTrue([fundingSource isVerified], @"Verified expected does not match");
 }
 
