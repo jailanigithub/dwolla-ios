@@ -91,19 +91,19 @@ static DwollaAPI* sharedInstance;
     
     //Creating Parameters Dictionary
     NSMutableDictionary* parameterDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                                pin, @"pin",
-                                                sourceID, @"sourceId",
-                                                amount, @"amount", nil];
+                                                pin, PIN_PARAMETER_NAME,
+                                                sourceID, SOURCE_ID_PARAMETER_NAME,
+                                                amount, AMOUNT_PARAMETER_NAME, nil];
     
-    if (type != nil && ![type isEqualToString:@""]) [parameterDictionary setObject:type forKey:@"sourceType"];
-    if (facAmount != nil && ![facAmount isEqualToString:@""]) [parameterDictionary setObject:facAmount forKey:@"facilitatorAmount"];
-    if (notes != nil && ![notes isEqualToString:@""]) [parameterDictionary setObject:notes forKey:@"notes"];
+    if (type != nil && ![type isEqualToString:@""]) [parameterDictionary setObject:type forKey:SOURCE_TYPE_PARAMETER_NAME];
+    if (facAmount != nil && ![facAmount isEqualToString:@""]) [parameterDictionary setObject:facAmount forKey:FACILITATOR_AMOUNT_PARAMETER_NAME];
+    if (notes != nil && ![notes isEqualToString:@""]) [parameterDictionary setObject:notes forKey:NOTES_PARAMETER_NAME];
     
     //Making the POST Request && Verifying
     NSDictionary* dictionary = [httpRequestRepository postRequest: url withParameterDictionary: parameterDictionary];
     
     //Parsing and responding
-    return [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:@"Response"]];
+    return [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:RESPONSE_RESULT_PARAMETER]];
 }
 
 -(NSString*)getBalance
@@ -112,7 +112,7 @@ static DwollaAPI* sharedInstance;
     NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", BALANCE_URL, token];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
-    return [[NSString alloc]initWithFormat:@"%@", [dictionary objectForKey:@"Response"]];
+    return [[NSString alloc]initWithFormat:@"%@", [dictionary objectForKey:RESPONSE_RESULT_PARAMETER]];
 }
 
 -(NSMutableArray*)getContactsByName:(NSString*)name
@@ -132,7 +132,7 @@ static DwollaAPI* sharedInstance;
     //Make GET Request and Verify
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url withQueryParameterDictionary:parameterDictionary];
     
-    NSArray* data =[dictionary valueForKey:@"Response"];
+    NSArray* data =[dictionary valueForKey:RESPONSE_RESULT_PARAMETER];
     
     NSMutableArray* contacts = [[NSMutableArray alloc] initWithCapacity:[data count]];
     
@@ -163,7 +163,7 @@ static DwollaAPI* sharedInstance;
     //Make GET Request and Verify
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url withQueryParameterDictionary:parameterDictionary];
     
-    NSArray* data =[dictionary valueForKey:@"Response"];
+    NSArray* data =[dictionary valueForKey:RESPONSE_RESULT_PARAMETER];
     
     NSMutableArray* contacts = [[NSMutableArray alloc] initWithCapacity:[data count]];
     
@@ -183,7 +183,7 @@ static DwollaAPI* sharedInstance;
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
 
-    NSArray* data =[dictionary valueForKey:@"Response"];
+    NSArray* data =[dictionary valueForKey:RESPONSE_RESULT_PARAMETER];
     
     NSMutableArray* sources = [[NSMutableArray alloc] initWithCapacity:[data count]];
     for (int i = 0; i < [data count]; i++)
@@ -205,7 +205,7 @@ static DwollaAPI* sharedInstance;
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
     
-    return [self generateSourceWithDictionary:[dictionary valueForKey:@"Response"]];
+    return [self generateSourceWithDictionary:[dictionary valueForKey:RESPONSE_RESULT_PARAMETER]];
 }
 
 -(DwollaUser*)getAccountInfo
@@ -216,9 +216,9 @@ static DwollaAPI* sharedInstance;
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
     
-    NSDictionary* response = [dictionary valueForKey:@"Response"];
+    NSDictionary* response = [dictionary valueForKey:RESPONSE_RESULT_PARAMETER];
 
-    return [[DwollaUser alloc] initWithUserID:[response valueForKey:@"Id"] name:[response valueForKey:@"Name"] city:[response valueForKey:@"City"] state:[response valueForKey:@"State"] latitude:[response valueForKey:@"Latitude"] longitude:[response valueForKey:@"Longitude"] type:[response valueForKey:@"Type"]];
+    return [[DwollaUser alloc] initWithUserID:[response valueForKey:ID_RESPONSE_NAME] name:[response valueForKey:NAME_RESPONSE_NAME] city:[response valueForKey:CITY_RESPONSE_NAME] state:[response valueForKey:STATE_RESPONSE_NAME] latitude:[response valueForKey:LATITUDE_RESPONSE_NAME] longitude:[response valueForKey:LONGITUDE_RESPONSE_NAME] type:[response valueForKey:TYPE_RESPONSE_NAME]];
 }
 
 -(DwollaUser*)getBasicInfoWithAccountID:(NSString*)accountID
@@ -231,10 +231,10 @@ static DwollaAPI* sharedInstance;
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
 
-    NSDictionary* values = [dictionary valueForKey:@"Response"];
+    NSDictionary* values = [dictionary valueForKey:RESPONSE_RESULT_PARAMETER];
     
-    return [[DwollaUser alloc] initWithUserID:[values valueForKey:@"Id"] name:[values valueForKey:@"Name"] city:nil state:nil
-                                     latitude:[values valueForKey:@"Latitude"] longitude:[values valueForKey:@"Longitude"] type:nil];
+    return [[DwollaUser alloc] initWithUserID:[values valueForKey:ID_RESPONSE_NAME] name:[values valueForKey:NAME_RESPONSE_NAME] city:nil state:nil
+                                     latitude:[values valueForKey:LATITUDE_RESPONSE_NAME] longitude:[values valueForKey:LONGITUDE_RESPONSE_NAME] type:nil];
 }
 
 -(NSArray*)getTransactionsSince:(NSString*)date
@@ -254,7 +254,7 @@ static DwollaAPI* sharedInstance;
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url withQueryParameterDictionary: parameterDictionary];
     
-    NSArray* data =[dictionary valueForKey:@"Response"];
+    NSArray* data =[dictionary valueForKey:RESPONSE_RESULT_PARAMETER];
     
     NSMutableArray* transactions = [[NSMutableArray alloc] initWithCapacity:[data count]];
     for (int i = 0; i < [data count]; i++)
@@ -272,7 +272,7 @@ static DwollaAPI* sharedInstance;
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
 
-    return [self generateTransactionWithDictionary:[dictionary valueForKey:@"Response"]];
+    return [self generateTransactionWithDictionary:[dictionary valueForKey:RESPONSE_RESULT_PARAMETER]];
 }
 
 -(DwollaTransactionStats*)getTransactionStatsWithStart:(NSString*)start
@@ -290,9 +290,9 @@ static DwollaAPI* sharedInstance;
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url withQueryParameterDictionary: parameterDictionary];
     
-    NSArray* result =[dictionary valueForKey:@"Response"];
+    NSArray* result =[dictionary valueForKey:RESPONSE_RESULT_PARAMETER];
  
-    return [[DwollaTransactionStats alloc] initWithSuccess:YES count:[result valueForKey:@"TransactionsCount"] total:[result valueForKey:@"TransactionsTotal"]];
+    return [[DwollaTransactionStats alloc] initWithSuccess:YES count:[result valueForKey:TRANSACTION_COUNT_RESPONSE_NAME] total:[result valueForKey:TRANSACTION_TOTAL_RESPONSE_NAME]];
 }
 
 -(NSDictionary*)generateDictionaryWithData:(NSData*)data
@@ -307,43 +307,44 @@ static DwollaAPI* sharedInstance;
 
 -(DwollaContact*) generateContactWithDictionary:(NSDictionary *)dictionary {
     
-    NSString *userId = [dictionary objectForKey:@"Id"];
-    NSString *name = [dictionary objectForKey:@"Name"];
-    NSString *image = [dictionary objectForKey:@"Image"];
-    NSString *city = [dictionary objectForKey:@"City"];
-    NSString *state = [dictionary objectForKey:@"State"];
-    NSString *type = [dictionary objectForKey:@"Type"];
-    NSString *address = [dictionary objectForKey:@"Address"];
-    NSString *longitude = [dictionary objectForKey:@"Longitude"];
-    NSString *latitude = [dictionary objectForKey:@"Latitude"];
+    NSString *userId = [dictionary objectForKey:ID_RESPONSE_NAME];
+    NSString *name = [dictionary objectForKey:NAME_RESPONSE_NAME];
+    NSString *image = [dictionary objectForKey:IMAGE_RESPONSE_NAME];
+    NSString *city = [dictionary objectForKey:CITY_RESPONSE_NAME];
+    NSString *state = [dictionary objectForKey:STATE_RESPONSE_NAME];
+    NSString *type = [dictionary objectForKey:TYPE_RESPONSE_NAME];
+    NSString *address = [dictionary objectForKey:ADDRESS_RESPONSE_NAME];
+    NSString *longitude = [dictionary objectForKey:LONGITUDE_PARAMETER_NAME];
+    NSString *latitude = [dictionary objectForKey:LATITUDE_RESPONSE_NAME];
     return [[DwollaContact alloc] initWithUserID:userId name:name image:image city:city state:state type:type address:address longitude:longitude latitude:latitude];
 }
 
 -(DwollaFundingSource*)generateSourceWithDictionary:(NSDictionary*)dictionary
 {
     
-    NSString* sourceID = [dictionary objectForKey:@"Id"];
-    NSString* name = [dictionary objectForKey:@"Name"];
-    NSString* type = [dictionary objectForKey:@"Type"];
-    NSString* verified = [dictionary objectForKey:@"Verified"];
+    NSString* sourceID = [dictionary objectForKey:ID_RESPONSE_NAME];
+    NSString* name = [dictionary objectForKey:NAME_RESPONSE_NAME];
+    NSString* type = [dictionary objectForKey:TYPE_RESPONSE_NAME];
+    NSString* verified = [dictionary objectForKey:VERIFIED_RESPONSE_NAME];
     
     return [[DwollaFundingSource alloc] initWithSourceID:sourceID name:name type:type verified:verified];
 }
 
 -(DwollaTransaction*)generateTransactionWithDictionary:(NSDictionary*) dictionary
 {
-    NSString* amount = [dictionary objectForKey:@"Amount"];
-    NSString* clearingDate = [dictionary objectForKey:@"ClearingDate"];
-    NSString* date = [dictionary objectForKey:@"Date"];
-    NSString* destinationID = [dictionary objectForKey:@"DestinationId"];
-    NSString* destinationName = [dictionary objectForKey:@"DestinationName"];
-    NSString* transactionID =  [dictionary objectForKey:@"Id"];
-    NSString* notes = [dictionary objectForKey:@"Notes"];
-    NSString* sourceID = [dictionary objectForKey:@"SourceId"];
-    NSString* sourceName =  [dictionary objectForKey:@"SourceName"];
-    NSString* status =  [dictionary objectForKey:@"Status"];
-    NSString* type =  [dictionary objectForKey:@"Type"];
-    NSString* userType = [dictionary objectForKey:@"UserType"];
+    NSString* amount = [dictionary objectForKey:AMOUNT_RESPONSE_NAME];
+    NSString* clearingDate = [dictionary objectForKey:CLEARING_DATE_RESPONSE_NAME];
+    NSString* date = [dictionary objectForKey:DATE_RESPONSE_NAME];
+    NSString* destinationID = [dictionary objectForKey:DESTINATION_ID_RESPONSE_NAME];
+    NSString* destinationName = [dictionary objectForKey:DESTINATION_NAME_RESPONSE_NAME];
+    NSString* transactionID =  [dictionary objectForKey:ID_RESPONSE_NAME];
+    NSString* notes = [dictionary objectForKey:NOTES_RESPONSE_NAME
+                       ];
+    NSString* sourceID = [dictionary objectForKey:SOURCE_ID_RESPONSE_NAME];
+    NSString* sourceName =  [dictionary objectForKey:SOURCE_NAME_RESPONSE_NAME];
+    NSString* status =  [dictionary objectForKey:STATUS_RESPONSE_NAME];
+    NSString* type =  [dictionary objectForKey:TYPE_RESPONSE_NAME];
+    NSString* userType = [dictionary objectForKey:USER_TYPE_RESPONSE_NAME];
 
     return [[DwollaTransaction alloc] initWithAmount:amount clearingDate:clearingDate date:date destinationID:destinationID destinationName:destinationName transactionID:transactionID notes:notes sourceID:sourceID sourceName:sourceName status:status type:type userType:userType];
 }

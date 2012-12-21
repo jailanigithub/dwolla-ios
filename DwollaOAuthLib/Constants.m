@@ -26,6 +26,8 @@ static NSString *const AMOUNT_ERROR_NAME = @"Amount";
 
 static NSString *const PIN_PARAMETER_NAME = @"pin";
 static NSString *const DESTINATION_ID_PARAMETER_NAME = @"destinationId";
+static NSString *const SOURCE_ID_PARAMETER_NAME = @"sourceId";
+static NSString *const SOURCE_TYPE_PARAMETER_NAME = @"sourceType";
 static NSString *const AMOUNT_PARAMETER_NAME = @"amount";
 static NSString *const DESTINATION_TYPE_PARAMETER_NAME = @"destinationType";
 static NSString *const FACILITATOR_AMOUNT_PARAMETER_NAME = @"facilitatorAmount";
@@ -44,3 +46,30 @@ static NSString *const LONGITUDE_PARAMETER_NAME = @"longitude";
 static NSString *const SKIP_PARAMETER_NAME = @"skip";
 static NSString *const START_DATE_PARAMETER_NAME = @"startDate";
 static NSString *const END_DATE_PARAMETER_NAME = @"endDate";
+
+static NSString *const ID_RESPONSE_NAME = @"Id";
+static NSString *const NAME_RESPONSE_NAME = @"Name";
+static NSString *const CITY_RESPONSE_NAME = @"City";
+static NSString *const STATE_RESPONSE_NAME = @"State";
+static NSString *const LATITUDE_RESPONSE_NAME = @"Latitude";
+static NSString *const LONGITUDE_RESPONSE_NAME = @"Longitude";
+static NSString *const TYPE_RESPONSE_NAME = @"Type";
+static NSString *const TRANSACTION_COUNT_RESPONSE_NAME = @"TransactionsCount";
+static NSString *const TRANSACTION_TOTAL_RESPONSE_NAME = @"TransactionsTotal";
+static NSString *const IMAGE_RESPONSE_NAME = @"Image";
+static NSString *const ADDRESS_RESPONSE_NAME = @"Address";
+static NSString *const VERIFIED_RESPONSE_NAME = @"Verified";
+static NSString *const AMOUNT_RESPONSE_NAME = @"Amount";
+static NSString *const CLEARING_DATE_RESPONSE_NAME = @"ClearingDate";
+static NSString *const DATE_RESPONSE_NAME = @"Date";
+static NSString *const DESTINATION_ID_RESPONSE_NAME = @"DestinationId";
+static NSString *const DESTINATION_NAME_RESPONSE_NAME = @"DestinationName";
+static NSString *const NOTES_RESPONSE_NAME = @"Notes";
+static NSString *const SOURCE_ID_RESPONSE_NAME = @"SourceId";
+static NSString *const SOURCE_NAME_RESPONSE_NAME = @"SourceName";
+static NSString *const STATUS_RESPONSE_NAME = @"Status";
+static NSString *const USER_TYPE_RESPONSE_NAME = @"UserType";
+
+
+
+
