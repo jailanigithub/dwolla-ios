@@ -65,7 +65,7 @@ static NSString *const QUERY_STRING_SEPERATOR = @"&";
 
 -(NSString*) encodeString: (NSString*) string
 {
-    return (__bridge NSString *) CFURLCreateStringByAddingPercentEscapes( NULL, (CFStringRef)string, NULL, (CFStringRef)@"!’\"();:@&=+$,/?%#[]% ", kCFStringEncodingISOLatin1);
+    return (NSString*)CFURLCreateStringByAddingPercentEscapes( NULL, (CFStringRef)string, NULL, (CFStringRef)@"!’\"();:@&=+$,/?%#[]% ", kCFStringEncodingISOLatin1);
 }
 
 @end
