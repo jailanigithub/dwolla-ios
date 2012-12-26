@@ -33,8 +33,6 @@
 
 -(IBAction)requestMoney;
 
--(IBAction)registerUser;
-
 -(IBAction)logout;
 
 -(IBAction)getNearby;
