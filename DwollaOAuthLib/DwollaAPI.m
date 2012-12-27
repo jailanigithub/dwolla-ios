@@ -37,6 +37,10 @@ static DwollaAPI* sharedInstance;
     sharedInstance = _instance;
 }
 
+-(void) setBaseURL:(NSString*) url {
+    DWOLLA_API_BASEURL = url;
+}
+
 -(NSString*)sendMoneyWithPIN:(NSString*)pin
                destinationID:(NSString*)destinationID
              destinationType:(NSString*)type
