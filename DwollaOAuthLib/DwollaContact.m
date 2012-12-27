@@ -22,34 +22,36 @@
           longitude:(NSString *)_longitude
            latitude:(NSString *)_latitude
 {
+    self = [super init];
     if (self)
     {
-        userID = _userID;
-        name = _name;
-        image = _image;
-        city = _city;
-        state = _state;
-        type = _type;
-        address = _address;
-        longitude = _longitude;
-        latitude = _latitude;
+        userID = [_userID retain];
+        name = [_name retain];
+        image = [_image retain];
+        city = [_city retain];
+        state = [_state retain];
+        type = [_type retain];
+        address = [_address retain];
+        longitude = [_longitude retain];
+        latitude = [_latitude retain];
     }
     return self;
 }
 
 -(id)initWithDictionary:(NSDictionary*) dictionary
 {
+    self = [super init];
     if (self)
     {
-        userID = [dictionary objectForKey:ID_RESPONSE_NAME];
-        name = [dictionary objectForKey:NAME_RESPONSE_NAME];
-        image = [dictionary objectForKey:IMAGE_RESPONSE_NAME];
-        city = [dictionary objectForKey:CITY_RESPONSE_NAME];
-        state = [dictionary objectForKey:STATE_RESPONSE_NAME];
-        type = [dictionary objectForKey:TYPE_RESPONSE_NAME];
-        address = [dictionary objectForKey:ADDRESS_RESPONSE_NAME];
-        longitude = [dictionary objectForKey:LONGITUDE_PARAMETER_NAME];
-        latitude = [dictionary objectForKey:LATITUDE_RESPONSE_NAME];
+        userID = [[dictionary objectForKey:ID_RESPONSE_NAME] retain];
+        name = [[dictionary objectForKey:NAME_RESPONSE_NAME] retain];
+        image = [[dictionary objectForKey:IMAGE_RESPONSE_NAME] retain];
+        city = [[dictionary objectForKey:CITY_RESPONSE_NAME] retain];
+        state = [[dictionary objectForKey:STATE_RESPONSE_NAME] retain];
+        type = [[dictionary objectForKey:TYPE_RESPONSE_NAME] retain];
+        address = [[dictionary objectForKey:ADDRESS_RESPONSE_NAME] retain];
+        longitude = [[dictionary objectForKey:LONGITUDE_PARAMETER_NAME] retain];
+        latitude = [[dictionary objectForKey:LATITUDE_RESPONSE_NAME] retain];
     }
     return self;
 }
@@ -66,6 +68,19 @@
     {
         return YES;
     }
+}
+
+-(void) dealloc {
+    [userID release];
+    [name release];
+    [image release];
+    [city release];
+    [state release];
+    [type release];
+    [address release];
+    [longitude release];
+    [latitude release];
+    [super dealloc];
 }
 
 @end
