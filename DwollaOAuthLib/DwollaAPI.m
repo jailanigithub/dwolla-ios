@@ -218,7 +218,7 @@ static DwollaAPI* sharedInstance;
     
     NSDictionary* response = [dictionary valueForKey:RESPONSE_RESULT_PARAMETER];
 
-    return [[DwollaUser alloc] initWithDictionary:response];
+    return [[[DwollaUser alloc] initWithDictionary:response] autorelease];
 }
 
 -(DwollaUser*)getBasicInfoWithAccountID:(NSString*)accountID
