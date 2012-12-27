@@ -11,6 +11,10 @@
 
 static NSString *const QUERY_STRING_SEPERATOR = @"&";
 
+@interface HttpRequestHelper ()
+-(BOOL) isNull:(NSString*)value;
+@end
+
 @implementation HttpRequestHelper
 
 -(NSDictionary*)generateDictionaryWithData:(NSData*)data
@@ -50,8 +54,13 @@ static NSString *const QUERY_STRING_SEPERATOR = @"&";
 -(NSDictionary*) checkRequestForSuccessAndReturn:(NSDictionary*) dictionary
 {
     BOOL success = [[dictionary valueForKey:@"Success"] boolValue];
-    if (!success)
-        @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:[self getJSONStringFromNSDictionary:dictionary] userInfo:nil];
+    if (!success){
+        NSString *message = [dictionary valueForKey:@"Message"];
+        if([self isNull:message]){
+            message = @"Unknown error occurred";
+        }
+        @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:message userInfo:nil];
+    }
     return dictionary;
 }
 
@@ -67,6 +76,10 @@ static NSString *const QUERY_STRING_SEPERATOR = @"&";
 -(NSString*) encodeString: (NSString*) string
 {
     return (NSString*)CFURLCreateStringByAddingPercentEscapes( NULL, (CFStringRef)string, NULL, (CFStringRef)@"!’\"();:@&=+$,/?%#[]% ", kCFStringEncodingISOLatin1);
+}
+
+-(BOOL) isNull:(NSString*) value {
+    return value == (id)[NSNull null] || value.length == 0;
 }
 
 @end
