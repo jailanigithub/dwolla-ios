@@ -49,7 +49,8 @@ static NSString *const QUERY_STRING_SEPERATOR = @"&";
 
 -(NSDictionary*) checkRequestForSuccessAndReturn:(NSDictionary*) dictionary
 {
-    if ([[[NSString alloc] initWithFormat:@"%@", [dictionary valueForKey:@"Success"]] isEqualToString:@"false"])
+    BOOL success = [[dictionary valueForKey:@"Success"] boolValue];
+    if (!success)
         @throw [NSException exceptionWithName:@"REQUEST_FAILED_EXCEPTION" reason:[self getJSONStringFromNSDictionary:dictionary] userInfo:nil];
     return dictionary;
 }
