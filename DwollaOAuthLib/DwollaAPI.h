@@ -85,10 +85,10 @@ static NSString *DWOLLA_API_BASEURL;
 /**
  * shows the balance of the current user
  *
- * @return string representation of the balance
+ * @return float representation of the balance
  * @throws NSException if no access token is available, or request fails
  **/
--(NSString*)getBalance;
+-(float)getBalance;
 
 
 /**

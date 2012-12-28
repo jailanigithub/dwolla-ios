@@ -111,13 +111,13 @@ static DwollaAPI* sharedInstance;
     return [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:RESPONSE_RESULT_PARAMETER]];
 }
 
--(NSString*)getBalance
+-(float)getBalance
 {
     NSString* token = [self.oAuthTokenRepository getAccessToken];
-    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", BALANCE_URL, token];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", BALANCE_URL, [self.httpRequestHelper encodeString:token]];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
-    return [[NSString alloc]initWithFormat:@"%@", [dictionary objectForKey:RESPONSE_RESULT_PARAMETER]];
+    return [[dictionary objectForKey:RESPONSE_RESULT_PARAMETER] floatValue];
 }
 
 -(NSMutableArray*)getContactsByName:(NSString*)name
