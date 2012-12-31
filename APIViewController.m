@@ -14,11 +14,13 @@
 
 @implementation APIViewController
 
+@synthesize dwollaAPI;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        dwollaAPI = [DwollaAPI sharedInstance];
     }
     return self;
 }
@@ -43,79 +45,86 @@
 
 -(IBAction) getBalance
 {
-    NSString* balance = [DwollaAPI getBalance];
+    NSString* balance = [dwollaAPI getBalance];
+    NSLog(@"%@", balance);
 }
 
 -(IBAction)getContacts
 {
-    DwollaContacts* contacts = [DwollaAPI getContactsByName:@"" types:@"" limit:@""];
+    NSArray* contacts = [dwollaAPI getContactsByName:@"" types:@"" limit:@""];
+    NSLog(@"%@", [contacts description]);
 }
 
 -(IBAction)getFundingSources
 {
-    DwollaFundingSources* sources = [DwollaAPI getFundingSources];
-    DwollaFundingSource* person = [[sources getAll] objectAtIndex:0];
+    NSArray* sources = [dwollaAPI getFundingSources];
+    DwollaFundingSource* person = [sources objectAtIndex:0];
+    NSLog(@"%@", [person description]);
 }
 
 -(IBAction)getFirstSource
 {
-    DwollaFundingSources* sources = [DwollaAPI getFundingSources];
-    DwollaFundingSource* source = [[sources getAll] objectAtIndex:0];
+    NSArray* sources = [dwollaAPI getFundingSources];
+    DwollaFundingSource* source = [sources objectAtIndex:0];
+    NSLog(@"%@", [source description]);
 }
 
 -(IBAction)logout
 {
-    [DwollaAPI clearAccessToken];
+    [dwollaAPI clearAccessToken];
 }
 
 -(IBAction)getTransactions
 {
-    DwollaTransactions* transactions = [DwollaAPI getTransactionsSince:@"04-08-12" limit:@"10" skip:@"0"];
-    DwollaTransaction* transaction = [[transactions getAll] objectAtIndex:0];
+    NSArray *transactions = [dwollaAPI getTransactionsSince:@"04-08-12" withType:@"" withLimit:@"10" withSkip:@"0"];
+    DwollaTransaction* transaction = [transactions objectAtIndex:0];
+    NSLog(@"%@", [transaction description]);
 }
 
 -(IBAction)getTransaction;
 {
-    DwollaTransactions* transactions = [DwollaAPI getTransactionsSince:@"04-08-12" limit:@"10" skip:@"0"];
-    DwollaTransaction* transaction = [[transactions getAll] objectAtIndex:0];
-    DwollaTransaction* trans = [DwollaAPI getTransaction:[transaction getTransactionID]];
+    NSArray *transactions = [dwollaAPI getTransactionsSince:@"04-08-12" withType:@"" withLimit:@"10" withSkip:@"0"];
+    DwollaTransaction* transaction = [transactions objectAtIndex:0];
+    DwollaTransaction* trans = [dwollaAPI getTransaction:transaction.transactionID];
+    NSLog(@"%@", [trans description]);
 }
 
 -(IBAction)getTransactionStats
 {
-    DwollaTransactionStats* stats = [DwollaAPI getTransactionStats:@"" end:@""];
+    DwollaTransactionStats *stats = [dwollaAPI getTransactionStatsWithStart:@"" withEnd:@"" withTypes:@""];
+    NSLog(@"%@", [stats description]);
 }
 
 -(IBAction)getAccountInfo
 {
-    DwollaUser* user = [DwollaAPI getAccountInfo];
+    DwollaUser* user = [dwollaAPI getAccountInfo];
+    NSLog(@"%@", [user description]);
 }
 
 -(IBAction)getBasicInfo
 {
-    DwollaTransactions* transactions = [DwollaAPI getTransactionsSince:@"04-08-12" limit:@"10" skip:@"0"];
-    DwollaTransaction* transaction = [[transactions getAll] objectAtIndex:0];
-    DwollaUser* user = [DwollaAPI getBasicInfoWithAccountID:(NSString*)[transaction getDestinationID]];
+    NSArray *transactions = [dwollaAPI getTransactionsSince:@"04-08-12" withType:@"" withLimit:@"10" withSkip:@"0"];
+    DwollaTransaction* transaction = [transactions objectAtIndex:0];
+    DwollaUser* user = [dwollaAPI getBasicInfoWithAccountID:transaction.destinationID];
+    NSLog(@"%@", [user description]);
 }
 
 -(IBAction)sendMoney
 {
-    NSString* request = [DwollaAPI sendMoneyWithPIN:@"" destinationID:@"812-607-7497" destinationType:@"Dwolla" amount:@"0.01" facilitatorAmount:@"0" assumeCosts:@"false" notes:@"api_test" fundingSourceID:@""];
+    NSString* request = [dwollaAPI sendMoneyWithPIN:@"" destinationID:@"812-607-7497" destinationType:@"Dwolla" amount:@"0.01" facilitatorAmount:@"0" assumeCosts:@"false" notes:@"api_test" fundingSourceID:@""];
+    NSLog(@"%@", request);
 }
 
 -(IBAction)requestMoney
 {
-    NSString* request = [DwollaAPI requestMoneyWithPIN:@"" sourceID:@"812-525-0238" sourceType:nil amount:@"0.01" facilitatorAmount:@"0.00" notes:nil];
-}
-
--(IBAction)registerUser
-{
-    DwollaUser* new = [DwollaAPI registerUserWithEmail:@"nicks+3@dwolla.com" password:@"Password123" pin:@"0123" firstName:@"First1" lastName:@"Last" address:@"1234 West End" address2:nil city:@"Des Moines" state:@"IA" zip:@"50301" phone:@"1112223344" birthDate:@"01-02-34" type:nil organization:nil ein:nil acceptTerms:YES];
+    NSString* request = [dwollaAPI requestMoneyWithPIN:@"" sourceID:@"812-525-0238" sourceType:nil amount:@"0.01" facilitatorAmount:@"0.00" notes:nil];
+    NSLog(@"%@", request);
 }
 
 -(IBAction)getNearby
 {
-    DwollaContacts* contacts = [DwollaAPI getNearbyWithLatitude:@"41.6" Longitude:@"-93.6" Limit:@"5" Range:@"1"];
+    NSArray* contacts = [dwollaAPI getNearbyWithLatitude:@"41.6" Longitude:@"-93.6" Limit:@"5" Range:@"1"];
+    NSLog(@"%@", [contacts description]);
 }
 
 @end

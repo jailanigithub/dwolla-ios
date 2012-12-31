@@ -10,6 +10,8 @@
 
 @implementation DwollaTransaction
 
+@synthesize amount, clearingDate, date, destinationID, destinationName, transactionID, notes, sourceID, sourceName, status, type, userType;
+
 -(id)initWithAmount:(NSString*)_amount
        clearingDate:(NSString*)_clearingDate
                date:(NSString*)_date
@@ -41,70 +43,29 @@
     return self;
 }
 
--(NSString *)getAmount
+-(id)initWithDictionary:(NSDictionary*) dictionary
 {
-    return amount;
-}
-
--(NSString*)getTransactionID
-{
-    return transactionID;
-}
-
--(NSString*)getDestinationID
-{
-    return destinationID;
-}
-
-
--(NSString*)getClearingDate
-{
-    return clearingDate;
-}
-
--(NSString*)getDate
-{
-    return date;
-}
-
--(NSString*)getDestinationName
-{
-    return destinationName;
-}
-
--(NSString*)getNotes
-{
-    return notes;
-}
-
--(NSString*)getSourceID
-{
-    return sourceID;
-}
-
--(NSString*)getSourceName
-{
-    return sourceName;
-}
-
--(NSString*)getStatus
-{
-    return status;
-}
-
--(NSString*)getType
-{
-    return type;
-}
-
--(NSString*)getUserType
-{
-    return userType;
+    if (self)
+    {
+        amount = [dictionary objectForKey:AMOUNT_RESPONSE_NAME];
+        clearingDate = [dictionary objectForKey:CLEARING_DATE_RESPONSE_NAME];
+        date = [dictionary objectForKey:DATE_RESPONSE_NAME];
+        destinationID = [dictionary objectForKey:DESTINATION_ID_RESPONSE_NAME];
+        destinationName = [dictionary objectForKey:DESTINATION_NAME_RESPONSE_NAME];
+        transactionID =  [dictionary objectForKey:ID_RESPONSE_NAME];
+        notes = [dictionary objectForKey:NOTES_RESPONSE_NAME];
+        sourceID = [dictionary objectForKey:SOURCE_ID_RESPONSE_NAME];
+        sourceName =  [dictionary objectForKey:SOURCE_NAME_RESPONSE_NAME];
+        status =  [dictionary objectForKey:STATUS_RESPONSE_NAME];
+        type =  [dictionary objectForKey:TYPE_RESPONSE_NAME];
+        userType = [dictionary objectForKey:USER_TYPE_RESPONSE_NAME];
+    }
+    return self;
 }
 
 -(BOOL)isEqualTo:(DwollaTransaction*)_transaction
 {
-    if (![destinationName isEqualToString:[_transaction getDestinationName]] || ![transactionID isEqualToString:[_transaction getTransactionID]] || ![userType isEqualToString:[_transaction getUserType]] || ![amount isEqualToString:[_transaction getAmount]] || ![status isEqualToString:[_transaction getStatus]] || ![type isEqualToString:[_transaction getType]] || ![destinationID isEqualToString:[_transaction getDestinationID]] || ![date isEqualToString:[_transaction getDate]]) 
+    if (![destinationName isEqualToString:[_transaction destinationName]] || ![transactionID isEqualToString:[_transaction transactionID]] || ![userType isEqualToString:[_transaction userType]] || ![amount isEqualToString:[_transaction amount]] || ![status isEqualToString:[_transaction status]] || ![type isEqualToString:[_transaction type]] || ![destinationID isEqualToString:[_transaction destinationID]] || ![date isEqualToString:[_transaction date]])
     {
         return NO;
     }

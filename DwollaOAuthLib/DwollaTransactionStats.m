@@ -10,37 +10,33 @@
 
 @implementation DwollaTransactionStats
 
+@synthesize count, total;
+
 -(id)initWithSuccess:(BOOL)_success 
                count:(NSString*)_count 
                total:(NSString*)_total
 {
     if (self) 
     {
-        success = _success;
         count = _count;
         total = _total;
     }
     return self;
 }
 
--(BOOL)wasSuccessful
+-(id)initWithDictionary:(NSDictionary*) dictionary
 {
-    return success;
-}
-
--(NSString*)getCount
-{
-    return count;
-}
-
--(NSString*)getTotal
-{
-    return total;
+    if (self)
+    {
+        count = [dictionary valueForKey:TRANSACTION_COUNT_RESPONSE_NAME];
+        total = [dictionary valueForKey:TRANSACTION_TOTAL_RESPONSE_NAME];
+    }
+    return self;
 }
 
 -(BOOL)isEqualTo:(DwollaTransactionStats*)_stats
 {
-    if (![count isEqualToString:[_stats getCount]] || ![total isEqualToString:[_stats getTotal]]) 
+    if (![count isEqualToString:[_stats count]] || ![total isEqualToString:[_stats total]])
     {
         return NO;
     }

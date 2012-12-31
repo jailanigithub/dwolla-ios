@@ -10,9 +10,10 @@
 
 #import <UIKit/UIKit.h>
 #import "IDwollaMessages.h"
-#import "DwollaAPI.h"
 #import "SBJson.h"
 #import "NSString+URLEncoding.h"
+#import "OAuthTokenRepository.h"
+#import "HttpRequestHelper.h"
 
 @interface DwollaOAuth2Client : UIWebView <UIWebViewDelegate>
 {
@@ -24,6 +25,8 @@
     UIView* superView;
     id<IDwollaMessages> receiver;
 }
+@property (retain) OAuthTokenRepository *oAuthTokenRepository;
+@property (retain) HttpRequestHelper *httpRequestHelper;
 
 /** 
  * initializes an instance of the DwollaO2AuthClient allowing the user to 

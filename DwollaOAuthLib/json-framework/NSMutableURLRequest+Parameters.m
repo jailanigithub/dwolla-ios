@@ -51,10 +51,6 @@ static NSString *Boundary = @"-----------------------------------0xCoCoaouTHeBou
     NSArray *encodedParameterPairs = [encodedParameters componentsSeparatedByString:@"&"];
     NSMutableArray *requestParameters = [NSMutableArray arrayWithCapacity:[encodedParameterPairs count]];
     
-    for (NSString *encodedPair in encodedParameterPairs) {
-        NSArray *encodedPairElements = [encodedPair componentsSeparatedByString:@"="];
-    }
-    
     return requestParameters;
 }
 
@@ -81,7 +77,6 @@ static NSString *Boundary = @"-----------------------------------0xCoCoaouTHeBou
 
 - (void)attachFileWithName:(NSString *)name filename:(NSString*)filename contentType:(NSString *)contentType data:(NSData*)data {
 
-	NSArray *parameters = [self parameters];
 	[self setValue:[@"multipart/form-data; boundary=" stringByAppendingString:Boundary] forHTTPHeaderField:@"Content-type"];
 	
 	NSMutableData *bodyData = [NSMutableData new];

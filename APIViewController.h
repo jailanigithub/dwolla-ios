@@ -33,10 +33,10 @@
 
 -(IBAction)requestMoney;
 
--(IBAction)registerUser;
-
 -(IBAction)logout;
 
 -(IBAction)getNearby;
+
+@property (retain) DwollaAPI *dwollaAPI;
 
 @end

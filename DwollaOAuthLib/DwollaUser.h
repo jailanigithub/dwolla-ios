@@ -7,17 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Constants.m"
 
 @interface DwollaUser : NSObject
-{
-    NSString* userID;
-    NSString* name;
-    NSString* city;
-    NSString* state;
-    NSString* longitude;
-    NSString* latitude;
-    NSString* type;
-}
+    @property (retain) NSString *userID;
+    @property (retain) NSString *name;
+    @property (retain) NSString *city;
+    @property (retain) NSString *state;
+    @property (retain) NSString *longitude;
+    @property (retain) NSString *latitude;
+    @property (retain) NSString *type;
 
 /**
  * initializes a new DwollaUser with the given parameters
@@ -40,40 +39,7 @@
           longitude:(NSString*)longitude 
                type:(NSString*)type;
 
-/**
- * @return name
- **/
--(NSString*)getName;
-
-/**
- * @return userID
- **/
--(NSString*)getUserID;
-
-/**
- * @return city
- **/
--(NSString*)getCity; 
-
-/**
- * @return state
- **/
--(NSString*)getState;
-
-/**
- * @return longitude
- **/
--(NSString*)getLongitude;
-
-/**
- * @return latitude
- **/
--(NSString*)getLatitude;
-
-/**
- * @return type
- **/
--(NSString*)getType;
+-(id)initWithDictionary:(NSDictionary*) dictionary;
 
 -(BOOL)isEqualTo:(DwollaUser*)_user;
 

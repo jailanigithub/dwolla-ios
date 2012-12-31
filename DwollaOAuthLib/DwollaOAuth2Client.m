@@ -10,11 +10,14 @@
 
 @implementation DwollaOAuth2Client
 
+@synthesize oAuthTokenRepository, httpRequestHelper;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        oAuthTokenRepository = [[OAuthTokenRepository alloc] init];
+        httpRequestHelper = [[HttpRequestHelper alloc] init];
     }
     return self;
 }
@@ -31,8 +34,8 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        key = [DwollaAPI encodedURLParameterString:_key];
-        secret = [DwollaAPI encodedURLParameterString:_secret];
+        key = [self.httpRequestHelper encodeString:_key];
+        secret = [self.httpRequestHelper encodeString:_secret];
         [[NSUserDefaults standardUserDefaults] setObject:key forKey:@"key"];
         [[NSUserDefaults standardUserDefaults] setObject:secret forKey:@"secret"];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -52,7 +55,7 @@
 
 -(void) login
 {
-    NSURLRequest* url = [DwollaAPI generateURLWithKey:key
+    NSURLRequest* url = [self generateURLWithKey:key
                                       redirect:redirect
                                       response:response
                                         scopes:scopes];
@@ -61,12 +64,12 @@
 
 -(void)logout
 {
-    [DwollaAPI clearAccessToken];
+    [oAuthTokenRepository clearAccessToken];
 }
 
 -(BOOL)isAuthorized
 {
-    return [DwollaAPI hasToken];
+    return [oAuthTokenRepository hasAccessToken];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)req navigationType:(UIWebViewNavigationType)navigationType
@@ -134,12 +137,50 @@
     
     NSString* token =[dictionary objectForKey:@"access_token"];
     
-    token = [DwollaAPI encodedURLParameterString:token];
+    token = [self.httpRequestHelper encodeString:token];
     
-    [DwollaAPI setAccessToken:token];
+    [oAuthTokenRepository setAccessToken:token];
     
     [receiver successfulLogin];
     [self removeFromSuperview];
+}
+
+
+
+
+-(NSURLRequest*)generateURLWithKey:(NSString*)keyParam
+                          redirect:(NSString*)redirectParam
+                          response:(NSString*)responseParam
+                            scopes:(NSArray*)scopesParam
+{
+    if (keyParam == nil || [keyParam isEqualToString:@""])
+    {
+        @throw [NSException exceptionWithName:@"INVALID_APPLICATION_CREDENTIALS_EXCEPTION"
+                                       reason:@"your application key is invalid"
+                                     userInfo:nil];
+    }
+    if(redirectParam == nil || [redirectParam isEqualToString:@""] || responseParam == nil ||
+       [responseParam isEqualToString:@""] || scopesParam == nil || [scopesParam count] == 0)
+    {
+        @throw [NSException exceptionWithName:@"INVALID_PARAMETER_EXCEPTION"
+                                       reason:@"either redirect, response, or scopes is nil or empty" userInfo:nil];
+    }
+    NSString* url = [NSString stringWithFormat:@"https://www.dwolla.com/oauth/v2/authenticate?client_id=%@&response_type=%@&redirect_uri=%@&scope=", keyParam, responseParam, redirectParam];
+    
+    for (int i = 0; i < [scopesParam count]; i++)
+    {
+        url = [url stringByAppendingString:[scopesParam objectAtIndex:i]];
+        if([scopesParam count] > 0 && i < [scopesParam count]-1)
+        {
+            url = [url stringByAppendingString:@"%7C"];
+        }
+    }
+    
+    NSURL* fullURL = [[NSURL alloc] initWithString:url];
+    
+    NSURLRequest* returnURL = [[NSURLRequest alloc] initWithURL:fullURL cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:100];
+    
+    return returnURL;
 }
 
 

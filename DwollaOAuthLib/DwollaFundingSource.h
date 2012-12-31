@@ -7,14 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Constants.m"
 
 @interface DwollaFundingSource : NSObject
-{
-    NSString* sourceID;
-    NSString* name;
-    NSString* type;
-    BOOL verified;
-}
+
+    @property (retain) NSString *sourceID;
+    @property (retain) NSString *name;
+    @property (retain) NSString *type;
+    @property (nonatomic, assign, getter = isVerified) BOOL verified;
 
 /**
  * initializes a new DwollaFundingSource with the given parameters
@@ -31,25 +31,7 @@
                  type:(NSString*)type 
              verified:(NSString*)verified;
 
-/**
- * @return sourceID
- **/
--(NSString*)getSourceID;
-
-/**
- * @return name
- **/
--(NSString*)getName;
-
-/**
- * @return type
- **/
--(NSString*)getType;
-
-/**
- * @return verified
- **/
--(BOOL)isVerified;
+-(id)initWithDictionary:(NSDictionary*)dictionary;
 
 -(BOOL)isEqualTo:(DwollaFundingSource*)_source;
 
