@@ -45,7 +45,7 @@
 
 -(IBAction) getBalance
 {
-    NSString* balance = [dwollaAPI getBalance];
+    float balance = [dwollaAPI getBalance];
     NSLog(@"%@", balance);
 }
 
