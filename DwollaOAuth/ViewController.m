@@ -34,14 +34,14 @@
 -(IBAction)login
 {
     NSArray *scopes = [[NSArray alloc] initWithObjects:@"send", @"balance", @"accountinfofull", @"contacts", @"funding",  @"request", @"transactions", nil];
-    DwollaOAuth2Client *client = [[DwollaOAuth2Client alloc] initWithFrame:CGRectMake(0, 0, 320, 460) key:@"qsWR4NLYZWc7hy84kRdr2TTPKjkUDQpDfMjUUrro6d2uWbw0dU" secret:@"r+nWEsy45d+zpB86mUy0QANbrTSas9KswANPUeL7auV0m1MicC" redirect:@"https://www.dwolla.com" response:@"code" scopes:scopes view:self.view reciever:self];
+       DwollaOAuth2Client *client = [[DwollaOAuth2Client alloc] initWithFrame:CGRectMake(0, 0, 320, 460) key:@"qsWR4NLYZWc7hy84kRdr2TTPKjkUDQpDfMjUUrro6d2uWbw0dU" secret:@"r+nWEsy45d+zpB86mUy0QANbrTSas9KswANPUeL7auV0m1MicC" redirect:@"https://www.dwolla.com" response:@"code" scopes:scopes view:self.view reciever:self];
+    
     [client login];
 }
 
 -(void)successfulLogin
 {
     APIViewController* actions = [[APIViewController alloc] init];
-    [actions setModalTransitionStyle:UIModalPresentationFullScreen];
     [self presentModalViewController:actions animated:YES];
 }
 

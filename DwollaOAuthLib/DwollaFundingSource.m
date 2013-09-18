@@ -34,7 +34,7 @@
         sourceID = [dictionary objectForKey:ID_RESPONSE_NAME];
         name = [dictionary objectForKey:NAME_RESPONSE_NAME];
         type = [dictionary objectForKey:TYPE_RESPONSE_NAME];
-        verified = [[dictionary objectForKey:VERIFIED_RESPONSE_NAME] isEqualToString:@"true"];
+        verified = [[dictionary objectForKey:VERIFIED_RESPONSE_NAME] boolValue];
     }
     return self;
 }

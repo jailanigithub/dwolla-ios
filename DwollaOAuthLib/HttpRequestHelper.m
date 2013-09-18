@@ -21,7 +21,7 @@ static NSString *const QUERY_STRING_SEPERATOR = @"&";
 {
     NSError* error;
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
-    
+    NSLog(@"======== Response Dictionary From Dwolla ========= %@ \n\n", dictionary);
     return dictionary;
 }
 

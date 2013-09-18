@@ -34,6 +34,8 @@
     
     [request setHTTPBody:body];
     
+    NSLog(@"======= Post Methods Request url ======= %@ \n\n ======= Post Methods Request Body ======= %@", url, body);
+    
     NSDictionary *resultDictionary = [self.nsURLConnectionRepository sendSynchronousRequest:request];
     
     return [self.httpRequestHelper checkRequestForSuccessAndReturn: resultDictionary];
@@ -41,6 +43,8 @@
 
 -(NSDictionary*)getRequest: (NSString*) url
 {
+    NSLog(@"======= Get Methods Request url ======= %@ \n\n", url);
+    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
                                                        timeoutInterval:10];

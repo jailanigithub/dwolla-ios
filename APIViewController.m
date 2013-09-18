@@ -46,7 +46,7 @@
 -(IBAction) getBalance
 {
     float balance = [dwollaAPI getBalance];
-    NSLog(@"%@", balance);
+    NSLog(@"%f", balance);
 }
 
 -(IBAction)getContacts
@@ -98,7 +98,7 @@
 -(IBAction)getAccountInfo
 {
     DwollaUser* user = [dwollaAPI getAccountInfo];
-    NSLog(@"%@", [user description]);
+    NSLog(@"%@ %@", [user userID], [user name]);
 }
 
 -(IBAction)getBasicInfo

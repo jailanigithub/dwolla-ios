@@ -38,7 +38,7 @@
                                                        @"10.00", @"Response", nil]]
      getRequest:@"https://www.dwolla.com/oauth/rest/balance?oauth_token=123456789"];
     
-    NSString* balance = [self.dwollaAPI getBalance];
+    NSString* balance = [NSString stringWithFormat:@"%f",[self.dwollaAPI getBalance]];
     
     GHAssertTrue([balance isEqualToString:@"10.00"], @"Balance does not equal the correct balance");
 }

@@ -127,7 +127,7 @@
     NSDictionary* result = [[NSDictionary alloc] initWithObjectsAndKeys:@"true", @"Success", @"Success", @"Message", @"55.76", @"Response", nil];
     [self Setup_GetRequest_WithDictionary:result];
     
-    NSString* response = [dwollaAPI getBalance];
+    NSString* response = [NSString stringWithFormat:@"%f",[dwollaAPI getBalance]];
     
     GHAssertTrue([response isEqualToString:@"55.76"],@"INCORRECT AMOUNT");
 }

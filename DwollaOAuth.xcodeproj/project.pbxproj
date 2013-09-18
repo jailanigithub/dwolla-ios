@@ -193,30 +193,9 @@
 		F534DBB3157EB04E000E2BF8 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		F534DBB4157EB04E000E2BF8 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		F534DBBC157EB04E000E2BF8 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		F534DBD6157EB11B000E2BF8 /* DwollaAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DwollaAPI.h; sourceTree = "<group>"; };
-		F534DBD7157EB11C000E2BF8 /* DwollaAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DwollaAPI.m; sourceTree = "<group>"; };
-		F534DBD9157EB141000E2BF8 /* IDwollaMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDwollaMessages.h; sourceTree = "<group>"; };
 		F59A64491580F7B300EABF75 /* APIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APIViewController.h; path = ../APIViewController.h; sourceTree = "<group>"; };
 		F59A644A1580F7B300EABF75 /* APIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APIViewController.m; path = ../APIViewController.m; sourceTree = "<group>"; };
 		F59A644B1580F7B300EABF75 /* APIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = APIViewController.xib; path = ../APIViewController.xib; sourceTree = "<group>"; };
-		F59A645615812E8D00EABF75 /* DwollaContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DwollaContacts.h; path = ../DwollaContacts.h; sourceTree = "<group>"; };
-		F59A645715812E8E00EABF75 /* DwollaContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DwollaContacts.m; path = ../DwollaContacts.m; sourceTree = "<group>"; };
-		F59A645915812E9800EABF75 /* DwollaContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DwollaContact.h; path = ../DwollaContact.h; sourceTree = "<group>"; };
-		F59A645A15812E9800EABF75 /* DwollaContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DwollaContact.m; path = ../DwollaContact.m; sourceTree = "<group>"; };
-		F59A645C15812EA400EABF75 /* DwollaFundingSources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DwollaFundingSources.h; path = ../DwollaFundingSources.h; sourceTree = "<group>"; };
-		F59A645D15812EA500EABF75 /* DwollaFundingSources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DwollaFundingSources.m; path = ../DwollaFundingSources.m; sourceTree = "<group>"; };
-		F59A645F15812EAC00EABF75 /* DwollaFundingSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DwollaFundingSource.h; path = ../DwollaFundingSource.h; sourceTree = "<group>"; };
-		F59A646015812EAC00EABF75 /* DwollaFundingSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DwollaFundingSource.m; path = ../DwollaFundingSource.m; sourceTree = "<group>"; };
-		F59A646215812EB500EABF75 /* DwollaUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DwollaUser.h; path = ../DwollaUser.h; sourceTree = "<group>"; };
-		F59A646315812EB500EABF75 /* DwollaUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DwollaUser.m; path = ../DwollaUser.m; sourceTree = "<group>"; };
-		F59A646515812EC200EABF75 /* DwollaTransactions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DwollaTransactions.h; path = ../DwollaTransactions.h; sourceTree = "<group>"; };
-		F59A646615812EC200EABF75 /* DwollaTransactions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DwollaTransactions.m; path = ../DwollaTransactions.m; sourceTree = "<group>"; };
-		F59A646815812ECD00EABF75 /* DwollaTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DwollaTransaction.h; path = ../DwollaTransaction.h; sourceTree = "<group>"; };
-		F59A646915812ECE00EABF75 /* DwollaTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DwollaTransaction.m; path = ../DwollaTransaction.m; sourceTree = "<group>"; };
-		F59A646B15812EDB00EABF75 /* DwollaTransactionStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DwollaTransactionStats.h; path = ../DwollaTransactionStats.h; sourceTree = "<group>"; };
-		F59A646C15812EDB00EABF75 /* DwollaTransactionStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DwollaTransactionStats.m; path = ../DwollaTransactionStats.m; sourceTree = "<group>"; };
-		F59DF6D41580028F00178B82 /* DwollaOAuth2Client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DwollaOAuth2Client.h; sourceTree = "<group>"; };
-		F59DF6D51580028F00178B82 /* DwollaOAuth2Client.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DwollaOAuth2Client.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -457,7 +436,6 @@
 		F534DBA4157EB04E000E2BF8 /* DwollaOAuth */ = {
 			isa = PBXGroup;
 			children = (
-				F534DC05157EB218000E2BF8 /* Classes */,
 				F534DBAD157EB04E000E2BF8 /* AppDelegate.h */,
 				F534DBAE157EB04E000E2BF8 /* AppDelegate.m */,
 				F59A64491580F7B300EABF75 /* APIViewController.h */,
@@ -466,7 +444,6 @@
 				F534DBB0157EB04E000E2BF8 /* MainStoryboard.storyboard */,
 				F534DBB3157EB04E000E2BF8 /* ViewController.h */,
 				F534DBB4157EB04E000E2BF8 /* ViewController.m */,
-				F59A645515812E6B00EABF75 /* DwollaAPI */,
 				F534DBA5157EB04E000E2BF8 /* Supporting Files */,
 			);
 			path = DwollaOAuth;
@@ -481,41 +458,6 @@
 				F534DBAC157EB04E000E2BF8 /* DwollaOAuth-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		F534DC05157EB218000E2BF8 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
-		F59A645515812E6B00EABF75 /* DwollaAPI */ = {
-			isa = PBXGroup;
-			children = (
-				F59DF6D41580028F00178B82 /* DwollaOAuth2Client.h */,
-				F59DF6D51580028F00178B82 /* DwollaOAuth2Client.m */,
-				F534DBD6157EB11B000E2BF8 /* DwollaAPI.h */,
-				F534DBD7157EB11C000E2BF8 /* DwollaAPI.m */,
-				F534DBD9157EB141000E2BF8 /* IDwollaMessages.h */,
-				F59A645615812E8D00EABF75 /* DwollaContacts.h */,
-				F59A645715812E8E00EABF75 /* DwollaContacts.m */,
-				F59A645915812E9800EABF75 /* DwollaContact.h */,
-				F59A645A15812E9800EABF75 /* DwollaContact.m */,
-				F59A645C15812EA400EABF75 /* DwollaFundingSources.h */,
-				F59A645D15812EA500EABF75 /* DwollaFundingSources.m */,
-				F59A645F15812EAC00EABF75 /* DwollaFundingSource.h */,
-				F59A646015812EAC00EABF75 /* DwollaFundingSource.m */,
-				F59A646215812EB500EABF75 /* DwollaUser.h */,
-				F59A646315812EB500EABF75 /* DwollaUser.m */,
-				F59A646515812EC200EABF75 /* DwollaTransactions.h */,
-				F59A646615812EC200EABF75 /* DwollaTransactions.m */,
-				F59A646815812ECD00EABF75 /* DwollaTransaction.h */,
-				F59A646915812ECE00EABF75 /* DwollaTransaction.m */,
-				F59A646B15812EDB00EABF75 /* DwollaTransactionStats.h */,
-				F59A646C15812EDB00EABF75 /* DwollaTransactionStats.m */,
-			);
-			name = DwollaAPI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -31,7 +31,7 @@
                view:(UIView*)_view
            reciever:(id<IDwollaMessages>)_receiver
 {
-    self = [super initWithFrame:frame];
+    self = [self initWithFrame:frame];
     if (self)
     {
         key = [self.httpRequestHelper encodeString:_key];
@@ -139,6 +139,8 @@
     
     token = [self.httpRequestHelper encodeString:token];
     
+    
+    NSLog(@"======= OAuth Generated Token %@ ====== \n\n", token);
     [oAuthTokenRepository setAccessToken:token];
     
     [receiver successfulLogin];

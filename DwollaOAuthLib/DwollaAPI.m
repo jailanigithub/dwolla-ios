@@ -52,7 +52,7 @@ static DwollaAPI* sharedInstance;
 {
     //Setting Up URL
     NSString *token = [self.oAuthTokenRepository getAccessToken];
-    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", SEND_URL, [self.httpRequestHelper encodeString:token]];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", SEND_URL, token];
     
     //Checking Parameters
     [self isParameterNullOrEmpty: pin andThrowErrorWithName: PIN_ERROR_NAME];
@@ -114,9 +114,20 @@ static DwollaAPI* sharedInstance;
 -(float)getBalance
 {
     NSString* token = [self.oAuthTokenRepository getAccessToken];
-    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", BALANCE_URL, [self.httpRequestHelper encodeString:token]];
-    
+
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", BALANCE_URL, token];
+
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
+    
+    BOOL success = [[dictionary valueForKey:@"Success"] boolValue];
+    if (!success){
+        NSString *message = [dictionary valueForKey:@"Message"];
+        if(!message){
+            message = @"Unknown error occurred";
+        }
+        NSLog(@"==== Error Message ===== %@ \n\n",message);
+        return 0.0;
+    }
     return [[dictionary objectForKey:RESPONSE_RESULT_PARAMETER] floatValue];
 }
 
@@ -217,10 +228,18 @@ static DwollaAPI* sharedInstance;
 {
     NSString* token = [self.oAuthTokenRepository getAccessToken];
     
-    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", USERS_URL, [self.httpRequestHelper encodeString:token]];
+    NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", USERS_URL, token];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
-    
+    BOOL success = [[dictionary valueForKey:@"Success"] boolValue];
+    if (!success){
+        NSString *message = [dictionary valueForKey:@"Message"];
+        if(!message){
+            message = @"Unknown error occurred";
+        }
+        NSLog(@"==== Error Message ===== %@ \n\n",message);
+        return nil;
+    }
     NSDictionary* response = [dictionary valueForKey:RESPONSE_RESULT_PARAMETER];
 
     return [[[DwollaUser alloc] initWithDictionary:response] autorelease];
