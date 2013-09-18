@@ -7,5 +7,5 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/jailanigithub/dwolla-ios.git"}
   s.source_files = 'DwollaOAuthLib','DwollaOAuthLib/**/*.{h,m}'
   s.requires_arc = false
-  s.frameworks = 'CoreGraphics', 'QuartzCore', 'GHUnitIOS', 'Foundation', 'SenTestingKit' 
+  s.frameworks = 'CoreGraphics', 'QuartzCore', 'Foundation', 'SenTestingKit' 
 end  
