@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/jailanigithub/dwolla-ios"
   s.author       = { "Jailani" => "jailaninice@gmail.com" }
   s.source       = { :git => "https://github.com/jailanigithub/dwolla-ios.git"}
-  s.source_files = 'DwollaOAuthLib'
+  s.source_files = 'DwollaOAuthLib','DwollaOAuthLib/**/*.{h,m}'
   s.requires_arc = false
   s.frameworks = 'CoreGraphics', 'QuartzCore', 'GHUnitIOS', 'Foundation', 'SenTestingKit' 
 end  
