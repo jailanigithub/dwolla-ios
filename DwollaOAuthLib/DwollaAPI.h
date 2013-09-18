@@ -19,7 +19,6 @@
 #import "HttpRequestRepository.h"
 #import "HttpRequestHelper.h"
 
-static NSString *DWOLLA_API_BASEURL;
 
 @interface DwollaAPI : NSObject
 @property (retain) OAuthTokenRepository *oAuthTokenRepository;
@@ -29,7 +28,6 @@ static NSString *DWOLLA_API_BASEURL;
 +(id) sharedInstance;
 +(void) setSharedInstance:(DwollaAPI*)_instance;
 
--(void) setBaseURL:(NSString*) url;
 -(void)setAccessToken:(NSString*) token;
 -(void)clearAccessToken;
 -(void) setClientKey: (NSString*) token;

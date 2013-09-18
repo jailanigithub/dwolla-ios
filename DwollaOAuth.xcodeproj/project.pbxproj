@@ -179,6 +179,7 @@
 		889FF8A8166699B50037DC40 /* DwollaOAuthLib-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DwollaOAuthLib-Prefix.pch"; sourceTree = "<group>"; };
 		889FF8A9166699B50037DC40 /* DwollaOAuthLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DwollaOAuthLib.h; sourceTree = "<group>"; };
 		889FF8AB166699B50037DC40 /* DwollaOAuthLib.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DwollaOAuthLib.m; sourceTree = "<group>"; };
+		B4663D1A17E9C88C000FB80D /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		F534DB9A157EB04E000E2BF8 /* DwollaOAuth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DwollaOAuth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F534DB9E157EB04E000E2BF8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F534DBA0157EB04E000E2BF8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -380,6 +381,7 @@
 				4E1385D916816E6200089E6D /* repositories */,
 				8856969516669C1A008F04E3 /* json-framework */,
 				8856964716669BCB008F04E3 /* DwollaAPI.h */,
+				B4663D1A17E9C88C000FB80D /* Constants.h */,
 				8856964816669BCB008F04E3 /* DwollaAPI.m */,
 				8856965116669BCB008F04E3 /* DwollaOAuth2Client.h */,
 				8856965216669BCB008F04E3 /* DwollaOAuth2Client.m */,

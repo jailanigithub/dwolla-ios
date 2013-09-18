@@ -7,7 +7,7 @@
 //
 
 #import "DwollaAPI.h"
-#import "Constants.m"
+#import "Constants.h"
 
 
 @implementation DwollaAPI
@@ -36,11 +36,6 @@ static DwollaAPI* sharedInstance;
 +(void) setSharedInstance:(DwollaAPI *)_instance {
     sharedInstance = _instance;
 }
-
--(void) setBaseURL:(NSString*) url {
-    DWOLLA_API_BASEURL = url;
-}
-
 -(NSString*)sendMoneyWithPIN:(NSString*)pin
                destinationID:(NSString*)destinationID
              destinationType:(NSString*)type

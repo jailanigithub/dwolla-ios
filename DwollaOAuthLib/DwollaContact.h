@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Constants.m"
+#import "Constants.h"
 
 @interface DwollaContact : NSObject
 
