@@ -5,7 +5,7 @@
 //  Created by Nick Schulze on 6/4/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
-//  A class used to access the Dwolla API, must have an oauth 
+//  A class used to access the Dwolla API, must have an oauth
 //  token for most of the methods
 
 #import <Foundation/Foundation.h>
@@ -42,7 +42,7 @@
  * @param amount: the amount of money to be sent (required)
  * @param facilitatorAmount: the amount of money the facilitator gets from the transaction
  *                           may be null, can't exceed 25% of the amount
- * @param assumeCost: values accepted are either YES or NO, indicates if the user wants to 
+ * @param assumeCost: values accepted are either YES or NO, indicates if the user wants to
  *                    assume the costs of the transaction, may be null
  * @param notes: notes to be delivered with the transaction, may be null
  * @param fundingSourceID: id of the funding source funds will be sent from, may be null
@@ -50,14 +50,14 @@
  * @return string representing the transaction id
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
--(NSString*)sendMoneyWithPIN:(NSString*)pin
-               destinationID:(NSString*)destinationID 
-             destinationType:(NSString*)type
-                      amount:(NSString*)amount
-           facilitatorAmount:(NSString*)facAmount
-                 assumeCosts:(NSString*)assumeCosts
-                       notes:(NSString*)notes
-             fundingSourceID:(NSString*)fundingID;
+-(NSDictionary*)sendMoneyWithPIN:(NSString*)pin
+                   destinationID:(NSString*)destinationID
+                 destinationType:(NSString*)type
+                          amount:(NSString*)amount
+               facilitatorAmount:(NSString*)facAmount
+                     assumeCosts:(NSString*)assumeCosts
+                           notes:(NSString*)notes
+                 fundingSourceID:(NSString*)fundingID;
 
 /**
  * requests money from the indicated user
@@ -79,7 +79,7 @@
                          amount:(NSString*)amount
               facilitatorAmount:(NSString*)facAmount
                           notes:(NSString*)notes;
-   
+
 /**
  * shows the balance of the current user
  *
@@ -115,9 +115,9 @@
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
 -(NSMutableArray*)getNearbyWithLatitude:(NSString*)lat
-                            Longitude:(NSString*)lon
-                                Limit:(NSString*)limit
-                                Range:(NSString*)range;
+                              Longitude:(NSString*)lon
+                                  Limit:(NSString*)limit
+                                  Range:(NSString*)range;
 
 /**
  * gets the funding sources of the current user
@@ -160,7 +160,7 @@
 /**
  * gets recent transactions
  *
- * @param date: the date to begin pulling transactions from 
+ * @param date: the date to begin pulling transactions from
  * @param limit: the number of transactions to be returned
  * @param skip: the number of transactions to skip
  *
@@ -168,9 +168,9 @@
  * @throws NSException if parameters are invalid, no access token is available, or request fails
  **/
 -(NSArray*)getTransactionsSince:(NSString*)date
-                                  withType:(NSString*)type
-                                 withLimit:(NSString*)limit
-                                  withSkip:(NSString*)skip;
+                       withType:(NSString*)type
+                      withLimit:(NSString*)limit
+                       withSkip:(NSString*)skip;
 
 /**
  * gets the transaction details of the provided transactionID

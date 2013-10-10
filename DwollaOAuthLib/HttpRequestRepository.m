@@ -38,7 +38,9 @@
     
     NSDictionary *resultDictionary = [self.nsURLConnectionRepository sendSynchronousRequest:request];
     
-    return [self.httpRequestHelper checkRequestForSuccessAndReturn: resultDictionary];
+    //    return [self.httpRequestHelper checkRequestForSuccessAndReturn: resultDictionary];
+    
+    return resultDictionary;
 }
 
 -(NSDictionary*)getRequest: (NSString*) url
@@ -48,7 +50,7 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
                                                            cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
                                                        timeoutInterval:10];
-
+    
     [request setHTTPMethod: @"GET"];
     
     NSDictionary *result = [self.nsURLConnectionRepository sendSynchronousRequest:request];

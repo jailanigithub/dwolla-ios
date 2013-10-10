@@ -36,15 +36,23 @@ static DwollaAPI* sharedInstance;
 +(void) setSharedInstance:(DwollaAPI *)_instance {
     sharedInstance = _instance;
 }
--(NSString*)sendMoneyWithPIN:(NSString*)pin
-               destinationID:(NSString*)destinationID
-             destinationType:(NSString*)type
-                      amount:(NSString*)amount
-           facilitatorAmount:(NSString*)facAmount
-                 assumeCosts:(NSString*)assumeCosts
-                       notes:(NSString*)notes
-             fundingSourceID:(NSString*)fundingID
-{
+//-(NSString*)sendMoneyWithPIN:(NSString*)pin
+//               destinationID:(NSString*)destinationID
+//             destinationType:(NSString*)type
+//                      amount:(NSString*)amount
+//           facilitatorAmount:(NSString*)facAmount
+//                 assumeCosts:(NSString*)assumeCosts
+//                       notes:(NSString*)notes
+//             fundingSourceID:(NSString*)fundingID
+-(NSDictionary*)sendMoneyWithPIN:(NSString*)pin
+                   destinationID:(NSString*)destinationID
+                 destinationType:(NSString*)type
+                          amount:(NSString*)amount
+               facilitatorAmount:(NSString*)facAmount
+                     assumeCosts:(NSString*)assumeCosts
+                           notes:(NSString*)notes
+                 fundingSourceID:(NSString*)fundingID{
+    
     //Setting Up URL
     NSString *token = [self.oAuthTokenRepository getAccessToken];
     NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", SEND_URL, token];
@@ -56,9 +64,9 @@ static DwollaAPI* sharedInstance;
     
     //Creating Parameters Dictionary
     NSMutableDictionary* parameterDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                                         pin, PIN_PARAMETER_NAME,
-                                         destinationID, DESTINATION_ID_PARAMETER_NAME,
-                                         amount, AMOUNT_PARAMETER_NAME, nil];
+                                                pin, PIN_PARAMETER_NAME,
+                                                destinationID, DESTINATION_ID_PARAMETER_NAME,
+                                                amount, AMOUNT_PARAMETER_NAME, nil];
     
     if (type != nil && ![type isEqualToString:@""]) [parameterDictionary setObject:type forKey:DESTINATION_TYPE_PARAMETER_NAME];
     if (facAmount != nil && ![facAmount isEqualToString:@""]) [parameterDictionary setObject:facAmount forKey:FACILITATOR_AMOUNT_PARAMETER_NAME];
@@ -70,15 +78,16 @@ static DwollaAPI* sharedInstance;
     NSDictionary* dictionary = [httpRequestRepository postRequest: url withParameterDictionary:parameterDictionary];
     
     //Parsing and responding
-    return [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:RESPONSE_RESULT_PARAMETER]];
+    //    return [[NSString alloc] initWithFormat:@"%@",[dictionary valueForKey:RESPONSE_RESULT_PARAMETER]];
+    return dictionary;
 }
 
--(NSString*)requestMoneyWithPIN:(NSString*)pin  
-                 sourceID:(NSString*)sourceID 
-               sourceType:(NSString*)type
-                   amount:(NSString*)amount
-        facilitatorAmount:(NSString*)facAmount
-                    notes:(NSString*)notes
+-(NSString*)requestMoneyWithPIN:(NSString*)pin
+                       sourceID:(NSString*)sourceID
+                     sourceType:(NSString*)type
+                         amount:(NSString*)amount
+              facilitatorAmount:(NSString*)facAmount
+                          notes:(NSString*)notes
 {
     NSString* token = [self.oAuthTokenRepository getAccessToken];
     
@@ -109,9 +118,9 @@ static DwollaAPI* sharedInstance;
 -(float)getBalance
 {
     NSString* token = [self.oAuthTokenRepository getAccessToken];
-
+    
     NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", BALANCE_URL, token];
-
+    
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
     
     BOOL success = [[dictionary valueForKey:@"Success"] boolValue];
@@ -155,9 +164,9 @@ static DwollaAPI* sharedInstance;
 }
 
 -(NSMutableArray*)getNearbyWithLatitude:(NSString*)lat
-                            Longitude:(NSString*)lon
-                                Limit:(NSString*)limit
-                                Range:(NSString*)range
+                              Longitude:(NSString*)lon
+                                  Limit:(NSString*)limit
+                                  Range:(NSString*)range
 {
     //Creating Parameters Dictionary
     NSMutableDictionary* parameterDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
@@ -193,7 +202,7 @@ static DwollaAPI* sharedInstance;
     NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@?oauth_token=%@", FUNDING_SOURCES_URL, token];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
-
+    
     NSArray* data =[dictionary valueForKey:RESPONSE_RESULT_PARAMETER];
     
     NSMutableArray* sources = [[NSMutableArray alloc] initWithCapacity:[data count]];
@@ -207,11 +216,11 @@ static DwollaAPI* sharedInstance;
 
 -(DwollaFundingSource*)getFundingSource:(NSString*)sourceID
 {
-
+    
     NSString* token = [self.oAuthTokenRepository getAccessToken];
     
     [self isParameterNullOrEmpty: sourceID andThrowErrorWithName: SOURCE_ID_ERROR_NAME];
-      
+    
     NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@/%@?oauth_token=%@", FUNDING_SOURCES_URL, [self.httpRequestHelper encodeString:sourceID], token];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
@@ -236,7 +245,7 @@ static DwollaAPI* sharedInstance;
         return nil;
     }
     NSDictionary* response = [dictionary valueForKey:RESPONSE_RESULT_PARAMETER];
-
+    
     return [[[DwollaUser alloc] initWithDictionary:response] autorelease];
 }
 
@@ -248,16 +257,16 @@ static DwollaAPI* sharedInstance;
     NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@/%@?client_id=%@&client_secret=%@", USERS_URL, accountID, key, secret];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
-
+    
     NSDictionary* values = [dictionary valueForKey:RESPONSE_RESULT_PARAMETER];
     
     return [[DwollaUser alloc] initWithDictionary:values];
 }
 
 -(NSArray*)getTransactionsSince:(NSString*)date
-                                  withType:(NSString*)type
-                                 withLimit:(NSString*)limit
-                                  withSkip:(NSString*)skip;
+                       withType:(NSString*)type
+                      withLimit:(NSString*)limit
+                       withSkip:(NSString*)skip;
 {
     NSMutableDictionary* parameterDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                                 [self.oAuthTokenRepository getAccessToken], OAUTH_TOKEN_PARAMETER_NAME, nil];
@@ -277,7 +286,7 @@ static DwollaAPI* sharedInstance;
     for (int i = 0; i < [data count]; i++)
         [transactions addObject:[[DwollaTransaction alloc] initWithDictionary:[data objectAtIndex:i]]];
     
-   return transactions;
+    return transactions;
 }
 
 -(DwollaTransaction*)getTransaction:(NSString*)transactionID
@@ -287,7 +296,7 @@ static DwollaAPI* sharedInstance;
     NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@/%@?oauth_token=%@", TRANSACTIONS_URL, transactionID, token];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url];
-
+    
     return [[DwollaTransaction alloc] initWithDictionary:[dictionary valueForKey:RESPONSE_RESULT_PARAMETER]];
 }
 
@@ -305,7 +314,7 @@ static DwollaAPI* sharedInstance;
     NSString* url = [DWOLLA_API_BASEURL stringByAppendingFormat:@"%@", TRANSACTIONS_STATS_URL];
     
     NSDictionary* dictionary = [self.httpRequestRepository getRequest:url withQueryParameterDictionary: parameterDictionary];
- 
+    
     return [[DwollaTransactionStats alloc] initWithDictionary: [dictionary valueForKey:RESPONSE_RESULT_PARAMETER]];
 }
 
@@ -323,7 +332,7 @@ static DwollaAPI* sharedInstance;
 }
 
 -(BOOL) isParameterNullOrEmpty: (NSString*) value
-andThrowErrorWithName: (NSString*) name
+         andThrowErrorWithName: (NSString*) name
 {
     if(value == nil || [value isEqualToString:@""])
     {
